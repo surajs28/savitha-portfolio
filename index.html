@@ -240,35 +240,39 @@
         </div>
 
         <div class="research__areas">
+          <!-- Card I: Education -->
           <div class="research-card fade-up" data-fields="education">
             <div class="research-card__num">I</div>
             <div class="research-card__title">Education Policy &amp; Governance</div>
-            <div class="research-card__desc">Studying school systems, Right to Education (RTE) implementation, and language policies in Indian education.</div>
+            <ul class="research-card__list">
+              <li>School Systems &amp; Reform</li>
+              <li>Language in Education Policy</li>
+              <li>Administrative History of Education</li>
+            </ul>
           </div>
-          <div class="research-card fade-up" style="transition-delay:.05s" data-fields="history">
+
+          <!-- Card II: Public Policy -->
+          <div class="research-card fade-up" style="transition-delay:.1s" data-fields="policy health">
             <div class="research-card__num">II</div>
-            <div class="research-card__title">India's Administrative Evolution</div>
-            <div class="research-card__desc">Characterizing district proliferation and boundary changes from the colonial era to contemporary India.</div>
+            <div class="research-card__title">Public Policy &amp; Administration</div>
+            <ul class="research-card__list">
+              <li>Public Policy Analysis</li>
+              <li>Public Administration &amp; Governance</li>
+              <li>Governance of Public Health</li>
+            </ul>
           </div>
-          <div class="research-card fade-up" style="transition-delay:.10s" data-fields="history">
+
+          <!-- Card III: Evolution & Governance -->
+          <div class="research-card fade-up" style="transition-delay:.2s" data-fields="politics governance health migration">
             <div class="research-card__num">III</div>
-            <div class="research-card__title">Federalism &amp; Decentralization</div>
-            <div class="research-card__desc">Analyzing political transitions, internal migration, and the evolution of urban and local governance.</div>
-          </div>
-          <div class="research-card fade-up" style="transition-delay:.15s" data-fields="health">
-            <div class="research-card__num">IV</div>
-            <div class="research-card__title">Computational Epidemiology</div>
-            <div class="research-card__desc">Modeling the spread of vector-borne diseases like Dengue and analyzing public health responses.</div>
-          </div>
-          <div class="research-card fade-up" style="transition-delay:.20s" data-fields="health education">
-            <div class="research-card__num">V</div>
-            <div class="research-card__title">Social Impact &amp; Welfare</div>
-            <div class="research-card__desc">Evaluating the impact of COVID-19 on unorganized workers and migrant distress in urban India.</div>
-          </div>
-          <div class="research-card fade-up" style="transition-delay:.25s" data-fields="networks">
-            <div class="research-card__num">VI</div>
-            <div class="research-card__title">Network Science</div>
-            <div class="research-card__desc">Exploring co-authorship networks and citation dynamics within the scientific community in India.</div>
+            <div class="research-card__title">Evolution &amp; Population</div>
+            <ul class="research-card__list">
+              <li>Political &amp; Administrative Evolution</li>
+              <li>Federalism &amp; Decentralization</li>
+              <li>Internal Migration &amp; Urban Governance</li>
+              <li>Population Studies &amp; Maternal Health</li>
+              <li>Computational Epidemiology</li>
+            </ul>
           </div>
         </div>
 
@@ -813,27 +817,49 @@
             </div>
 
             <div style="margin-top:var(--s10)">
-              <div class="section-label">Foundational Research Experience</div>
+              <div class="section-label">Legacy Research</div>
+              <h3 class="education__heading fade-up">Foundational Research Experience</h3>
               <div class="research-grid">
+                <!-- CARD 1: HEALTH SYSTEMS -->
                 <div class="foundation-card fade-up">
                   <div class="research-card__meta">2009 · Mumbai, India</div>
                   <div class="research-card__role">Spatial Analysis of Health Systems</div>
-                  <div class="research-card__inst">Internship at International Institute of Population Sciences (IIPS)</div>
-                  <div class="research-card__desc">Investigated spatial correlates of maternal and child health using DLHS-3 data; applied spatial autocorrelation and regression using GeoDa, Arc GIS, and STATA.</div>
+                  <div class="research-card__inst">Internship: Intl Inst of Population Sciences (IIPS)</div>
+                  <div class="research-card__desc">
+                    <ul>
+                      <li>Investigated the spatial nature of maternal and child health correlates at district level in rural India.</li>
+                      <li>Analyzed primary data of DLHS-3 using <strong>SPSS</strong> and <strong>STATA</strong> to extract socio-economic and health care variables.</li>
+                      <li>Explored spatial autocorrelation and correlates through spatial regression using <strong>GeoDa</strong> and <strong>Arc GIS</strong>.</li>
+                    </ul>
+                  </div>
                 </div>
 
-                <div class="foundation-card fade-up">
+                <!-- CARD 2: UNDER-5 MORTALITY -->
+                <div class="foundation-card fade-up" style="transition-delay: 0.1s;">
                   <div class="research-card__meta">2009 · Penn State University, PA</div>
                   <div class="research-card__role">Spatial Analysis of Under-5 Mortality</div>
-                  <div class="research-card__inst">The Pennsylvania State University</div>
-                  <div class="research-card__desc">Explored spatial dimensions of child mortality based on DLHS-2 and Census data; studied socio-economic correlates using LM-Error and LM-Lag models in GeoDa.</div>
+                  <div class="research-card__inst">Spatial Demography Research</div>
+                  <div class="research-card__desc">
+                    <ul>
+                      <li>Explored spatial dimensions of child mortality based on DLHS-2 and Census 2001 data.</li>
+                      <li>Utilized Spatial Analytic measures (Moran’s I, LISA) for descriptive statistics.</li>
+                      <li>Studied socio-economic correlates using <strong>LM-Error</strong> and <strong>LM-Lag</strong> spatial regression models in GeoDa.</li>
+                    </ul>
+                  </div>
                 </div>
 
-                <div class="foundation-card fade-up">
+                <!-- CARD 3: RTE POLICY -->
+                <div class="foundation-card fade-up" style="transition-delay: 0.2s;">
                   <div class="research-card__meta">2006 · Penn State University, PA</div>
-                  <div class="research-card__role">Education Policy: Right to Education (RTE)</div>
-                  <div class="research-card__inst">The Pennsylvania State University</div>
-                  <div class="research-card__desc">Conducted extensive policy analysis of the RTE (Draft) Bill-2005; formulated recommendations that were forwarded to the Government of India.</div>
+                  <div class="research-card__role">Right to Education (RTE) Policy</div>
+                  <div class="research-card__inst">Education Policy Analysis</div>
+                  <div class="research-card__desc">
+                    <ul>
+                      <li>Conducted extensive policy analysis of the <strong>Right to Education (India) Draft Bill-2005</strong>.</li>
+                      <li>Formulated policy recommendations to amend the draft bill as part of <strong>Asha for Education</strong>.</li>
+                      <li>Coordinated campaign efforts and forwarded formal recommendations to the <strong>Government of India</strong>.</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -894,8 +920,8 @@
               <div class="timeline__dot" aria-hidden="true"></div>
               <div>
                 <div class="timeline__role">Rashtriya Avishkar Abhiyan</div>
-                <div class="timeline__org">Ministry of Human Resource Development, GoI</div>
-                <div class="timeline__desc">Nodal Officer for IIT Gandhinagar. Conducted Science Day, coordinated with KV and Navodaya schools, and judged KV school science projects. Conducted a 'Science from Toys' workshop.</div>
+                <div class="timeline__org">MHRD, GoI (With Prof. Sriram Kanvah)</div>
+                <div class="timeline__desc">Nodal Officer for IIT Gandhinagar. Conducted Science Day with student participation from Ahmedabad and Gandhinagar. Coordinated with KV and Navodaya schools. Judged science projects for Children Science Congress and conducted 'Science from Toys' workshops in collaboration with Sarva Shiksha Abhiyan and Vikram Sarabhai Community Science Centre.</div>
               </div>
             </div>
 
@@ -903,33 +929,43 @@
               <div class="timeline__dot" aria-hidden="true"></div>
               <div>
                 <div class="timeline__role">PAHELI Survey</div>
-                <div class="timeline__desc">Conducted Peoples Health, Education and Livelihood Survey in Palaj and Basan villages (March-April 2015).</div>
+                <div class="timeline__desc">Conducted Peoples Health, Education and Livelihood (PAHELI) Survey in Palaj and Basan villages (March-April 2015), documenting vital socio-economic indicators.</div>
               </div>
             </div>
 
             <div class="timeline__item">
               <div class="timeline__dot" aria-hidden="true"></div>
               <div>
-                <div class="timeline__role">Village school teaching</div>
-                <div class="timeline__desc">Coordinated teaching activities in Palaj and Basan Villages by IITGN Students as part of Unnat Bharat Abhiyan (Feb-April 2015).</div>
+                <div class="timeline__role">Village School Teaching</div>
+                <div class="timeline__org">Unnat Bharat Abhiyan</div>
+                <div class="timeline__desc">Coordinated teaching activities in Palaj and Basan Villages by IITGN Students (Feb-April 2015), bridging the gap between higher education and rural communities.</div>
               </div>
             </div>
 
             <div class="timeline__item">
               <div class="timeline__dot" aria-hidden="true"></div>
               <div>
-                <div class="timeline__role">Symposium Judge</div>
-                <div class="timeline__org">Penn State & Pennsylvania Junior Science</div>
-                <div class="timeline__desc">Graduate Poster Exhibition (Penn State 2009, 2010); Pennsylvania Junior Science & Humanities Symposium (2008).</div>
+                <div class="timeline__role">Graduate Poster Exhibition Judge</div>
+                <div class="timeline__org">The Pennsylvania State University (2009–2010)</div>
+                <div class="timeline__desc">Evaluated graduate-level research posters across Science and Humanities disciplines during the annual university-wide exhibition.</div>
               </div>
             </div>
 
             <div class="timeline__item">
               <div class="timeline__dot" aria-hidden="true"></div>
               <div>
-                <div class="timeline__role">Volunteer</div>
-                <div class="timeline__org">Bangalore Association for Science Education</div>
-                <div class="timeline__desc">Science in Action (1997-1999).</div>
+                <div class="timeline__role">Junior Science & Humanities Symposium Judge</div>
+                <div class="timeline__org">Pennsylvania Junior Science & Humanities (2008)</div>
+                <div class="timeline__desc">Graded and ranked middle and high school students' science talks, providing academic mentorship and performance evaluation.</div>
+              </div>
+            </div>
+
+            <div class="timeline__item">
+              <div class="timeline__dot" aria-hidden="true"></div>
+              <div>
+                <div class="timeline__role">Volunteer, Science in Action</div>
+                <div class="timeline__org">Bangalore Association for Science Education (1997–1999)</div>
+                <div class="timeline__desc">Organized city-wide science education programs, designed physics experiments, and demonstrated core scientific principles to high school students.</div>
               </div>
             </div>
           </div>
@@ -942,8 +978,9 @@
             <div class="timeline__item">
               <div class="timeline__dot" aria-hidden="true"></div>
               <div>
-                <div class="timeline__role">Petition drive for absentee Voting</div>
-                <div class="timeline__desc">Created an online group called voterswithoutborders and initiated the petition drive to allow Non resident Indians and People on the move in Indian Elections (2008-2009).</div>
+                <div class="timeline__role">Petition for Absentee Voting</div>
+                <div class="timeline__org">voterswithoutborders (2008–2009)</div>
+                <div class="timeline__desc">Created the online advocacy group <a href="http://www.voterswithoutborders.org" target="_blank" style="color:var(--gold);text-decoration:underline;">voterswithoutborders.org</a> and initiated a nationwide petition drive to allow Non-Resident Indians (NRIs) and internal migrants to participate in Indian elections.</div>
               </div>
             </div>
 
@@ -951,17 +988,25 @@
               <div class="timeline__dot" aria-hidden="true"></div>
               <div>
                 <div class="timeline__role">Association for India’s Development (AID)</div>
-                <div class="timeline__org">Secretary and Project Coordinator</div>
-                <div class="timeline__desc">Penn State & Texas A&M (2003-2008). Involved in Sikshana, Eureka Quality Improvement Program (EQUIP) in Tsunami affected districts, and RTI Campaign.</div>
+                <div class="timeline__org">Secretary and Project Coordinator (2003–2008)</div>
+                <div class="timeline__desc">
+                  Led coordination between Penn State and Texas A&M chapters, focusing on grassroots development:
+                  <ul style="margin-top: 0.5rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                    <li><strong>Sikshana:</strong> Coordinated funding and ground-level assessment for Phase II public school empowerment in Bangalore.</li>
+                    <li><strong>EQUIP:</strong> Evaluated primary educational components for 4,500 schools in Tsunami-affected districts of Tamil Nadu.</li>
+                    <li><strong>RTI Campaign:</strong> Actively campaigned against amendments to the Right to Information Act (2005) to preserve transparency.</li>
+                    <li><strong>Admin:</strong> Managed student club governance, including inter-chapter collaboration and project documentation.</li>
+                  </ul>
+                </div>
               </div>
             </div>
 
             <div class="timeline__item">
               <div class="timeline__dot" aria-hidden="true"></div>
               <div>
-                <div class="timeline__role">Asha for education</div>
-                <div class="timeline__org">Right To Education (RTE) Cell</div>
-                <div class="timeline__desc">Evaluated the RTE Bill for amendments, coordinated campaign efforts in 2006.</div>
+                <div class="timeline__role">Asha for Education</div>
+                <div class="timeline__org">Right To Education (RTE) Cell (2006)</div>
+                <div class="timeline__desc">Evaluated the RTE Bill for critical amendments and coordinated national campaign efforts to reinstate and strengthen the bill within the Indian legislative framework.</div>
               </div>
             </div>
           </div>

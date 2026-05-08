@@ -210,7 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // 2. PHYSICS DROP + TITLE GLOW
-  gsap.set(".research-card", { opacity: 0, y: -250 });
+  // Scoped strictly to cards INSIDE .research__areas to avoid hiding foundation cards
+  gsap.set(".research__areas .research-card", { opacity: 0, y: -250 });
 
   const researchTL = gsap.timeline({
     scrollTrigger: {
@@ -220,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  gsap.utils.toArray(".research-card").forEach((card, i) => {
+  gsap.utils.toArray(".research__areas .research-card").forEach((card, i) => {
     const title = card.querySelector(".research-card__title");
     
     // Drop the card

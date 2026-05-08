@@ -549,7 +549,32 @@ ul, ol { list-style: none; }
 .research-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(184,132,26,0.4); transform: translateY(-2px) !important; }
 .research-card__num { font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 200; color: var(--gold); opacity: 0.6; margin-bottom: var(--s3); line-height: 1; }
 .research-card__title { font-family: var(--font-serif); font-size: var(--text-xl); font-weight: 500; color: var(--parchment); margin-bottom: var(--s2); }
-.research-card__desc { font-size: var(--text-sm); color: var(--on-dark-dim); line-height: 1.8; }
+.research-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+
+.research-card__list li {
+  font-size: var(--text-sm);
+  color: var(--on-dark-dim);
+  line-height: 1.6;
+  position: relative;
+  padding-left: 1.2rem;
+}
+
+.research-card__list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 1.2rem;
+  line-height: 1;
+  top: -2px;
+}
 
 /* PAPER ACCORDION */
 .papers__heading { font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 300; color: var(--parchment); margin-bottom: var(--s5); border-top: 1px solid var(--border-dark); padding-top: var(--s6); }
@@ -787,7 +812,7 @@ ul, ol { list-style: none; }
 }
 
 .timeline__org { font-size: var(--text-sm); color: var(--ink); font-weight: 500; }
-.timeline__desc { font-size: var(--text-sm); color: var(--slate); line-height: 1.6; margin-top: 0.5rem; max-width: 500px; }
+.timeline__desc { font-size: var(--text-sm); color: var(--slate); line-height: 1.6; margin-top: 0.5rem; max-width: 850px; }
 .edu-cards { display: flex; flex-direction: column; gap: var(--s4); }
 .edu-card { padding: var(--s5); background: var(--cream-dark); border-radius: var(--radius-card); border-left: 3px solid var(--gold); transition: transform var(--dur); }
 .edu-card:hover { transform: translateX(5px); }
@@ -1091,6 +1116,76 @@ footer { background: var(--lapis); padding: var(--s6) var(--gutter); border-top:
 
 .talks-list .pub-item.focused .pub-item__title::after {
   width: 100%;
+}
+
+/* FOUNDATIONAL RESEARCH CARDS */
+.research-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--s6);
+  margin-top: var(--s6);
+}
+
+.foundation-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  padding: var(--s6);
+  border-radius: var(--radius-card);
+  transition: all var(--dur) var(--ease);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.foundation-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+  border-color: var(--gold-hover);
+}
+
+.research-card__meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.research-card__role {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.research-card__inst {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.research-card__desc {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--slate);
+}
+
+.research-card__desc ul {
+  padding-left: 1.25rem;
+  margin-top: var(--s2);
+}
+
+.research-card__desc li {
+  margin-bottom: var(--s2);
+  position: relative;
+}
+
+.research-card__desc li::marker {
+  color: var(--gold);
 }
 /* RESEARCH GRANTS */
 .grants-grid {
