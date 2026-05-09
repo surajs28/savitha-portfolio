@@ -138,15 +138,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Reset initial states just in case
-  gsap.set(".hero__name-first", { x: -100, opacity: 0 });
-  gsap.set(".hero__name-last", { x: 100, opacity: 0 });
+  gsap.set(".hero__name-first", { x: "-100vw", opacity: 0 });
+  gsap.set(".hero__name-last", { x: "100vw", opacity: 0 });
   gsap.set(".hero__role-tag, .hero__role-sep", { y: -30, opacity: 0 });
   gsap.set(".hero__desc, .hero__actions", { y: 20, opacity: 0 });
 
   heroTL
     // A. Names slide in to meet
-    .to(".hero__name-first", { x: 0, opacity: 1, duration: 1.2, ease: "power3.out" })
-    .to(".hero__name-last", { x: 0, opacity: 1, duration: 1.2, ease: "power3.out" }, "<")
+    .to(".hero__name-first", { x: 0, opacity: 1, duration: 1.2, ease: "power4.out" })
+    .to(".hero__name-last", { x: 0, opacity: 1, duration: 1.2, ease: "power4.out" }, "<")
     
     // B. Golden underline draws from center
     .to(".hero__underline", { scaleX: 1, duration: 0.8, ease: "power2.inOut" }, "-=0.4")
@@ -853,18 +853,23 @@ document.addEventListener('DOMContentLoaded', () => {
     ease: "power2.out"
   });
 
-  // 15. FOUNDATION RESEARCH CARDS
-  gsap.from(".foundation-card", {
-    scrollTrigger: {
-      trigger: ".research-grid",
-      start: "top 90%",
-      toggleActions: "play none none reverse"
-    },
-    opacity: 0,
-    y: 20,
-    stagger: 0.1,
-    duration: 0.8,
-    ease: "power2.out"
+  // 15. FOUNDATION RESEARCH CARDS — each card triggers itself
+  gsap.utils.toArray(".foundation-card").forEach((card, i) => {
+    gsap.fromTo(card,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: i * 0.12,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 92%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
   });
 
 }); // closes DOMContentLoaded
