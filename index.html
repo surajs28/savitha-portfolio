@@ -37,7 +37,7 @@
           <li><a href="#expertise" class="nav-item">Expertise</a></li>
           <li><a href="#journey" class="nav-item">Experience</a></li>
           <li><a href="#credentials" class="nav-item">Certifications</a></li>
-          <li><a href="articles.html" class="nav-item">Articles</a></li>
+          <li><a href="#articles" class="nav-item">Articles</a></li>
           <li><a href="#contact" class="nav-item nav-btn">Contact</a></li>
         </ul>
       </nav>
@@ -58,7 +58,7 @@
           <li><a href="#expertise" class="mobile-nav-item">Expertise</a></li>
           <li><a href="#journey" class="mobile-nav-item">Experience</a></li>
           <li><a href="#credentials" class="mobile-nav-item">Certifications</a></li>
-          <li><a href="articles.html" class="mobile-nav-item">Articles</a></li>
+          <li><a href="#articles" class="mobile-nav-item">Articles</a></li>
           <li><a href="#contact" class="mobile-nav-item mobile-nav-btn">Contact</a></li>
         </ul>
       </nav>
@@ -260,39 +260,6 @@
             <p class="quote-text">"The difference between a good organisation and a great one is always its people."</p>
             <cite class="quote-attribution">— Savitha Krishnamoorthy</cite>
           </blockquote>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- THOUGHT LEADERSHIP SECTION -->
-  <section id="perspectives" class="section perspectives-section">
-    <div class="section-container">
-      <div class="perspectives-header" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: var(--space-md); flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <h2 class="section-heading" style="margin-bottom: 0;" data-animate="fade-up">Perspectives</h2>
-          <p class="section-subheading" style="margin-top: 0.5rem; margin-bottom: 0;" data-animate="fade-up" style="--delay: 1;">Ideas that shape how I lead people.</p>
-        </div>
-        <a href="articles.html" class="editorial-btn" data-animate="fade-up" style="--delay: 2;">View All Articles <span class="arrow">→</span></a>
-      </div>
-      
-      <div id="homepage-insights-container" class="articles-layout">
-        <!-- Skeleton loaders displayed while fetching -->
-        <div class="post-skeleton" style="background-color: var(--color-white); border: 1px solid var(--color-divider); padding: var(--space-md);">
-          <div class="skeleton-pill"></div>
-          <div class="skeleton-date"></div>
-          <div class="skeleton-title"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line short"></div>
-        </div>
-        <div class="post-skeleton" style="background-color: var(--color-white); border: 1px solid var(--color-divider); padding: var(--space-md);">
-          <div class="skeleton-pill"></div>
-          <div class="skeleton-date"></div>
-          <div class="skeleton-title"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line short"></div>
         </div>
       </div>
     </div>
@@ -535,6 +502,51 @@
           <span class="credential-badge" data-animate="fade-up" style="--delay: 8;">Thomas Profiling</span>
           <span class="credential-badge" data-animate="fade-up" style="--delay: 9;">16PF</span>
           <span class="credential-badge" data-animate="fade-up" style="--delay: 10;">FIRO-B</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTICLES SECTION -->
+  <section id="articles" class="section articles-section" style="background-color: var(--color-bg); border-top: 1px solid var(--color-divider); padding: var(--space-lg) var(--space-xs);">
+    <div class="section-container">
+      <div class="perspectives-header" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: var(--space-md); flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 class="section-heading" style="margin-bottom: 0;" data-animate="fade-up">Articles & Insights</h2>
+          <p class="section-subheading" style="margin-top: 0.5rem; margin-bottom: 0;" data-animate="fade-up" style="--delay: 1;">Reflections on people, leadership, and organization design.</p>
+        </div>
+        <a href="articles.html" class="editorial-btn" data-animate="fade-up" style="--delay: 2;">View All Articles <span class="arrow">→</span></a>
+      </div>
+      
+      <div class="articles-layout">
+        <!-- 1. Static Pygmalion Card -->
+        <article class="featured-article-card" data-animate="fade-up" style="--delay: 2;">
+          <div class="article-meta">
+            <span class="article-tag">Leadership &bull; Psychology &bull; Management &bull; 14 May 2025</span>
+          </div>
+          <h3 class="article-title">Power of Expectations – The Pygmalion Way</h3>
+          <p class="article-excerpt">The way one treats another can, for better or worse, be transforming. Drawing from George Bernard Shaw's 'Pygmalion' and psychological research, this piece explores the power of positive expectations in leadership.</p>
+          <a href="articles.html" class="article-cta-btn" style="text-decoration: none; display: inline-block; text-align: center;">Read Full Article <span class="arrow">→</span></a>
+        </article>
+
+        <!-- 2. Dynamic Posts Feed Container (Skeletons initially) -->
+        <div id="dynamic-posts-container" style="display: contents;">
+          <div class="post-skeleton" style="background-color: var(--color-white); border: 1px solid var(--color-divider); padding: var(--space-md);">
+            <div class="skeleton-pill"></div>
+            <div class="skeleton-date"></div>
+            <div class="skeleton-title"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line short"></div>
+          </div>
+          <div class="post-skeleton" style="background-color: var(--color-white); border: 1px solid var(--color-divider); padding: var(--space-md);">
+            <div class="skeleton-pill"></div>
+            <div class="skeleton-date"></div>
+            <div class="skeleton-title"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line short"></div>
+          </div>
         </div>
       </div>
     </div>
