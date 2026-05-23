@@ -2556,3 +2556,124 @@ ul {
   display: none !important;
 }
 
+/* 18. EXECUTIVE CREDENTIALS CARDS STYLING */
+.credentials-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.section-heading-editorial {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 400;
+  color: var(--color-primary);
+  margin-bottom: 2.5rem;
+}
+
+.credentials-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 100%;
+}
+
+.cred-card {
+  background-color: #F4F0EA; /* Beautiful off-white card background from screenshot */
+  border-left: 3px solid var(--color-accent); /* Orange/gold left border indicator */
+  border-radius: 4px;
+  padding: 2.2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+  min-height: 250px;
+}
+
+.cred-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(26, 26, 46, 0.06);
+}
+
+.cred-card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.cred-school {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.cred-title {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  line-height: 1.3;
+  margin-bottom: auto;
+}
+
+.cred-divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(26, 26, 46, 0.08);
+  margin: 1.5rem 0;
+}
+
+.cred-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.cred-badge {
+  background-color: #E8E0D0; /* Beige rounded pill */
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  white-space: nowrap;
+}
+
+.cred-label {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 992px) {
+  .credentials-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .credentials-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  .cred-card {
+    min-height: auto;
+    padding: 1.8rem 1.5rem;
+  }
+}
+
