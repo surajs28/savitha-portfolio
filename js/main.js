@@ -106,24 +106,16 @@ document.addEventListener('DOMContentLoaded', () => {
   statContainers.forEach(box => statObserver.observe(box));
 
   // 5. THOUGHT LEADERSHIP ARTICLE MODAL
-  const openArticleBtn = document.getElementById('open-article-btn');
   const articleModal = document.getElementById('article-modal');
   const closeModalBtn = document.getElementById('close-modal-btn');
 
-  if (openArticleBtn && articleModal && closeModalBtn) {
-    const openModal = () => {
-      articleModal.classList.remove('hidden');
-      articleModal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    };
-
+  if (articleModal && closeModalBtn) {
     const closeModal = () => {
       articleModal.classList.add('hidden');
       articleModal.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
     };
 
-    openArticleBtn.addEventListener('click', openModal);
     closeModalBtn.addEventListener('click', closeModal);
 
     // Close on overlay background click
@@ -137,6 +129,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !articleModal.classList.contains('hidden')) {
         closeModal();
+      }
+    });
+
+    // Event delegation for opening the modal via any static or dynamic button with id 'open-article-btn'
+    document.addEventListener('click', (e) => {
+      if (e.target && e.target.id === 'open-article-btn') {
+        articleModal.classList.remove('hidden');
+        articleModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
       }
     });
   }
