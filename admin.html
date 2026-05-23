@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Savitha Krishnamoorthy</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="admin-page-body">
+  
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- 1. LOGIN SCREEN SECTION -->
+  <section id="login-section" class="auth-wrapper hidden">
+    <div class="login-card">
+      <div class="login-header">
+        <span class="login-logo">SK</span>
+        <h1 class="login-title">Admin Access</h1>
+      </div>
+      
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" required autocomplete="email" placeholder="email@example.com" />
+        </div>
+        
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" required autocomplete="current-password" placeholder="••••••••" />
+        </div>
+        
+        <button type="submit" class="btn-primary-full">Log In</button>
+        <p id="login-error" class="login-error-message hidden"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- 2. PRIVATE ADMIN DASHBOARD SECTION -->
+  <section id="dashboard-section" class="admin-dashboard hidden">
+    <!-- Simplified Admin Navbar -->
+    <header id="admin-navbar">
+      <div class="admin-nav-container">
+        <a href="index.html" class="admin-logo">SK <span>Admin</span></a>
+        <button id="logout-btn" class="btn-logout">Logout</button>
+      </div>
+    </header>
+
+    <div class="admin-container">
+      <div class="admin-grid">
+        
+        <!-- COLUMN 1: FORM COLUMN (40% desktop) -->
+        <div class="form-column">
+          <div class="admin-card">
+            <h2 id="form-title" class="admin-card-title">Create New Post</h2>
+            
+            <form id="post-form">
+              <!-- Hidden field to track edit mode -->
+              <input type="hidden" id="post-id" value="" />
+              
+              <div class="form-group">
+                <label for="post-title">Title *</label>
+                <input type="text" id="post-title" required placeholder="Enter post title" />
+              </div>
+              
+              <div class="form-group">
+                <label for="post-category">Category *</label>
+                <select id="post-category" required>
+                  <option value="Leadership">Leadership</option>
+                  <option value="HR Strategy">HR Strategy</option>
+                  <option value="Talent">Talent</option>
+                  <option value="Engagement">Engagement</option>
+                  <option value="Personal Growth">Personal Growth</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="post-content">Content *</label>
+                <textarea id="post-content" required rows="10" placeholder="Write your insight or paste from LinkedIn..."></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="post-linkedin">LinkedIn URL (Optional)</label>
+                <input type="url" id="post-linkedin" placeholder="https://linkedin.com/posts/..." />
+              </div>
+              
+              <div class="form-group-toggle">
+                <span class="toggle-label">Publish status:</span>
+                <label class="switch-container">
+                  <input type="checkbox" id="post-published" checked />
+                  <span class="slider-round"></span>
+                </label>
+                <span id="published-status-text" class="toggle-status-text">Publish Immediately</span>
+              </div>
+              
+              <div class="form-actions">
+                <button type="submit" id="submit-post-btn" class="btn-primary-form">Publish Post</button>
+                <a href="#" id="cancel-edit-btn" class="cancel-edit-link hidden">Cancel Edit</a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- COLUMN 2: POSTS LIST COLUMN (60% desktop) -->
+        <div class="list-column">
+          <div class="admin-card">
+            <div class="list-header">
+              <h2 class="admin-card-title">All Posts</h2>
+              <span id="post-count-badge" class="count-badge">0</span>
+            </div>
+            
+            <div id="admin-posts-list" class="admin-posts-list">
+              <!-- Loading indicators -->
+              <div class="admin-loading">Loading posts...</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Local Supabase Client Library -->
+  <script src="js/supabase.js"></script>
+  <!-- Shared Config -->
+  <script src="js/supabase-client.js"></script>
+  <!-- Admin Script -->
+  <script src="js/admin.js"></script>
+</body>
+</html>

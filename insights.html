@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insights — Savitha Krishnamoorthy</title>
+  <meta name="description" content="Perspectives on people, leadership, and the evolving world of work by Savitha Krishnamoorthy.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="insights-page">
+  <!-- Scroll progress bar -->
+  <div id="progress-bar"></div>
+
+  <!-- Header & Navigation -->
+  <header id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo" aria-label="Savitha Krishnamoorthy Home">SK</a>
+      
+      <!-- Desktop Navigation -->
+      <nav class="nav-desktop" aria-label="Desktop Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html#about" class="nav-item">About</a></li>
+          <li><a href="index.html#expertise" class="nav-item">Expertise</a></li>
+          <li><a href="index.html#journey" class="nav-item">Journey</a></li>
+          <li><a href="index.html#perspectives" class="nav-item">Perspectives</a></li>
+          <li><a href="#" class="nav-item active">Insights</a></li>
+          <li><a href="index.html#contact" class="nav-item">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Hamburger Menu Button -->
+      <button id="nav-toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-menu" class="mobile-menu hidden" aria-hidden="true">
+      <nav aria-label="Mobile Navigation">
+        <ul>
+          <li><a href="index.html#about" class="mobile-nav-item">About</a></li>
+          <li><a href="index.html#expertise" class="mobile-nav-item">Expertise</a></li>
+          <li><a href="index.html#journey" class="mobile-nav-item">Journey</a></li>
+          <li><a href="index.html#perspectives" class="mobile-nav-item">Perspectives</a></li>
+          <li><a href="#" class="mobile-nav-item">Insights</a></li>
+          <li><a href="index.html#contact" class="mobile-nav-item">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- INSIGHTS HERO SECTION -->
+  <section class="insights-hero">
+    <div class="insights-hero-container">
+      <h1 class="insights-title">Insights</h1>
+      <p class="insights-subheading">Perspectives on people, leadership, and the evolving world of work.</p>
+    </div>
+  </section>
+
+  <!-- INSIGHTS FEED SECTION -->
+  <section class="insights-feed-section">
+    <div class="insights-feed-container">
+      
+      <!-- Container for dynamic posts -->
+      <div id="posts-feed">
+        <!-- Skeleton Loaders -->
+        <div class="post-skeleton">
+          <div class="skeleton-pill"></div>
+          <div class="skeleton-date"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line short"></div>
+        </div>
+        <div class="post-skeleton">
+          <div class="skeleton-pill"></div>
+          <div class="skeleton-date"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line short"></div>
+        </div>
+        <div class="post-skeleton">
+          <div class="skeleton-pill"></div>
+          <div class="skeleton-date"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line short"></div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <span class="copyright">© 2025 Savitha Krishnamoorthy</span>
+      <a href="https://in.linkedin.com/in/savitha-krishnamoorthy-5506066" target="_blank" rel="noopener" class="footer-social-link" aria-label="LinkedIn Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Local Supabase Client Library -->
+  <script src="js/supabase.js"></script>
+  <!-- Shared Config -->
+  <script src="js/supabase-client.js"></script>
+  <!-- Main interaction script for mobile menu, etc. -->
+  <script src="js/main.js" defer></script>
+  <!-- Insights Page JS -->
+  <script src="js/insights.js" defer></script>
+</body>
+</html>
