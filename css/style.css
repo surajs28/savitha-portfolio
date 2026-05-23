@@ -244,6 +244,11 @@ ul {
   color: var(--color-accent);
 }
 
+.nav-desktop {
+  margin-left: 3.5rem;
+  margin-right: auto;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -283,33 +288,7 @@ ul {
   transform: scaleX(1);
 }
 
-/* Contact button in navigation */
-.nav-item.nav-btn {
-  display: inline-block;
-  background-color: var(--color-accent);
-  color: var(--color-white) !important;
-  border-radius: 50px;
-  padding: 0.4rem 1rem;
-  letter-spacing: 0.1em;
-  font-weight: 600;
-  transition: var(--transition-smooth);
-}
 
-.nav-item.nav-btn::after {
-  display: none; /* No underline for button style */
-}
-
-.nav-item.nav-btn:hover {
-  background-color: var(--color-primary);
-  color: var(--color-white) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(184, 150, 12, 0.2);
-}
-
-#navbar.navbar-scrolled .nav-item.nav-btn:hover {
-  background-color: var(--color-accent);
-  filter: brightness(0.9);
-}
 
 /* Navigation - Mobile Toggle */
 #nav-toggle {
@@ -889,6 +868,29 @@ ul {
   box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
 }
 
+.btn-primary-outline {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  border: 1.5px solid var(--color-accent);
+  border-radius: 50px;
+  color: var(--color-accent) !important;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: var(--transition-smooth);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.btn-primary-outline:hover {
+  background-color: var(--color-accent);
+  color: var(--color-white) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(184, 150, 12, 0.25);
+}
+
 /* Scroll Explore Indicator */
 .hero-scroll-explore {
   font-family: var(--font-body);
@@ -1112,6 +1114,10 @@ ul {
   font-weight: 700;
 }
 
+.pill-value.text-val {
+  font-size: 1.15rem;
+}
+
 .pill-label {
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -1156,16 +1162,26 @@ ul {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   border-left: 1px solid var(--color-divider);
-  border-bottom: 1px solid var(--color-divider);
+  border-top: 1px solid var(--color-divider);
 }
 
 .expertise-card {
   padding: var(--space-md);
-  border-top: 1px solid var(--color-divider);
+  border-bottom: 1px solid var(--color-divider);
   border-right: 1px solid var(--color-divider);
   background-color: var(--color-bg);
   transition: var(--transition-smooth);
   position: relative;
+}
+
+.expertise-card.no-bottom-border {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .expertise-card {
+    padding: 2rem 1.25rem;
+  }
 }
 
 .expertise-card::before {
@@ -1866,6 +1882,19 @@ ul {
 [data-animate="slide-in-right"].in-view {
   opacity: 1;
   transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+  [data-animate="slide-in-left"] {
+    transform: translateY(20px);
+  }
+  [data-animate="slide-in-right"] {
+    transform: translateY(20px);
+  }
+  [data-animate="slide-in-left"].in-view,
+  [data-animate="slide-in-right"].in-view {
+    transform: translateY(0);
+  }
 }
 
 /* =============================================================
@@ -2794,50 +2823,25 @@ ul {
 .cred-footer {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
 }
 
-.cred-badge {
-  background-color: #E8E0D0; /* Beige rounded pill */
+.cred-tag {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
   color: var(--color-primary);
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.4rem 1rem;
+  background-color: rgba(26, 26, 46, 0.03);
+  border: 1px solid rgba(26, 26, 46, 0.1);
+  padding: 0.45rem 1.2rem;
   border-radius: 50px;
-  white-space: nowrap;
-}
-
-.cred-label {
-  font-family: var(--font-body);
-  font-size: 0.62rem;
-  font-weight: 700;
-  color: var(--color-secondary);
-  letter-spacing: 0.08em;
   text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: inline-block;
+  white-space: nowrap;
+  text-align: center;
 }
-
-  .cred-badge {
-    background-color: rgba(26, 26, 46, 0.05);
-    color: var(--color-primary);
-    font-family: var(--font-body);
-    font-size: 0.65rem;
-    font-weight: 600;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  
-  .cred-label {
-    font-family: var(--font-body);
-    font-size: 0.65rem;
-    font-weight: 500;
-    color: var(--color-secondary);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
 
   /* PSYCHOMETRIC INSTRUMENTS SECTION */
   .psycho-block {

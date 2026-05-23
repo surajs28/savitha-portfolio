@@ -89,10 +89,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const postDate = `<span class="post-date">${formatDate(post.created_at)}</span>`;
         const postTitle = `<h2 class="post-title">${post.title}</h2>`;
         
-        // Handle newlines in content securely
+        // Handle newlines and markdown-like syntax securely
         const safeContent = document.createElement('div');
-        safeContent.className = 'post-content';
-        safeContent.innerText = post.content;
+        safeContent.className = 'post-content modal-body-text';
+        safeContent.style.whiteSpace = 'normal';
+        
+        // Helper to escape HTML characters to prevent XSS
+        const escapeHTML = (str) => {
+          return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+        };
+
+        const formattedContent = post.content.split('\n\n').map(p => {
+          const trimmed = p.trim();
+          if (trimmed.startsWith('###')) {
+            return `<h3>${escapeHTML(trimmed.replace('###', '').trim())}</h3>`;
+          }
+          if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
+            const listItems = trimmed.split('\n').map(item => {
+              return `<li>${escapeHTML(item.replace(/^[*+-]\s*/, '').trim())}</li>`;
+            }).join('');
+            return `<ul>${listItems}</ul>`;
+          }
+          return `<p>${escapeHTML(trimmed)}</p>`;
+        }).join('');
+
+        safeContent.innerHTML = formattedContent;
         
         let linkedinLink = '';
         if (post.linkedin_url && post.linkedin_url.trim() !== '') {

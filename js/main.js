@@ -144,17 +144,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 6. ACTIVE NAVIGATION LINK HIGHLIGHTING ON SCROLL
   const navItems = document.querySelectorAll('.nav-item');
-  const sections = document.querySelectorAll('section[id], #accreditations');
+  const sections = document.querySelectorAll('section[id]');
 
   const highlightNav = () => {
-    let scrollY = window.pageYOffset;
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
     
     sections.forEach(current => {
-      const sectionHeight = current.offsetHeight;
-      const sectionTop = current.offsetTop - 120; // Offset for sticky navbar
+      const rect = current.getBoundingClientRect();
+      const sectionTop = rect.top + scrollY - 120; // Absolute top position of the section
+      const sectionHeight = rect.height;
       const sectionId = current.getAttribute('id');
       
-      if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
         navItems.forEach(item => {
           item.classList.remove('active');
           if (item.getAttribute('href') === `#${sectionId}` || item.getAttribute('data-section') === sectionId) {
