@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 6. ACTIVE NAVIGATION LINK HIGHLIGHTING ON SCROLL
   const navItems = document.querySelectorAll('.nav-item');
-  const sections = document.querySelectorAll('section[id]');
+  const sections = document.querySelectorAll('section[id], #accreditations');
 
   const highlightNav = () => {
     let scrollY = window.pageYOffset;
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
         navItems.forEach(item => {
           item.classList.remove('active');
-          if (item.getAttribute('href') === `#${sectionId}`) {
+          if (item.getAttribute('href') === `#${sectionId}` || item.getAttribute('data-section') === sectionId) {
             item.classList.add('active');
           }
         });

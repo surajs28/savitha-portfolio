@@ -20,7 +20,10 @@
   <!-- Header & Navigation -->
   <header id="navbar">
     <div class="nav-container">
-      <a href="index.html" class="logo-name" aria-label="Savitha Krishnamoorthy Home">Savitha Krishnamoorthy</a>
+      <div class="brand-container">
+        <img src="ges-logo.svg" alt="The Great Eastern Shipping Co. Ltd. Logo" class="brand-company-logo" />
+        <a href="index.html" class="logo-name">Savitha Krishnamoorthy</a>
+      </div>
       
       <!-- Desktop Navigation -->
       <nav class="nav-desktop" aria-label="Desktop Navigation">
@@ -112,34 +115,6 @@
         </div>
       </article>
 
-      <!-- 2. SECTION DIVIDER -->
-      <div class="articles-feed-divider" data-animate="fade-up" style="--delay: 2;">
-        <span class="divider-line"></span>
-        <h2 class="feed-section-title">Latest Insights</h2>
-        <span class="divider-line"></span>
-      </div>
-      
-      <!-- 3. CONTAINER FOR DYNAMIC POSTS -->
-      <div id="posts-feed">
-        <!-- Skeleton Loaders -->
-        <div class="post-skeleton">
-          <div class="skeleton-pill"></div>
-          <div class="skeleton-date"></div>
-          <div class="skeleton-title"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line short"></div>
-        </div>
-        <div class="post-skeleton">
-          <div class="skeleton-pill"></div>
-          <div class="skeleton-date"></div>
-          <div class="skeleton-title"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line short"></div>
-        </div>
-      </div>
-      
     </div>
   </section>
 
@@ -159,7 +134,5 @@
   <script src="js/supabase-client.js"></script>
   <!-- Main interaction script for mobile menu, etc. -->
   <script src="js/main.js" defer></script>
-  <!-- Articles Page JS -->
-  <script src="js/articles.js" defer></script>
 </body>
 </html>

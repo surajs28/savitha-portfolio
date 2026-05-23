@@ -1,7 +1,8 @@
-// js/homepage-insights.js - Dynamically loads the top 3 published posts from Supabase for index.html
+// js/homepage-insights.js - Dynamically loads the top 2 published posts from Supabase for index.html
 
 document.addEventListener('DOMContentLoaded', () => {
   const dynamicPostsContainer = document.getElementById('dynamic-posts-container');
+  const noInsightsMessage = document.getElementById('no-insights-message');
   const articleModal = document.getElementById('article-modal');
   const modalTag = articleModal ? articleModal.querySelector('.modal-tag') : null;
   const modalTitle = articleModal ? articleModal.querySelector('.modal-title') : null;
@@ -40,16 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const renderFallback = () => {
-    if (!dynamicPostsContainer) return;
-    dynamicPostsContainer.innerHTML = `
-      <article class="placeholder-article-card" data-animate="fade-up" style="--delay: 3;">
-        <div class="placeholder-content">
-          <h3 class="placeholder-title">More articles coming soon</h3>
-          <p class="placeholder-desc">Reflections on future organizational models, compensation structures, and corporate culture shifts.</p>
-        </div>
-      </article>
-    `;
-    setupScrollAnimations();
+    if (dynamicPostsContainer) dynamicPostsContainer.innerHTML = '';
+    if (noInsightsMessage) {
+      noInsightsMessage.style.display = 'block';
+    }
   };
 
   // Check if database client is ready
@@ -59,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Fetch the 3 most recent published posts
+  // Fetch the 2 most recent published posts
   const fetchRecentPosts = async () => {
     try {
       const { data: posts, error } = await supabase
@@ -67,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .select('*')
         .eq('published', true)
         .order('created_at', { ascending: false })
-        .limit(3);
+        .limit(2);
 
       if (error) {
         throw error;
@@ -79,6 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!posts || posts.length === 0) {
         renderFallback();
         return;
+      }
+
+      // Hide message if there are posts
+      if (noInsightsMessage) {
+        noInsightsMessage.style.display = 'none';
       }
 
       posts.forEach((post, index) => {
@@ -141,21 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
       });
-
-      // If fewer than 3 posts exist, render a placeholder next to them
-      if (posts.length < 3) {
-        const placeholder = document.createElement('article');
-        placeholder.className = 'placeholder-article-card';
-        placeholder.setAttribute('data-animate', 'fade-up');
-        placeholder.style.setProperty('--delay', (posts.length + 3).toString());
-        placeholder.innerHTML = `
-          <div class="placeholder-content">
-            <h3 class="placeholder-title">More articles coming soon</h3>
-            <p class="placeholder-desc">Reflections on future organizational models, compensation structures, and corporate culture shifts.</p>
-          </div>
-        `;
-        dynamicPostsContainer.appendChild(placeholder);
-      }
 
       setupScrollAnimations();
 
