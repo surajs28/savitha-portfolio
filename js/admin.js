@@ -43,9 +43,41 @@ document.addEventListener('DOMContentLoaded', () => {
   // List References
   const postsList = document.getElementById('admin-posts-list');
   const postCountBadge = document.getElementById('post-count-badge');
+  const messagesList = document.getElementById('admin-messages-list');
+  const messageCountBadge = document.getElementById('message-count-badge');
+  const tabPosts = document.getElementById('tab-posts');
+  const tabMessages = document.getElementById('tab-messages');
+  const formColumn = document.querySelector('.form-column');
 
-  // Local cache for current posts
+  // Local cache for current data
   let cachedPosts = [];
+  let cachedMessages = [];
+
+  // Tabs logic
+  const switchTab = (tabName) => {
+    if (tabName === 'posts') {
+      tabPosts.style.color = 'var(--color-primary)';
+      tabPosts.querySelector('.tab-indicator').classList.remove('hidden');
+      tabMessages.style.color = 'var(--color-secondary)';
+      tabMessages.querySelector('.tab-indicator').classList.add('hidden');
+      postsList.classList.remove('hidden');
+      messagesList.classList.add('hidden');
+      formColumn.classList.remove('hidden'); // Show post creation form
+      loadPosts();
+    } else {
+      tabMessages.style.color = 'var(--color-primary)';
+      tabMessages.querySelector('.tab-indicator').classList.remove('hidden');
+      tabPosts.style.color = 'var(--color-secondary)';
+      tabPosts.querySelector('.tab-indicator').classList.add('hidden');
+      messagesList.classList.remove('hidden');
+      postsList.classList.add('hidden');
+      formColumn.classList.add('hidden'); // Hide post creation form when viewing messages
+      loadMessages();
+    }
+  };
+
+  tabPosts.addEventListener('click', () => switchTab('posts'));
+  tabMessages.addEventListener('click', () => switchTab('messages'));
 
   // ==========================================
   // TOAST NOTIFICATIONS
@@ -420,6 +452,157 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast('Failed to save post: ' + err.message, 'error');
     }
   });
+
+  // ==========================================
+  // MESSAGES LOGIC
+  // ==========================================
+  const loadMessages = async () => {
+    messagesList.innerHTML = '<div class="admin-loading">Loading messages...</div>';
+    
+    try {
+      const { data: messages, error } = await supabase
+        .from('messages')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      cachedMessages = messages || [];
+      renderMessagesList(cachedMessages);
+      
+      const unreadCount = cachedMessages.filter(m => !m.read).length;
+      messageCountBadge.innerText = unreadCount > 0 ? unreadCount : '';
+      messageCountBadge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+      
+    } catch (err) {
+      console.error('Error fetching messages:', err);
+      showToast('Failed to load messages: ' + err.message, 'error');
+      messagesList.innerHTML = '<div class="admin-error">Failed to fetch messages from database.</div>';
+    }
+  };
+
+  const renderMessagesList = (messages) => {
+    if (messages.length === 0) {
+      messagesList.innerHTML = '<div class="admin-empty">No messages received yet.</div>';
+      return;
+    }
+
+    messagesList.innerHTML = '';
+    
+    messages.forEach(msg => {
+      const row = document.createElement('div');
+      row.className = 'admin-post-row';
+      // Gold left border for unread messages
+      if (!msg.read) {
+        row.style.borderLeft = '4px solid var(--color-accent)';
+      }
+      
+      const createdDate = new Date(msg.created_at);
+      const formattedDate = createdDate.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      row.innerHTML = `
+        <div class="row-info" style="flex: 1;">
+          <div class="row-title-line" style="margin-bottom: 0.25rem;">
+            <span class="row-title" style="font-size: 1.1rem;">${escapeHTML(msg.name)}</span>
+            <span class="row-date" style="font-size: 0.8rem; margin-left: auto;">${formattedDate}</span>
+          </div>
+          <div class="row-meta-line" style="margin-bottom: 0.75rem;">
+            <a href="mailto:${escapeHTML(msg.email)}" class="row-category" style="color: var(--color-accent); text-decoration: underline;">${escapeHTML(msg.email)}</a>
+          </div>
+          <div style="font-size: 0.95rem; color: var(--color-secondary); line-height: 1.5; white-space: pre-wrap; background: var(--color-bg); padding: 1rem; border-radius: 4px;">${escapeHTML(msg.message)}</div>
+        </div>
+        <div class="row-actions" style="flex-direction: column; justify-content: flex-start; margin-left: 1rem; min-width: 100px;">
+          <div id="msg-actions-${msg.id}" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            ${!msg.read ? `<button class="btn-action btn-mark-read" data-id="${msg.id}" style="color: var(--color-accent);">✓ Mark Read</button>` : '<span style="font-size: 0.8rem; color: var(--color-secondary); padding-left: 10px;">Read</span>'}
+            <button class="btn-action btn-delete-msg" data-id="${msg.id}" style="color: #e74c3c;">🗑️ Delete</button>
+          </div>
+          <div class="row-confirm-delete hidden" id="msg-confirm-${msg.id}" style="display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.8rem; margin-top: 0;">
+            <span class="confirm-text" style="color: #e74c3c;">Sure?</span>
+            <button class="btn-confirm btn-yes-msg" data-id="${msg.id}">Yes</button>
+            <button class="btn-confirm btn-no-msg" data-id="${msg.id}">No</button>
+          </div>
+        </div>
+      `;
+
+      messagesList.appendChild(row);
+    });
+
+    // Mark as read button handler
+    document.querySelectorAll('.btn-mark-read').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const id = e.target.getAttribute('data-id');
+        await markMessageRead(id);
+      });
+    });
+
+    // Delete Button Click - Show confirmation UI
+    document.querySelectorAll('.btn-delete-msg').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.target.getAttribute('data-id');
+        document.getElementById(`msg-actions-${id}`).classList.add('hidden');
+        document.getElementById(`msg-actions-${id}`).style.display = 'none';
+        document.getElementById(`msg-confirm-${id}`).classList.remove('hidden');
+      });
+    });
+
+    // Cancel Delete Button Click
+    document.querySelectorAll('.btn-no-msg').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.target.getAttribute('data-id');
+        document.getElementById(`msg-confirm-${id}`).classList.add('hidden');
+        document.getElementById(`msg-actions-${id}`).classList.remove('hidden');
+        document.getElementById(`msg-actions-${id}`).style.display = 'flex';
+      });
+    });
+
+    // Confirm Delete Button Click
+    document.querySelectorAll('.btn-yes-msg').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const id = e.target.getAttribute('data-id');
+        await deleteMessage(id);
+      });
+    });
+  };
+
+  const deleteMessage = async (id) => {
+    try {
+      const { error } = await supabase
+        .from('messages')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      showToast('Message deleted successfully', 'success');
+      loadMessages();
+    } catch (err) {
+      console.error('Error deleting message:', err);
+      showToast('Failed to delete message', 'error');
+    }
+  };
+
+  const markMessageRead = async (id) => {
+    try {
+      const { error } = await supabase
+        .from('messages')
+        .update({ read: true })
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      showToast('Message marked as read', 'success');
+      loadMessages();
+    } catch (err) {
+      console.error('Error marking message as read:', err);
+      showToast('Failed to mark as read', 'error');
+    }
+  };
 
   // Initialize
   checkSession();

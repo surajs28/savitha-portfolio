@@ -111,14 +111,24 @@
         <!-- COLUMN 2: POSTS LIST COLUMN (60% desktop) -->
         <div class="list-column">
           <div class="admin-card">
-            <div class="list-header">
-              <h2 class="admin-card-title">All Posts</h2>
-              <span id="post-count-badge" class="count-badge">0</span>
+            <div class="list-header" style="display: flex; gap: 1.5rem; align-items: baseline; border-bottom: 1px solid var(--color-divider); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+              <button id="tab-posts" class="admin-tab active" style="background:none; border:none; font-family: var(--font-heading); font-size: 1.5rem; cursor: pointer; color: var(--color-primary); position: relative;">
+                All Posts <span id="post-count-badge" class="count-badge" style="position: static; margin-left: 0.5rem; font-size: 0.75rem;">0</span>
+                <div class="tab-indicator" style="position: absolute; bottom: -0.6rem; left: 0; width: 100%; height: 2px; background-color: var(--color-accent);"></div>
+              </button>
+              <button id="tab-messages" class="admin-tab" style="background:none; border:none; font-family: var(--font-heading); font-size: 1.5rem; cursor: pointer; color: var(--color-secondary); position: relative;">
+                Messages <span id="message-count-badge" class="count-badge" style="position: static; margin-left: 0.5rem; font-size: 0.75rem;">0</span>
+                <div class="tab-indicator hidden" style="position: absolute; bottom: -0.6rem; left: 0; width: 100%; height: 2px; background-color: var(--color-accent);"></div>
+              </button>
             </div>
             
             <div id="admin-posts-list" class="admin-posts-list">
               <!-- Loading indicators -->
               <div class="admin-loading">Loading posts...</div>
+            </div>
+
+            <div id="admin-messages-list" class="admin-messages-list hidden">
+              <div class="admin-loading">Loading messages...</div>
             </div>
           </div>
         </div>

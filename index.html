@@ -591,6 +591,33 @@
             <p class="corporate-location">Mumbai, India</p>
           </div>
         </div>
+        
+        <!-- Contact Form -->
+        <div class="contact-form-container" data-animate="fade-up" style="--delay: 6;">
+          <form id="contact-form">
+            <input type="hidden" name="_subject" value="New message from portfolio - Savitha Krishnamoorthy">
+            
+            <div style="display: flex; gap: 1rem;">
+              <div class="form-group" style="flex: 1;">
+                <label for="name">NAME</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required>
+              </div>
+              
+              <div class="form-group" style="flex: 1;">
+                <label for="email">EMAIL</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="message">MESSAGE</label>
+              <textarea id="message" name="message" placeholder="Send a message regarding HR inquiries, leadership diagnostics, or speaking engagements..." rows="4" required></textarea>
+            </div>
+            
+            <button type="submit" class="btn-primary-form" style="padding: 0.8rem 2rem; border-radius: 50px; background-color: var(--color-accent); color: var(--color-white); border: none; font-weight: 600; cursor: pointer; letter-spacing: 0.05em;">Send Message</button>
+            <p id="form-status" style="display: none; margin-top: 1rem; color: var(--color-accent); font-weight: 500; font-size: 0.9rem;"></p>
+          </form>
+        </div>
       </div>
     </div>
   </section>

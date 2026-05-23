@@ -166,4 +166,44 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   window.addEventListener('scroll', highlightNav);
+
+  // 7. CONTACT FORM AJAX SUBMISSION
+  const contactForm = document.getElementById('contact-form');
+  const formStatus = document.getElementById('form-status');
+  
+  if (contactForm && formStatus) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(contactForm);
+      const name = formData.get('name');
+      const email = formData.get('email');
+      const message = formData.get('message');
+      
+      try {
+        const { error } = await window.supabase
+          .from('messages')
+          .insert([
+            { name, email, message }
+          ]);
+        
+        if (!error) {
+          formStatus.textContent = "Thank you! Savitha will get back to you shortly.";
+          formStatus.style.display = 'block';
+          formStatus.style.color = 'var(--color-accent)';
+          contactForm.reset();
+        } else {
+          console.error("Supabase error:", error);
+          formStatus.textContent = "Something went wrong. Please try again.";
+          formStatus.style.display = 'block';
+          formStatus.style.color = '#e74c3c';
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+        formStatus.textContent = "Something went wrong. Please try again.";
+        formStatus.style.display = 'block';
+        formStatus.style.color = '#e74c3c';
+      }
+    });
+  }
 });
