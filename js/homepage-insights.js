@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Check if database client is ready
-  const isClientReady = window.supabase && typeof window.supabase.createClient === 'function';
+  const isClientReady = !!window.supabase;
   if (!isClientReady) {
     renderFallback();
     return;
