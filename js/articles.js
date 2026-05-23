@@ -1,4 +1,4 @@
-// js/insights.js - Dynamically loads published posts from Supabase for insights.html
+// js/articles.js - Dynamically loads published posts from Supabase for articles.html
 
 document.addEventListener('DOMContentLoaded', () => {
   const postsFeed = document.getElementById('posts-feed');

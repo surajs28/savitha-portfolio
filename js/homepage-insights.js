@@ -43,36 +43,38 @@ document.addEventListener('DOMContentLoaded', () => {
     title: "Power of Expectations – The Pygmalion Way",
     category: "Leadership · Psychology · Management",
     date: "14 May 2025",
-    excerpt: "High expectations from leaders can be transformative. Drawing from the Pygmalion effect and research by Rosenthal & Jacobson, this piece explores how managers who believe in their people — and show it — build consistently stronger, more motivated teams.",
+    excerpt: "The way one treats another can, for better or worse, be transforming. Drawing from George Bernard Shaw's 'Pygmalion' and psychological research, this piece explores the power of positive expectations in leadership.",
     content: `
       <p class="lead-text">
-        It is one of the most compelling insights in behavioral psychology: the expectations we hold of others can directly dictate their performance. Known as the <strong>Pygmalion Effect</strong>, this phenomenon suggests that human capability is not fixed; it is elastic, reacting dynamically to the belief systems of those who lead.
+        Anyone who is familiar with the play ‘Pygmalion’ by George Bernard Shaw, would know about an experiment which started on a casual conversation and went on to become a serious study. In a nutshell this is a story about how Professor Higgins, a scientist of phonetics, lays a bet to Colonel Pickering that he will convert a mere flower girl, Eliza Doolittle, who is rough in her dialect and present her as poised and well-spoken as a Duchess. While Professor Higgins works and is successful on the physical transformation the insight is brilliantly put by Eliza: <em>“The difference between a lady and a flower girl is not how she behaves but how she is treated. I will always be a Flower girl to Prof. Higgins because he always treats me like a flower girl, but I know I can be a lady to you because you treat me as one and always will.”</em>
       </p>
       <p>
-        In their seminal 1968 study, researchers Robert Rosenthal and Lenore Jacobson demonstrated that when teachers were led to believe certain students were "academic bloomers," those students showed significant, measurable IQ improvements by the end of the year—solely because of the teachers' subtle, non-verbal changes in attention, support, and feedback.
-      </p>
-      <h3>The HR Application: Setting the Ceiling</h3>
-      <p>
-        In an organizational context, the Pygmalion Effect operates as a silent architect of culture. When managers believe their employees are inherently capable, resourceful, and motivated, they interact with them in ways that manifest those traits. They delegate more challenging work, offer constructive guidance rather than punitive correction, and provide the psychological safety required for innovation.
+        This play is inspired by the ‘Pygmalion effect’. The Pygmalion effect is a psychological phenomenon wherein it is believed that high expectations can lead to improved performance. Its name comes from the story of Pygmalion, a mythical Greek sculptor. Pygmalion carved a statue of a woman and then became enamored with it. Unable to love a human, Pygmalion appealed to Aphrodite, the goddess of love. She took pity and brought the statue to life.
       </p>
       <p>
-        Conversely, the <strong>Golem Effect</strong>—the negative counterpart—shows that low expectations lead to diminished performance. Micro-management is the ultimate corporate manifestation of the Golem Effect; it signals a lack of trust, causing employees to withdraw, second-guess their instincts, and eventually perform to the low bar set for them.
+        The insights from Pygmalion effect are widely practiced in educational institutions. Research by Robert Rosenthal and Lenore Jacobson examined the influence of teachers’ expectations on students’ performance. Interesting studies have been carried out where students who were picked randomly were presented as ‘Gifted’, which in turn has had a positive psychological impact on teachers. These children in many cases ended up excelling as the teachers projected higher expectations and in many cases encouragement as well.
       </p>
-      <blockquote>
-        "Treat a man as he is and he will remain as he is. Treat a man as he can be and should be, and he will become as he can and should be." <br>
-        <cite>— Johann Wolfgang von Goethe</cite>
-      </blockquote>
-      <h3>Practical Strategies for Leaders</h3>
       <p>
-        To harness the power of expectations, organizations must build cultures that train managers to:
+        The powerful influence of a person’s expectation, especially leaders or mentors on an individual’s behavior, has long been recognized by psychologists and even workplaces today.
+        It presents a theory that many a times people outperform because of the positive expectations set on them by their managers or parents or teachers etc. To elaborate what it means is the way one person treats another can, for better or worse, be transforming. Managers who believe their team members have potential and frequently offer encouragement and positive reinforcements are likely to build more successful teams.
       </p>
-      <ul>
-        <li><strong>Frame feedback constructively:</strong> Focus on potential and future performance rather than historic failures.</li>
-        <li><strong>Provide stretch assignments:</strong> Actively push team members beyond their comfortable boundaries, accompanied by clear structural support.</li>
-        <li><strong>Deconstruct systemic biases:</strong> Regularly review assessment criteria to ensure managers' subjective expectations do not skew evaluations.</li>
-      </ul>
       <p>
-        Expectations are not mere passive thoughts; they are active forces. By elevating what we believe our teams can achieve, we don't just measure capability—we create it.
+        Insights from ‘Pygmalion in Management’ by J Sterling Livingston, state many a time Managers unintentionally treat their subordinates in a way that could lead to lower expectations than the subordinate could be capable of. This is also because interestingly at a psychological level, people often believe they can only deliver what is expected of them.
+      </p>
+      <p>
+        Often in coffee conversations with colleagues, when you discuss about managers who inspire them, apart from the domain competence it is often about: <em>“He believed in my ability even more than I did on myself,”</em> or <em>“She told me 'I know you can do this, you are not seeing it yet, but I can clearly see this.'”</em>
+      </p>
+      <p>
+        There is common folk tale related to the Solomon Island where it is believed that a tree if it had to be brought down can be done so by the combined effort of the Islanders cursing negatively and yelling at the tree. While whether this is true or not is debatable, it does emphasize the impact of repeated negative expectations and statements on one’s psyche and hence performance as well.
+      </p>
+      <p>
+        If we know this then what’s really the issue? Well, it’s easier said than done. Our own inhibitions, experiences and deep-rooted personality traits could come in the way of setting and communicating positive expectations from people around us. It is often difficult to recognize how easily we end up transmitting negative feelings.
+      </p>
+      <p>
+        However, being aware of the impact of our expectations and the way it is communicated by managers can go a long way in building positivity. Feedback both positive as well as citing improvement areas could be motivating and further enhance performance. Research by McClelland and Atkinson also indicates that the Pygmalion effect drops if we see our chance of success as being less than 50%. This explains that while high expectations are beneficial, it is up to the point of diminishing returns.
+      </p>
+      <p>
+        Whether consciously or not, leaders facilitate changes in behavior, hence a deliberate effort to state positive expectations and create positive reinforcement can do more good than harm.
       </p>
     `
   };

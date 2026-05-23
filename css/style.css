@@ -1956,8 +1956,29 @@ ul {
   margin-bottom: 10px;
 }
 
-.skeleton-line.short {
-  width: 40%;
+
+/* Articles Feed Divider */
+.articles-feed-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-md);
+  width: 100%;
+}
+
+.articles-feed-divider .divider-line {
+  flex-grow: 1;
+  height: 1px;
+  background-color: var(--color-divider);
+}
+
+.articles-feed-divider .feed-section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3.5vw, 2.5rem);
+  color: var(--color-primary);
+  white-space: nowrap;
+  margin: 0;
 }
 
 
