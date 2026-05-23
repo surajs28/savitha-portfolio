@@ -1,8 +1,10 @@
 // js/admin.js - Authentication & CRUD logic for admin.html
 
 document.addEventListener('DOMContentLoaded', () => {
+  const supabase = window.supabase;
+
   // Handle database connection library failure
-  const isClientReady = window.supabase && typeof window.supabase.createClient !== 'function';
+  const isClientReady = !!supabase;
   if (!isClientReady) {
     document.body.innerHTML = `
       <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: 'DM Sans', sans-serif; background: #FAF7F2; padding: 20px; text-align: center;">

@@ -2,9 +2,10 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   const postsFeed = document.getElementById('posts-feed');
+  const supabase = window.supabase;
 
   // Handle database connection library failure
-  const isClientReady = window.supabase && typeof window.supabase.createClient !== 'function';
+  const isClientReady = !!supabase;
   if (!isClientReady) {
     if (postsFeed) {
       postsFeed.innerHTML = `
