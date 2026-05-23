@@ -1356,11 +1356,38 @@ ul {
   }
 }
 
-/* 11. THOUGHT LEADERSHIP SECTION */
 .articles-layout {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-sm);
+}
+
+.editorial-btn {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid transparent;
+  transition: var(--transition-smooth);
+}
+
+.editorial-btn:hover {
+  color: var(--color-primary);
+  border-bottom: 1px solid var(--color-primary);
+}
+
+.editorial-btn .arrow {
+  transition: var(--transition-smooth);
+}
+
+.editorial-btn:hover .arrow {
+  transform: translateX(4px);
 }
 
 .featured-article-card {

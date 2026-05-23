@@ -442,29 +442,32 @@
   <!-- THOUGHT LEADERSHIP SECTION -->
   <section id="perspectives" class="section perspectives-section">
     <div class="section-container">
-      <h2 class="section-heading" data-animate="fade-up">Perspectives</h2>
-      <p class="section-subheading" data-animate="fade-up" style="--delay: 1;">Ideas that shape how I lead people.</p>
+      <div class="perspectives-header" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: var(--space-md); flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 class="section-heading" style="margin-bottom: 0;" data-animate="fade-up">Perspectives</h2>
+          <p class="section-subheading" style="margin-top: 0.5rem; margin-bottom: 0;" data-animate="fade-up" style="--delay: 1;">Ideas that shape how I lead people.</p>
+        </div>
+        <a href="insights.html" class="editorial-btn" data-animate="fade-up" style="--delay: 2;">View All Insights <span class="arrow">→</span></a>
+      </div>
       
-      <div class="articles-layout">
-        <!-- Featured Article Card -->
-        <article class="featured-article-card" data-animate="fade-up" style="--delay: 2;">
-          <div class="article-meta">
-            <span class="article-tag">Leadership · Psychology · Management</span>
-          </div>
-          <h3 class="article-title">Power of Expectations – The Pygmalion Way</h3>
-          <p class="article-excerpt">
-            High expectations from leaders can be transformative. Drawing from the Pygmalion effect and research by Rosenthal & Jacobson, this piece explores how managers who believe in their people — and show it — build consistently stronger, more motivated teams.
-          </p>
-          <button id="open-article-btn" class="article-cta-btn">Read Article <span class="arrow">→</span></button>
-        </article>
-
-        <!-- Secondary Card Placeholder -->
-        <article class="placeholder-article-card" data-animate="fade-up" style="--delay: 3;">
-          <div class="placeholder-content">
-            <h3 class="placeholder-title">More articles coming soon</h3>
-            <p class="placeholder-desc">Reflections on future organizational models, compensation structures, and corporate culture shifts.</p>
-          </div>
-        </article>
+      <div id="homepage-insights-container" class="articles-layout">
+        <!-- Skeleton loaders displayed while fetching -->
+        <div class="post-skeleton" style="background-color: var(--color-white); border: 1px solid var(--color-divider); padding: var(--space-md);">
+          <div class="skeleton-pill"></div>
+          <div class="skeleton-date"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line short"></div>
+        </div>
+        <div class="post-skeleton" style="background-color: var(--color-white); border: 1px solid var(--color-divider); padding: var(--space-md);">
+          <div class="skeleton-pill"></div>
+          <div class="skeleton-date"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line short"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -632,6 +635,13 @@
     </div>
   </div>
 
+  <!-- Local Supabase Client Library -->
+  <script src="js/supabase.js"></script>
+  <!-- Shared Config -->
+  <script src="js/supabase-client.js"></script>
+  <!-- Main interaction script -->
   <script src="js/main.js" defer></script>
+  <!-- Dynamic Homepage Insights -->
+  <script src="js/homepage-insights.js" defer></script>
 </body>
 </html>
