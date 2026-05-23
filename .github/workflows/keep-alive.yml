@@ -12,7 +12,7 @@ jobs:
       - name: Ping Supabase
         run: |
           curl -s \
-            -H "apikey: sb_publishable_jMDIVUOiVKyRxsLwDEZs7A_NXBA15_q" \
-            -H "Authorization: Bearer sb_publishable_jMDIVUOiVKyRxsLwDEZs7A_NXBA15_q" \
-            "https://qbjmbfgruaylouippnnw.supabase.co/rest/v1/posts?select=id&limit=1"
+            -H "apikey: sb_publishable_uNUXJ5dzviwyYNXXYPe9fQ_zKKfkyIi" \
+            -H "Authorization: Bearer sb_publishable_uNUXJ5dzviwyYNXXYPe9fQ_zKKfkyIi" \
+            "https://ivfcaobarjvoamlrmcdt.supabase.co/rest/v1/posts?select=id&limit=1"
           echo "Supabase pinged successfully"
