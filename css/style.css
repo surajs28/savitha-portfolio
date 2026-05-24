@@ -233,7 +233,7 @@ ul {
   font-family: var(--font-heading);
   font-size: 1.3rem;
   font-weight: 500;
-  color: var(--color-accent);
+  color: #f28a22; /* Beautiful bright gold/orange to match the hero name */
   letter-spacing: 0.02em;
   white-space: nowrap;
   display: flex;
@@ -241,7 +241,7 @@ ul {
 }
 
 #navbar.navbar-scrolled .logo-name {
-  color: var(--color-accent);
+  color: #f28a22;
 }
 
 .nav-desktop {
