@@ -1125,6 +1125,43 @@ ul {
   color: var(--color-secondary);
 }
 
+/* Causes I Care About */
+.causes-section {
+  margin-top: 2.2rem;
+}
+
+.causes-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+  display: block;
+}
+
+.causes-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.cause-pill {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-accent);
+  padding: 0.45rem 1.2rem;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+
 /* Pull Quote */
 .pull-quote {
   border-left: 1px solid var(--color-accent);
