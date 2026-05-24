@@ -148,8 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
     loginError.classList.add('hidden');
     loginError.innerText = '';
 
-    if (!email || !password) {
-      loginError.innerText = 'Please enter both email and password.';
+    if (!email) {
+      loginError.innerText = 'Please enter your email.';
+      loginError.classList.remove('hidden');
+      return;
+    }
+
+    if (!password) {
+      loginError.innerText = 'Please enter your password';
       loginError.classList.remove('hidden');
       return;
     }
