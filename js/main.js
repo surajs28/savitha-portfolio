@@ -218,79 +218,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Coordinates mapping (1000 x 600 virtual box)
       const points = [
-        // 1. Head & Neck (Indices 0 - 5)
-        { x: 500, y: 100, isSil: true }, // Head Top (0)
-        { x: 480, y: 120, isSil: true }, // Head Left (1)
-        { x: 520, y: 120, isSil: true }, // Head Right (2)
-        { x: 500, y: 145, isSil: true }, // Chin (3)
-        { x: 485, y: 160, isSil: true }, // Left Neck (4)
-        { x: 515, y: 160, isSil: true }, // Right Neck (5)
+        // Silhouette: Head & Neck
+        { x: 500, y: 100 }, // Head Top (0)
+        { x: 500, y: 140 }, // Chin/Neck (1)
 
-        // 2. Shoulders & Arms (Indices 6 - 11)
-        { x: 445, y: 175, isSil: true }, // Left Shoulder (6)
-        { x: 555, y: 175, isSil: true }, // Right Shoulder (7)
-        { x: 415, y: 220, isSil: true }, // Left Elbow (8)
-        { x: 585, y: 220, isSil: true }, // Right Elbow (9)
-        { x: 390, y: 275, isSil: true }, // Left Hand (10)
-        { x: 610, y: 275, isSil: true }, // Right Hand (11)
+        // Silhouette: Shoulders & Arms
+        { x: 400, y: 170 }, // Left Shoulder (2)
+        { x: 600, y: 170 }, // Right Shoulder (3)
+        { x: 330, y: 220 }, // Left Elbow (4)
+        { x: 250, y: 270 }, // Left Hand (5)
+        { x: 670, y: 220 }, // Right Elbow (6)
+        { x: 750, y: 270 }, // Right Hand (7)
 
-        // 3. Torso (Indices 12 - 17)
-        { x: 475, y: 215, isSil: true }, // Left Chest (12)
-        { x: 525, y: 215, isSil: true }, // Right Chest (13)
-        { x: 500, y: 200, isSil: true }, // Mid Chest (14)
-        { x: 465, y: 275, isSil: true }, // Left Waist (15)
-        { x: 535, y: 275, isSil: true }, // Right Waist (16)
-        { x: 500, y: 275, isSil: true }, // Mid Waist (17)
+        // Silhouette: Torso
+        { x: 430, y: 230 }, // Left Chest (8)
+        { x: 570, y: 230 }, // Right Chest (9)
+        { x: 500, y: 200 }, // Mid Chest/Spine (10)
+        { x: 460, y: 310 }, // Left Waist (11)
+        { x: 540, y: 310 }, // Right Waist (12)
+        { x: 500, y: 310 }, // Mid Waist (13)
 
-        // 4. Hips & Legs (Indices 18 - 24)
-        { x: 455, y: 345, isSil: true }, // Left Hip (18)
-        { x: 545, y: 345, isSil: true }, // Right Hip (19)
-        { x: 500, y: 345, isSil: true }, // Mid Hip (20)
-        { x: 470, y: 440, isSil: true }, // Left Knee (21)
-        { x: 530, y: 440, isSil: true }, // Right Knee (22)
-        { x: 480, y: 535, isSil: true }, // Left Foot (23)
-        { x: 520, y: 535, isSil: true }, // Right Foot (24)
+        // Silhouette: Hips & Legs
+        { x: 450, y: 370 }, // Left Hip (14)
+        { x: 550, y: 370 }, // Right Hip (15)
+        { x: 500, y: 370 }, // Mid Hip (16)
+        { x: 430, y: 470 }, // Left Knee (17)
+        { x: 410, y: 560 }, // Left Foot (18)
+        { x: 570, y: 470 }, // Right Knee (19)
+        { x: 590, y: 560 }, // Right Foot (20)
 
-        // 5. Scattered Outer Stars (Indices 25 - 34)
-        { x: 300, y: 80, isSil: false },  // Top Left (25)
-        { x: 700, y: 80, isSil: false },  // Top Right (26)
-        { x: 220, y: 200, isSil: false }, // Mid Left Outer (27)
-        { x: 780, y: 200, isSil: false }, // Mid Right Outer (28)
-        { x: 260, y: 380, isSil: false }, // Low Left Outer (29)
-        { x: 740, y: 380, isSil: false }, // Low Right Outer (30)
-        { x: 340, y: 500, isSil: false }, // Bottom Left Outer (31)
-        { x: 660, y: 500, isSil: false }, // Bottom Right Outer (32)
-        { x: 380, y: 120, isSil: false }, // High Mid Left (33)
-        { x: 620, y: 120, isSil: false }  // High Mid Right (34)
+        // Outer Constellation Stars (spanned wide to cover full canvas)
+        { x: 100, y: 80  }, // Far Top Left (21)
+        { x: 900, y: 80  }, // Far Top Right (22)
+        { x: 150, y: 230 }, // Mid Left Outer (23)
+        { x: 850, y: 230 }, // Mid Right Outer (24)
+        { x: 120, y: 420 }, // Low Left Outer (25)
+        { x: 880, y: 420 }, // Low Right Outer (26)
+        { x: 200, y: 530 }, // Bottom Left Outer (27)
+        { x: 800, y: 530 }, // Bottom Right Outer (28)
+        { x: 300, y: 120 }, // Inner Top Left (29)
+        { x: 700, y: 120 }, // Inner Top Right (30)
+        { x: 320, y: 320 }, // Left Mid Star (31)
+        { x: 680, y: 320 }, // Right Mid Star (32)
+        { x: 300, y: 480 }, // Left Low Star (33)
+        { x: 700, y: 480 }, // Right Low Star (34)
+        { x: 500, y: 40  }, // Top Center Sky (35)
+        { x: 500, y: 570 }  // Bottom Center Ground (36)
       ];
 
       const connections = [
-        // Head
-        [0, 1], [0, 2], [1, 3], [2, 3],
-        // Neck
-        [3, 4], [3, 5],
-        // Shoulders & Chest
-        [4, 6], [5, 7], [6, 12], [7, 13], [12, 14], [13, 14],
-        // Arms
-        [6, 8], [8, 10], [7, 9], [9, 11],
-        // Torso
-        [12, 15], [13, 16], [14, 17], [15, 17], [16, 17],
+        // Head & Neck
+        [0, 1],
+        // Shoulders
+        [1, 2], [1, 3],
+        // Left Arm
+        [2, 4], [4, 5],
+        // Right Arm
+        [3, 6], [6, 7],
+        // Torso / Chest
+        [2, 8], [3, 9], [8, 10], [9, 10], [1, 10],
+        // Torso / Waist
+        [8, 11], [9, 12], [10, 13], [11, 13], [12, 13],
         // Hips
-        [15, 18], [16, 19], [17, 20], [18, 20], [19, 20],
-        // Legs
-        [18, 21], [19, 22], [21, 23], [22, 24], [23, 24],
+        [11, 14], [12, 15], [13, 16], [14, 16], [15, 16],
+        // Left Leg
+        [14, 17], [17, 18],
+        // Right Leg
+        [15, 19], [19, 20],
 
-        // Outer Star Connections (drawing into the silhouette)
-        [25, 1],  // Top Left to Head Left
-        [26, 2],  // Top Right to Head Right
-        [33, 6],  // High Mid Left to Left Shoulder
-        [34, 7],  // High Mid Right to Right Shoulder
-        [27, 8],  // Mid Left Outer to Left Elbow
-        [28, 9],  // Mid Right Outer to Right Elbow
-        [29, 15], // Low Left Outer to Left Waist
-        [30, 16], // Low Right Outer to Right Waist
-        [31, 21], // Bottom Left Outer to Left Knee
-        [32, 22]  // Bottom Right Outer to Right Knee
+        // Outer Connections (draw lines from background stars to the figure)
+        [21, 2],  // Far Top Left -> Left Shoulder
+        [22, 3],  // Far Top Right -> Right Shoulder
+        [23, 5],  // Mid Left Outer -> Left Hand
+        [24, 7],  // Mid Right Outer -> Right Hand
+        [25, 14], // Low Left Outer -> Left Hip
+        [26, 15], // Low Right Outer -> Right Hip
+        [27, 18], // Bottom Left Outer -> Left Foot
+        [28, 20], // Bottom Right Outer -> Right Foot
+        [29, 0],  // Inner Top Left -> Head Top
+        [30, 0],  // Inner Top Right -> Head Top
+        [31, 11], // Left Mid Star -> Left Waist
+        [32, 12], // Right Mid Star -> Right Waist
+        [33, 17], // Left Low Star -> Left Knee
+        [34, 19], // Right Low Star -> Right Knee
+        [35, 0],  // Top Center Sky -> Head Top
+        [36, 18], // Bottom Center Ground -> Left Foot
+        [36, 20]  // Bottom Center Ground -> Right Foot
       ];
 
       // Staggered appear times (0ms to 2500ms)
