@@ -422,7 +422,7 @@ ul {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(ellipse at 50% 50%, #c8892a 0%, #7a4a1a 25%, #3a2810 45%, #1a1a2e 75%);
+  background: radial-gradient(ellipse at 65% 45%, #c8892a 0%, #7a4a1a 25%, #3a2810 45%, #1a1a2e 75%);
 }
 
 #constellation-canvas {
@@ -449,51 +449,21 @@ ul {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   height: calc(100vh - var(--header-height));
   position: relative;
   z-index: 10;
-  padding: 2rem var(--space-xs) 0;
+  padding: 4rem var(--space-xs) 0;
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 45fr 55fr;
-  gap: 3.5rem;
-  align-items: center;
+.hero-content {
+  max-width: 900px;
   width: 100%;
-  flex: 1;
-  min-height: 0;
-}
-
-.hero-col-left {
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.hero-col-right {
+  margin: 0 auto;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: left;
-}
-
-.hero-col-right .hero-accent-line {
-  margin: 0.5rem 0 1.8rem;
-}
-
-.hero-col-right .hero-italic-bio {
-  text-align: left;
-  margin: 0 0 3rem;
-  max-width: 100%;
-}
-
-.hero-col-right .hero-actions {
-  justify-content: flex-start;
+  align-items: center;
 }
 
 /* Eyebrow styling */
@@ -783,42 +753,6 @@ ul {
     height: auto;
     min-height: 100vh;
     padding: 6rem var(--space-xs) 3rem;
-  }
-
-  .hero-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    width: 100%;
-    flex: none;
-  }
-
-  .hero-col-right {
-    order: 1;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-  }
-
-  .hero-col-left {
-    order: 2;
-    min-height: 280px;
-    height: 320px;
-    width: 100%;
-    align-self: center;
-  }
-
-  .hero-col-right .hero-accent-line {
-    margin: 0.5rem auto 1.5rem;
-  }
-
-  .hero-col-right .hero-italic-bio {
-    text-align: center;
-    margin: 0 auto 2rem;
-  }
-
-  .hero-col-right .hero-actions {
-    justify-content: center;
   }
   
   .hero-name-headline {

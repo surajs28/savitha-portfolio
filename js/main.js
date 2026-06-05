@@ -328,7 +328,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       let startTime = null;
-      let leftColRect = { x: 0, y: 0, width: 0, height: 0 };
 
       const resize = () => {
         const dpr = window.devicePixelRatio || 1;
@@ -336,24 +335,6 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = rect.width * dpr;
         canvas.height = rect.height * dpr;
         ctx.scale(dpr, dpr);
-
-        const leftCol = document.querySelector('.hero-col-left');
-        if (leftCol) {
-          const lRect = leftCol.getBoundingClientRect();
-          leftColRect = {
-            x: lRect.left - rect.left,
-            y: lRect.top - rect.top,
-            width: lRect.width,
-            height: lRect.height
-          };
-        } else {
-          leftColRect = {
-            x: 0,
-            y: 0,
-            width: rect.width,
-            height: rect.height
-          };
-        }
       };
 
       window.addEventListener('resize', resize);
@@ -368,34 +349,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const width = canvas.width / (window.devicePixelRatio || 1);
         const height = canvas.height / (window.devicePixelRatio || 1);
 
-        // Centered contain scale matching aspect ratio of 1000 x 600 for ambient stars
-        const ambientScale = Math.min(width / 1000, height / 600) * 0.9;
-        const ambientCenterX = width / 2;
-        const ambientCenterY = height / 2;
+        // Centered contain scale matching aspect ratio of 1000 x 600
+        const scale = Math.min(width / 1000, height / 600) * 0.85;
+        const centerX = width / 2;
+        const centerY = height / 2;
 
-        // Scale and center for silhouette (left column)
-        const silCenterX = leftColRect.x + leftColRect.width / 2;
-        const silCenterY = leftColRect.y + leftColRect.height / 2;
-        // The silhouette height spans 75% of the left column height (virtual height is 460)
-        // Constrain so width doesn't overflow (virtual width is 500)
-        const silScaleHeight = (leftColRect.height * 0.75) / 460;
-        const silScaleWidth = (leftColRect.width * 0.85) / 500;
-        const silScale = Math.min(silScaleHeight, silScaleWidth);
-
-        const getRenderCoords = (p, index) => {
-          if (index <= 20) {
-            // Silhouette points centered in left column
-            return {
-              x: silCenterX + (p.x - 500) * silScale,
-              y: silCenterY + (p.y - 330) * silScale
-            };
-          } else {
-            // Ambient stars spread across the full width
-            return {
-              x: ambientCenterX + (p.x - 500) * ambientScale,
-              y: ambientCenterY + (p.y - 300) * ambientScale
-            };
-          }
+        const getRenderCoords = (p) => {
+          return {
+            x: centerX + (p.x - 500) * scale,
+            y: centerY + (p.y - 300) * scale
+          };
         };
 
         // Draw connection lines
@@ -408,8 +371,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (elapsed < conn.drawStart) return;
 
             const progress = Math.min((elapsed - conn.drawStart) / conn.drawDuration, 1);
-            const c1 = getRenderCoords(p1, conn.i1);
-            const c2 = getRenderCoords(p2, conn.i2);
+            const c1 = getRenderCoords(p1);
+            const c2 = getRenderCoords(p2);
 
             ctx.beginPath();
             ctx.moveTo(c1.x, c1.y);
@@ -422,9 +385,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Draw dots
-        points.forEach((p, idx) => {
+        points.forEach(p => {
           if (elapsed >= p.appearTime) {
-            const coords = getRenderCoords(p, idx);
+            const coords = getRenderCoords(p);
             let fadeOpacity = Math.min((elapsed - p.appearTime) / 300, 1);
             
             let pulseScale = 1;
