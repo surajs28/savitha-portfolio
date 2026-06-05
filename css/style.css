@@ -394,6 +394,37 @@ ul {
   }
 }
 
+/* Lotus Preloader Overlay */
+.preloader-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: #1a1a2e;
+  z-index: 9999;
+  display: none; /* hidden by default for graceful degradation */
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+body.preloader-active .preloader-overlay {
+  display: flex;
+}
+
+#preloader-canvas {
+  max-width: 100%;
+  max-height: 100%;
+  width: 400px;
+  height: 400px;
+}
+
+@media (max-width: 768px) {
+  #preloader-canvas {
+    width: 280px;
+    height: 280px;
+  }
+}
+
 /* If preloader is active, hold animations until .hero-reveal-start is added */
 body.preloader-active [data-animate] {
   animation-play-state: paused !important;
@@ -401,27 +432,6 @@ body.preloader-active [data-animate] {
 
 body.hero-reveal-start [data-animate] {
   animation-play-state: running !important;
-}
-
-body.preloader-run-canvas .hero-name-headline {
-  opacity: 0 !important;
-  pointer-events: none;
-}
-
-body.preloader-run-canvas .hero-eyebrow-container {
-  animation-delay: 4.4s !important;
-}
-body.preloader-run-canvas .hero-accent-line {
-  animation-delay: 4.6s !important;
-}
-body.preloader-run-canvas .hero-italic-bio {
-  animation-delay: 4.9s !important;
-}
-body.preloader-run-canvas .hero-actions {
-  animation-delay: 5.2s !important;
-}
-body.preloader-run-canvas .hero-stats-row {
-  animation-delay: 5.5s !important;
 }
 
 /* 6. HERO SECTION */
@@ -452,28 +462,7 @@ body.preloader-run-canvas .hero-stats-row {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #1a1a2e; /* solid dark background */
-}
-
-.sky-bg-gradient {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(ellipse at 50% 50%, #c8892a 0%, #7a4a1a 25%, #3a2810 45%, #1a1a2e 75%);
-  opacity: 0;
-  transition: opacity 2.0s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  z-index: 1;
-}
-
-body.hero-reveal-start .sky-bg-gradient {
-  opacity: 1;
-}
-
-body:not(.preloader-active) .sky-bg-gradient {
-  opacity: 1;
-  transition: none;
+  background: radial-gradient(ellipse at 65% 45%, #c8892a 0%, #7a4a1a 25%, #3a2810 45%, #1a1a2e 75%);
 }
 
 #constellation-canvas {
@@ -482,7 +471,7 @@ body:not(.preloader-active) .sky-bg-gradient {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
 }
 
@@ -500,51 +489,21 @@ body:not(.preloader-active) .sky-bg-gradient {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   height: calc(100vh - var(--header-height));
   position: relative;
   z-index: 10;
-  padding: 2rem var(--space-xs) 0;
+  padding: 4rem var(--space-xs) 0;
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 45fr 55fr;
-  gap: 3.5rem;
-  align-items: center;
+.hero-content {
+  max-width: 900px;
   width: 100%;
-  flex: 1;
-  min-height: 0;
-}
-
-.hero-col-left {
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.hero-col-right {
+  margin: 0 auto;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: left;
-}
-
-.hero-col-right .hero-accent-line {
-  margin: 0.5rem 0 1.8rem;
-}
-
-.hero-col-right .hero-italic-bio {
-  text-align: left;
-  margin: 0 0 3rem;
-  max-width: 100%;
-}
-
-.hero-col-right .hero-actions {
-  justify-content: flex-start;
+  align-items: center;
 }
 
 /* Eyebrow styling */
@@ -552,7 +511,7 @@ body:not(.preloader-active) .sky-bg-gradient {
   margin-bottom: 1.2rem;
   opacity: 0;
   transform: translateY(20px);
-  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards;
+  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
 }
 
 .hero-eyebrow {
@@ -623,7 +582,7 @@ body:not(.preloader-active) .sky-bg-gradient {
   text-align: center;
   opacity: 0;
   transform: translateY(20px);
-  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards;
+  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.75s forwards;
 }
 
 /* Stats Row styling */
@@ -637,7 +596,7 @@ body:not(.preloader-active) .sky-bg-gradient {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   opacity: 0;
   transform: translateY(20px);
-  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s forwards;
+  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.2s forwards;
 }
 
 .hero-stat-col {
@@ -686,7 +645,7 @@ body:not(.preloader-active) .sky-bg-gradient {
   width: 100%;
   opacity: 0;
   transform: translateY(20px);
-  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
+  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.0s forwards;
 }
 
 .hero-btn-primary {
@@ -834,42 +793,6 @@ body:not(.preloader-active) .sky-bg-gradient {
     height: auto;
     min-height: 100vh;
     padding: 6rem var(--space-xs) 3rem;
-  }
-
-  .hero-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    width: 100%;
-    flex: none;
-  }
-
-  .hero-col-right {
-    order: 1;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-  }
-
-  .hero-col-left {
-    order: 2;
-    min-height: 280px;
-    height: 320px;
-    width: 100%;
-    align-self: center;
-  }
-
-  .hero-col-right .hero-accent-line {
-    margin: 0.5rem auto 1.5rem;
-  }
-
-  .hero-col-right .hero-italic-bio {
-    text-align: center;
-    margin: 0 auto 2rem;
-  }
-
-  .hero-col-right .hero-actions {
-    justify-content: center;
   }
   
   .hero-name-headline {
