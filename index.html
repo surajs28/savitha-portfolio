@@ -72,96 +72,8 @@
     <!-- Premium layered video/image background with sunrise overlay -->
     <!-- Premium layered animated background with sunrise and shipping company graphics -->
     <div class="hero-bg-container">
-      <!-- Sky and Sunrise Background -->
-      <div class="sky-bg">
-        <div class="sunrise-sun"></div>
-        <div class="sunrise-glow"></div>
-      </div>
-      
-      <!-- Birds in the sky -->
-      <div class="birds-group">
-        <svg class="bird bird-1" viewBox="0 0 24 24" width="16" height="16">
-          <path d="M2,15 Q6,10 12,13 Q18,10 22,15 Q18,12 12,14 Q6,12 2,15 Z" fill="#4A4A6A" opacity="0.6"/>
-        </svg>
-        <svg class="bird bird-2" viewBox="0 0 24 24" width="12" height="12">
-          <path d="M2,15 Q6,10 12,13 Q18,10 22,15 Q18,12 12,14 Q6,12 2,15 Z" fill="#4A4A6A" opacity="0.5"/>
-        </svg>
-        <svg class="bird bird-3" viewBox="0 0 24 24" width="10" height="10">
-          <path d="M2,15 Q6,10 12,13 Q18,10 22,15 Q18,12 12,14 Q6,12 2,15 Z" fill="#4A4A6A" opacity="0.4"/>
-        </svg>
-      </div>
-
-      <!-- Distant Background Sea & Small Cargo Ship -->
-      <div class="distant-sea">
-        <div class="distant-ship-wrapper">
-          <!-- Small SVG silhouette cargo ship -->
-          <svg class="distant-ship" viewBox="0 0 100 30" width="80" height="24">
-            <path d="M 0,20 L 5,16 L 15,16 L 15,12 L 22,12 L 22,16 L 28,16 L 30,20 L 95,20 L 90,25 L 10,25 Z" fill="#4A4A6A" opacity="0.5"/>
-            <!-- Tiny containers -->
-            <rect x="35" y="12" width="8" height="8" fill="#B8960C" opacity="0.4"/>
-            <rect x="45" y="10" width="10" height="10" fill="#4A4A6A" opacity="0.5"/>
-            <rect x="57" y="14" width="8" height="6" fill="#B8960C" opacity="0.3"/>
-            <rect x="67" y="11" width="12" height="9" fill="#4A4A6A" opacity="0.4"/>
-          </svg>
-        </div>
-        
-        <!-- Distant Waves -->
-        <svg class="waves waves-back" viewBox="0 0 1200 40" preserveAspectRatio="none">
-          <path d="M0,20 C150,30 300,10 450,20 C600,30 750,10 900,20 C1050,30 1200,10 1350,20 L1350,40 L0,40 Z" fill="#4A4A6A" opacity="0.35"></path>
-        </svg>
-      </div>
-
-      <!-- Mid-ground Waves & Main Cargo Ship -->
-      <div class="mid-sea">
-        <div class="main-ship-wrapper">
-          <!-- Detailed SVG Cargo Ship with colorful container stacks -->
-          <svg class="main-ship" viewBox="0 0 300 90" width="280" height="84">
-            <!-- Ship Hull -->
-            <path d="M 10,65 L 25,48 L 80,48 L 80,42 L 130,42 L 130,48 L 260,48 L 290,65 L 280,78 L 30,78 Z" fill="#1A1A2E" />
-            <!-- Ship Cabin / Superstructure (Bridge) -->
-            <path d="M 35,48 L 35,28 L 50,28 L 50,22 L 72,22 L 72,48 Z" fill="#FAF7F2" stroke="#1A1A2E" stroke-width="1.5"/>
-            <rect x="42" y="32" width="5" height="4" fill="#4A4A6A"/>
-            <rect x="58" y="26" width="6" height="5" fill="#4A4A6A"/>
-            <!-- Radar tower / Mast -->
-            <line x1="60" y1="22" x2="60" y2="8" stroke="#1A1A2E" stroke-width="2"/>
-            <line x1="56" y1="12" x2="64" y2="12" stroke="#1A1A2E" stroke-width="1.5"/>
-            <!-- Cargo Containers (Goods) -->
-            <!-- Row 1 -->
-            <rect x="90" y="34" width="22" height="14" fill="#B8960C" rx="1"/>
-            <rect x="115" y="34" width="22" height="14" fill="#4A4A6A" rx="1"/>
-            <rect x="140" y="34" width="22" height="14" fill="#B8960C" rx="1"/>
-            <rect x="165" y="34" width="22" height="14" fill="#FAF7F2" stroke="#1A1A2E" stroke-width="1" rx="1"/>
-            <rect x="190" y="34" width="22" height="14" fill="#4A4A6A" rx="1"/>
-            <rect x="215" y="34" width="22" height="14" fill="#B8960C" rx="1"/>
-            <rect x="240" y="34" width="18" height="14" fill="#4A4A6A" rx="1"/>
-            <!-- Row 2 -->
-            <rect x="100" y="20" width="22" height="14" fill="#4A4A6A" rx="1"/>
-            <rect x="125" y="20" width="22" height="14" fill="#FAF7F2" stroke="#1A1A2E" stroke-width="1" rx="1"/>
-            <rect x="150" y="20" width="22" height="14" fill="#B8960C" rx="1"/>
-            <rect x="175" y="20" width="22" height="14" fill="#4A4A6A" rx="1"/>
-            <rect x="200" y="20" width="22" height="14" fill="#B8960C" rx="1"/>
-            <rect x="225" y="20" width="20" height="14" fill="#FAF7F2" stroke="#1A1A2E" stroke-width="1" rx="1"/>
-            <!-- Row 3 (top stacks) -->
-            <rect x="135" y="6" width="22" height="14" fill="#B8960C" rx="1"/>
-            <rect x="160" y="6" width="22" height="14" fill="#FAF7F2" stroke="#1A1A2E" stroke-width="1" rx="1"/>
-            <rect x="185" y="6" width="22" height="14" fill="#4A4A6A" rx="1"/>
-          </svg>
-        </div>
-        
-        <!-- Rolling Waves -->
-        <svg class="waves waves-mid" viewBox="0 0 1200 60" preserveAspectRatio="none">
-          <path d="M0,30 C150,45 300,15 450,30 C600,45 750,15 900,30 C1050,45 1200,15 1350,30 L1350,60 L0,60 Z" fill="#4A4A6A" opacity="0.75"></path>
-        </svg>
-      </div>
-
-      <!-- Foreground Waves -->
-      <div class="foreground-sea">
-        <svg class="waves waves-front" viewBox="0 0 1200 80" preserveAspectRatio="none">
-          <path d="M0,40 C150,25 300,55 450,40 C600,25 750,55 900,40 C1050,25 1200,55 1350,40 L1350,80 L0,80 Z" fill="#1A1A2E"></path>
-        </svg>
-      </div>
-
-      <!-- Gradient Overlay for Contrast -->
+      <div class="sky-bg"></div>
+      <canvas id="constellation-canvas"></canvas>
       <div class="hero-overlay"></div>
     </div>
 
@@ -177,9 +89,6 @@
           <span class="hero-eyebrow">SENIOR HUMAN RESOURCES PROFESSIONAL | GENERAL MANAGER – HR</span>
         </div>
 
-        <div class="hero-company-name" data-animate="fade-up">
-          THE GREAT EASTERN SHIPPING CO. LTD.
-        </div>
 
         <p class="hero-italic-bio" data-animate="fade-up">
           25+ Years of Transforming People, Culture & Organisations
