@@ -1,141 +1,12 @@
 // main.js - handles navigation, scroll progress, IntersectionObserver animations, modal, and count-up stats.
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 0. LOTUS PRELOADER AND STAGGERED REVEAL SYSTEM
-  const preloader = document.getElementById('preloader');
-  const preloaderCanvas = document.getElementById('preloader-canvas');
-  
-  const finishPreloader = () => {
-    if (preloader) preloader.style.display = 'none';
-    document.body.classList.remove('preloader-active');
-    document.body.classList.add('hero-reveal-start');
-  };
+  // 0. THREAD WEAVING PRELOADER AND STAGGERED REVEAL SYSTEM
+  const canvas = document.getElementById('constellation-canvas');
+  const headline = document.querySelector('.hero-name-headline');
+  const isFirstVisit = !sessionStorage.getItem('visited');
 
-  const runPreloader = (overlay, canvas) => {
-    sessionStorage.setItem('visited', 'true');
-    const ctx = canvas.getContext('2d');
-    
-    // Set dimensions based on client size
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    ctx.scale(dpr, dpr);
-    
-    const width = rect.width;
-    const height = rect.height;
-    const centerX = width / 2;
-    const centerY = height / 2;
-    
-    const petalConfigs = [
-      { angle: -Math.PI / 2, length: 70, width: 20, delay: 500, duration: 400 },      // 0: Top
-      { angle: -Math.PI / 4, length: 65, width: 18, delay: 720, duration: 400 },      // 1: Top-Right
-      { angle: -3 * Math.PI / 4, length: 65, width: 18, delay: 940, duration: 400 },  // 2: Top-Left
-      { angle: 0, length: 68, width: 19, delay: 1160, duration: 400 },                // 3: Right
-      { angle: Math.PI, length: 68, width: 19, delay: 1380, duration: 400 },           // 4: Left
-      { angle: Math.PI / 4, length: 65, width: 18, delay: 1600, duration: 400 },      // 5: Bottom-Right
-      { angle: 3 * Math.PI / 4, length: 65, width: 18, delay: 1820, duration: 400 },  // 6: Bottom-Left
-      { angle: Math.PI / 2, length: 60, width: 17, delay: 2040, duration: 400 }       // 7: Bottom
-    ];
-    
-    let animationFrameId;
-    let startTime = null;
-    const totalDuration = 4300; // 2.5s bloom + 1s hold + 0.8s fade out
-    
-    const draw = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      
-      ctx.clearRect(0, 0, width, height);
-      
-      // 1. Center Seed
-      let dotRadius = 0;
-      let dotGlow = 0;
-      
-      if (elapsed < 500) {
-        const progress = elapsed / 500;
-        dotRadius = 4 * progress;
-        dotGlow = 8 * progress;
-      } else if (elapsed >= 500 && elapsed < 2500) {
-        dotRadius = 4;
-        dotGlow = 8;
-      } else if (elapsed >= 2500 && elapsed < 3500) {
-        const pulseProgress = (elapsed - 2500) / 1000;
-        const pulseFactor = Math.sin(pulseProgress * Math.PI * 2);
-        dotRadius = 4 + 1.5 * pulseFactor;
-        dotGlow = 8 + 6 * Math.abs(pulseFactor);
-      } else {
-        dotRadius = 4;
-        dotGlow = 8;
-      }
-      
-      if (elapsed >= 0) {
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, dotRadius, 0, Math.PI * 2);
-        ctx.fillStyle = '#e8a830';
-        ctx.shadowColor = '#e8a830';
-        ctx.shadowBlur = dotGlow;
-        ctx.fill();
-      }
-      
-      ctx.shadowBlur = 0;
-      
-      // 2. Draw Petals
-      petalConfigs.forEach(petal => {
-        if (elapsed >= petal.delay) {
-          const petalProgress = Math.min((elapsed - petal.delay) / petal.duration, 1);
-          
-          ctx.save();
-          ctx.translate(centerX, centerY);
-          ctx.rotate(petal.angle);
-          
-          ctx.beginPath();
-          ctx.moveTo(0, 0);
-          
-          const curLength = petal.length * petalProgress;
-          const curWidth = petal.width * Math.sin(petalProgress * Math.PI / 2);
-          
-          ctx.quadraticCurveTo(-curWidth, -curLength * 0.4, 0, -curLength);
-          ctx.quadraticCurveTo(curWidth, -curLength * 0.4, 0, 0);
-          
-          ctx.strokeStyle = '#e8a830';
-          ctx.lineWidth = 1.5;
-          ctx.lineCap = 'round';
-          ctx.lineJoin = 'round';
-          
-          ctx.shadowColor = '#e8a830';
-          ctx.shadowBlur = 12 * petalProgress;
-          ctx.stroke();
-          
-          ctx.restore();
-        }
-      });
-      
-      ctx.shadowBlur = 0;
-      
-      // 3. Transitions
-      if (elapsed < 3500) {
-        animationFrameId = requestAnimationFrame(draw);
-      } else if (elapsed >= 3500 && elapsed < totalDuration) {
-        const fadeProgress = (elapsed - 3500) / 800;
-        overlay.style.opacity = (1 - fadeProgress).toString();
-        animationFrameId = requestAnimationFrame(draw);
-      } else {
-        cancelAnimationFrame(animationFrameId);
-        finishPreloader();
-      }
-    };
-    
-    animationFrameId = requestAnimationFrame(draw);
-  };
-
-  if (preloader && preloaderCanvas && !sessionStorage.getItem('visited')) {
-    runPreloader(preloader, preloaderCanvas);
-  } else {
-    finishPreloader();
-  }
-
-  // Count-up stats observer for hero stats row
+  // Count-up stats function for hero stats row
   const heroStatCols = document.querySelectorAll('.hero-stat-col');
   const countUpHero = (element, targetValue, suffix) => {
     let startTimestamp = null;
@@ -161,31 +32,361 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroStatObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const startCount = () => {
-          const target = parseInt(entry.target.getAttribute('data-count-target'), 10);
-          const suffix = entry.target.getAttribute('data-count-suffix') || '';
-          if (!isNaN(target)) {
+        const target = parseInt(entry.target.getAttribute('data-count-target'), 10);
+        const suffix = entry.target.getAttribute('data-count-suffix') || '';
+        if (!isNaN(target)) {
+          setTimeout(() => {
             countUpHero(entry.target, target, suffix);
-          }
-        };
-
-        if (document.body.classList.contains('preloader-active')) {
-          const checkInterval = setInterval(() => {
-            if (!document.body.classList.contains('preloader-active')) {
-              clearInterval(checkInterval);
-              setTimeout(startCount, 1200);
-            }
-          }, 100);
-        } else {
-          setTimeout(startCount, 1200);
+          }, 300);
         }
-        
         observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.1 });
 
   heroStatCols.forEach(col => heroStatObserver.observe(col));
+
+  if (canvas && headline && isFirstVisit) {
+    sessionStorage.setItem('visited', 'true');
+    document.body.classList.add('preloader-active');
+    document.body.classList.add('preloader-run-canvas');
+
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+
+    // Canvas size adjustment
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.setTransform(1, 0, 0, 1, 0, 0); // reset scale
+      ctx.scale(dpr, dpr);
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Text layout configuration variables
+    let rect, lines, lineHeight, drawX, fontStr, isCentered;
+    let textPoints = [];
+
+    const updateTextLayout = () => {
+      rect = headline.getBoundingClientRect();
+      const style = window.getComputedStyle(headline);
+      const fontSize = style.fontSize;
+      const fontFamily = style.fontFamily;
+      const fontWeight = style.fontWeight;
+      fontStr = `${fontWeight} ${fontSize} ${fontFamily}`;
+      isCentered = style.textAlign === 'center';
+      drawX = isCentered ? (rect.left + rect.width / 2) : rect.left;
+      lineHeight = parseFloat(fontSize) * 1.15;
+
+      // Wrap text into lines
+      const offCanvas = document.createElement('canvas');
+      const offCtx = offCanvas.getContext('2d');
+      offCtx.font = fontStr;
+      const fullWidth = offCtx.measureText("Savitha Krishnamoorthy").width;
+      if (fullWidth > rect.width) {
+        lines = ["Savitha", "Krishnamoorthy"];
+      } else {
+        lines = ["Savitha Krishnamoorthy"];
+      }
+    };
+
+    const sampleTextPoints = () => {
+      const offCanvas = document.createElement('canvas');
+      offCanvas.width = window.innerWidth;
+      offCanvas.height = window.innerHeight;
+      const offCtx = offCanvas.getContext('2d');
+
+      offCtx.font = fontStr;
+      offCtx.textBaseline = 'top';
+      offCtx.fillStyle = '#ffffff';
+      offCtx.textAlign = isCentered ? 'center' : 'left';
+
+      lines.forEach((line, index) => {
+        offCtx.fillText(line, drawX, rect.top + index * lineHeight);
+      });
+
+      const imgData = offCtx.getImageData(0, 0, offCanvas.width, offCanvas.height);
+      const data = imgData.data;
+      const points = [];
+      const step = window.innerWidth < 768 ? 4 : 3;
+
+      for (let y = 0; y < offCanvas.height; y += step) {
+        for (let x = 0; x < offCanvas.width; x += step) {
+          const idx = (y * offCanvas.width + x) * 4;
+          if (data[idx + 3] > 128) {
+            points.push({ x, y });
+          }
+        }
+      }
+
+      // Fallback if no points sampled
+      if (points.length === 0) {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        for (let i = 0; i < 200; i++) {
+          points.push({
+            x: centerX - 150 + Math.random() * 300,
+            y: centerY - 20 + Math.random() * 40
+          });
+        }
+      }
+
+      return points;
+    };
+
+    const getRandomEdgePoint = (w, h) => {
+      const edge = Math.floor(Math.random() * 4);
+      let x, y;
+      if (edge === 0) { // top
+        x = Math.random() * w;
+        y = -20;
+      } else if (edge === 1) { // right
+        x = w + 20;
+        y = Math.random() * h;
+      } else if (edge === 2) { // bottom
+        x = Math.random() * w;
+        y = h + 20;
+      } else { // left
+        x = -20;
+        y = Math.random() * h;
+      }
+      return { x, y };
+    };
+
+    const getBezierPoint = (p0, p1, p2, t) => {
+      const x = (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * p1.x + t * t * p2.x;
+      const y = (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * p1.y + t * t * p2.y;
+      return { x, y };
+    };
+
+    const drawThread = (thread, opacity) => {
+      if (thread.path.length < 2) return;
+      ctx.beginPath();
+      ctx.moveTo(thread.path[0].x, thread.path[0].y);
+      for (let i = 1; i < thread.path.length; i++) {
+        ctx.lineTo(thread.path[i].x, thread.path[i].y);
+      }
+      ctx.strokeStyle = `rgba(232, 168, 48, ${opacity})`; // #e8a830
+      ctx.lineWidth = thread.width;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.shadowColor = '#e8a830';
+      ctx.shadowBlur = 4 * opacity;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    };
+
+    const drawText = (opacity) => {
+      ctx.font = fontStr;
+      ctx.textBaseline = 'top';
+      ctx.textAlign = isCentered ? 'center' : 'left';
+      ctx.fillStyle = `rgba(242, 138, 34, ${opacity})`; // #f28a22
+      ctx.shadowColor = `rgba(232, 168, 48, ${opacity})`; // #e8a830
+      ctx.shadowBlur = 12 * opacity;
+      lines.forEach((line, index) => {
+        ctx.fillText(line, drawX, rect.top + index * lineHeight);
+      });
+      ctx.shadowBlur = 0;
+    };
+
+    const drawShimmerText = (offset) => {
+      ctx.font = fontStr;
+      ctx.textBaseline = 'top';
+      ctx.textAlign = isCentered ? 'center' : 'left';
+
+      const textWidth = window.innerWidth;
+      const grad = ctx.createLinearGradient(0, 0, textWidth, 0);
+      const baseColor = 'rgba(242, 138, 34, '; // #f28a22
+
+      for (let i = 0; i <= 1; i += 0.2) {
+        const stopX = i * textWidth;
+        const phase = stopX * 0.005 - offset;
+        const opacity = 0.85 + 0.15 * Math.sin(phase); // oscillates between 0.7 and 1.0
+        grad.addColorStop(i, `${baseColor}${opacity})`);
+      }
+
+      ctx.fillStyle = grad;
+      ctx.shadowColor = 'rgba(232, 168, 48, 0.4)';
+      ctx.shadowBlur = 10;
+      lines.forEach((line, index) => {
+        ctx.fillText(line, drawX, rect.top + index * lineHeight);
+      });
+      ctx.shadowBlur = 0;
+    };
+
+    const threads = [];
+    let animationFrameId;
+    let startTime = null;
+
+    // Initialize all components after fonts and layout are ready
+    const initPreloader = () => {
+      updateTextLayout();
+      textPoints = sampleTextPoints();
+      const pointsCount = textPoints.length;
+      const maxThreads = window.innerWidth < 768 ? 60 : 100;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      // Generate threads
+      for (let i = 0; i < maxThreads; i++) {
+        const start = getRandomEdgePoint(w, h);
+        const chaoticX = w * 0.15 + Math.random() * w * 0.7;
+        const chaoticY = h * 0.15 + Math.random() * h * 0.7;
+
+        // Control point for Phase 2 (random bulge)
+        const ctrlX1 = (start.x + chaoticX) / 2 + (Math.random() - 0.5) * w * 0.4;
+        const ctrlY1 = (start.y + chaoticY) / 2 + (Math.random() - 0.5) * h * 0.4;
+
+        // Target point from sampled text
+        const target = textPoints[Math.floor(Math.random() * pointsCount)];
+
+        // Control point for Phase 3 (decelerating curve)
+        const ctrlX2 = (chaoticX + target.x) / 2 + (Math.random() - 0.5) * w * 0.2;
+        const ctrlY2 = (chaoticY + target.y) / 2 + (Math.random() - 0.5) * h * 0.2;
+
+        threads.push({
+          startX: start.x,
+          startY: start.y,
+          ctrlX1,
+          ctrlY1,
+          chaoticX,
+          chaoticY,
+          targetX: target.x,
+          targetY: target.y,
+          ctrlX2,
+          ctrlY2,
+
+          delay2: Math.random() * 0.3,
+          speedRate2: 1 / (1 - (Math.random() * 0.2)),
+
+          delay3: Math.random() * 0.3,
+          speedRate3: 1 / (1 - (Math.random() * 0.2)),
+
+          x: start.x,
+          y: start.y,
+          path: [],
+          width: 0.8 + Math.random() * 0.7
+        });
+      }
+
+      // Start draw loop
+      animationFrameId = requestAnimationFrame(drawLoop);
+    };
+
+    // Listen to resize to keep positions aligned
+    window.addEventListener('resize', () => {
+      if (animationFrameId) {
+        updateTextLayout();
+      }
+    });
+
+    const drawLoop = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      // Phase 1 (0.0s - 0.5s): Dark screen
+      if (elapsed < 500) {
+        // Just clear canvas
+      }
+      // Phase 2 (0.5s - 1.5s): Threads shoot in
+      else if (elapsed >= 500 && elapsed < 1500) {
+        const t = (elapsed - 500) / 1000;
+        threads.forEach(thread => {
+          let threadT = (t - thread.delay2) * thread.speedRate2;
+          threadT = Math.max(0, Math.min(1, threadT));
+
+          const pos = getBezierPoint(
+            { x: thread.startX, y: thread.startY },
+            { x: thread.ctrlX1, y: thread.ctrlY1 },
+            { x: thread.chaoticX, y: thread.chaoticY },
+            threadT
+          );
+
+          thread.x = pos.x;
+          thread.y = pos.y;
+
+          if (threadT > 0) {
+            thread.path.push({ x: pos.x, y: pos.y });
+            if (thread.path.length > 50) thread.path.shift();
+          }
+
+          drawThread(thread, 1.0);
+        });
+      }
+      // Phase 3 (1.5s - 3.0s): Decelerating curve to letterforms
+      else if (elapsed >= 1500 && elapsed < 3000) {
+        const t = (elapsed - 1500) / 1500;
+        threads.forEach(thread => {
+          let threadT = (t - thread.delay3) * thread.speedRate3;
+          threadT = Math.max(0, Math.min(1, threadT));
+
+          const pos = getBezierPoint(
+            { x: thread.chaoticX, y: thread.chaoticY },
+            { x: thread.ctrlX2, y: thread.ctrlY2 },
+            { x: thread.targetX, y: thread.targetY },
+            threadT
+          );
+
+          thread.x = pos.x;
+          thread.y = pos.y;
+
+          thread.path.push({ x: pos.x, y: pos.y });
+          if (thread.path.length > 60) thread.path.shift();
+
+          drawThread(thread, 1.0);
+        });
+
+        // Let letters begin emerging
+        const textOpacity = Math.max(0, (elapsed - 2000) / 1000) * 0.35;
+        if (textOpacity > 0.01) {
+          drawText(textOpacity);
+        }
+      }
+      // Phase 4 (3.0s - 4.2s): Name solidifies, excess threads fade
+      else if (elapsed >= 3000 && elapsed < 4200) {
+        const t = (elapsed - 3000) / 1200;
+        const textOpacity = 0.35 + t * 0.65;
+        const threadOpacity = 1.0 - t;
+
+        if (threadOpacity > 0.01) {
+          threads.forEach(thread => {
+            if (thread.path.length > 0) {
+              if (Math.random() < 0.25) thread.path.shift();
+            }
+            drawThread(thread, threadOpacity);
+          });
+        }
+
+        drawText(textOpacity);
+      }
+      // Phase 5 & 6 (4.2s+): Content reveals & Continuous shimmer
+      else {
+        if (document.body.classList.contains('preloader-active')) {
+          document.body.classList.remove('preloader-active');
+          document.body.classList.add('hero-reveal-start');
+        }
+
+        const shimmerOffset = elapsed * 0.003;
+        drawShimmerText(shimmerOffset);
+      }
+
+      animationFrameId = requestAnimationFrame(drawLoop);
+    };
+
+    // Wait for fonts to be ready before starting to ensure correct sampling
+    document.fonts.ready.then(() => {
+      initPreloader();
+    }).catch(() => {
+      initPreloader();
+    });
+  } else {
+    // Skip preloader on repeat visits or if requirements not met
+    document.body.classList.remove('preloader-active');
+    document.body.classList.add('hero-reveal-start');
+  }
 
   // 1. NAVIGATION MOBILE MENU
   const navToggle = document.getElementById('nav-toggle');

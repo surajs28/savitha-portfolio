@@ -20,16 +20,11 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- Lotus Preloader Overlay -->
-  <div id="preloader" class="preloader-overlay">
-    <canvas id="preloader-canvas"></canvas>
-  </div>
   <script>
     if (!sessionStorage.getItem('visited')) {
-      document.body.classList.add('preloader-active');
+      document.body.classList.add('preloader-active', 'preloader-run-canvas');
     }
   </script>
-
   <!-- Scroll progress bar -->
   <div id="progress-bar"></div>
 
@@ -83,54 +78,55 @@
     <!-- Premium layered animated background with sunrise and shipping company graphics -->
     <div class="hero-bg-container">
       <div class="sky-bg"></div>
+      <div class="sky-bg-gradient"></div>
       <canvas id="constellation-canvas"></canvas>
       <div class="hero-overlay"></div>
     </div>
 
     <div class="hero-container">
-      <div class="hero-content">
-        <h1 class="hero-name-headline" data-animate="fade-up">
-          Savitha Krishnamoorthy
-        </h1>
-        
-        <div class="hero-accent-line" data-animate="fade-up"></div>
-        
-        <div class="hero-eyebrow-container" data-animate="fade-up">
-          <span class="hero-eyebrow">SENIOR HUMAN RESOURCES PROFESSIONAL | GENERAL MANAGER – HR</span>
-        </div>
-
-
-        <p class="hero-italic-bio" data-animate="fade-up">
-          25+ Years of Transforming People, Culture & Organisations
-        </p>
-
-        <!-- CTA Buttons -->
-        <div class="hero-actions" data-animate="fade-up">
-          <a href="https://in.linkedin.com/in/savitha-krishnamoorthy-5506066" target="_blank" rel="noopener" class="hero-btn-primary">Connect on LinkedIn &nbsp;↗</a>
-          <a href="#contact" class="hero-btn-secondary">Get in Touch</a>
-        </div>
-
-        <!-- Hero Stats Row -->
-        <div class="hero-stats-row" data-animate="fade-up" style="margin-top: 60px;">
-          <div class="hero-stat-col" data-count-target="25" data-count-suffix="+">
-            <div class="hero-stat-num">0+</div>
-            <div class="hero-stat-lbl">Years Experience</div>
+      <div class="hero-grid">
+        <div class="hero-col-left"></div>
+        <div class="hero-col-right">
+          <h1 class="hero-name-headline" data-animate="fade-up">
+            Savitha Krishnamoorthy
+          </h1>
+          
+          <div class="hero-accent-line" data-animate="fade-up"></div>
+          
+          <div class="hero-eyebrow-container" data-animate="fade-up">
+            <span class="hero-eyebrow">SENIOR HUMAN RESOURCES PROFESSIONAL | GENERAL MANAGER – HR</span>
           </div>
-          <div class="hero-stat-col" data-count-target="10" data-count-suffix="+">
-            <div class="hero-stat-num">0+</div>
-            <div class="hero-stat-lbl">Psychometric Instruments</div>
-          </div>
-          <div class="hero-stat-col" data-count-target="360" data-count-suffix="°">
-            <div class="hero-stat-num">0°</div>
-            <div class="hero-stat-lbl">Feedback Processes</div>
-          </div>
-          <div class="hero-stat-col" data-count-target="8" data-count-suffix="">
-            <div class="hero-stat-num">0</div>
-            <div class="hero-stat-lbl">HR Verticals</div>
+
+          <p class="hero-italic-bio" data-animate="fade-up">
+            25+ Years of Transforming People, Culture & Organisations
+          </p>
+
+          <!-- CTA Buttons -->
+          <div class="hero-actions" data-animate="fade-up">
+            <a href="https://in.linkedin.com/in/savitha-krishnamoorthy-5506066" target="_blank" rel="noopener" class="hero-btn-primary">Connect on LinkedIn &nbsp;↗</a>
+            <a href="#contact" class="hero-btn-secondary">Get in Touch</a>
           </div>
         </div>
+      </div>
 
-
+      <!-- Hero Stats Row -->
+      <div class="hero-stats-row" data-animate="fade-up">
+        <div class="hero-stat-col" data-count-target="25" data-count-suffix="+">
+          <div class="hero-stat-num">0+</div>
+          <div class="hero-stat-lbl">Years Experience</div>
+        </div>
+        <div class="hero-stat-col" data-count-target="10" data-count-suffix="+">
+          <div class="hero-stat-num">0+</div>
+          <div class="hero-stat-lbl">Psychometric Instruments</div>
+        </div>
+        <div class="hero-stat-col" data-count-target="360" data-count-suffix="°">
+          <div class="hero-stat-num">0°</div>
+          <div class="hero-stat-lbl">Feedback Processes</div>
+        </div>
+        <div class="hero-stat-col" data-count-target="8" data-count-suffix="">
+          <div class="hero-stat-num">0</div>
+          <div class="hero-stat-lbl">HR Verticals</div>
+        </div>
       </div>
     </div>
   </section>
