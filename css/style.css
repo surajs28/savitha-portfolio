@@ -394,6 +394,46 @@ ul {
   }
 }
 
+/* Lotus Preloader Overlay */
+.preloader-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: #1a1a2e;
+  z-index: 9999;
+  display: none; /* hidden by default for graceful degradation */
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+body.preloader-active .preloader-overlay {
+  display: flex;
+}
+
+#preloader-canvas {
+  max-width: 100%;
+  max-height: 100%;
+  width: 400px;
+  height: 400px;
+}
+
+@media (max-width: 768px) {
+  #preloader-canvas {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+/* If preloader is active, hold animations until .hero-reveal-start is added */
+body.preloader-active [data-animate] {
+  animation-play-state: paused !important;
+}
+
+body.hero-reveal-start [data-animate] {
+  animation-play-state: running !important;
+}
+
 /* 6. HERO SECTION */
 .hero-section {
   height: 100vh;
@@ -471,7 +511,7 @@ ul {
   margin-bottom: 1.2rem;
   opacity: 0;
   transform: translateY(20px);
-  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards;
+  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
 }
 
 .hero-eyebrow {
@@ -494,7 +534,7 @@ ul {
   margin-bottom: 0.5rem;
   opacity: 0;
   transform: translateY(20px);
-  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s forwards;
+  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s forwards;
 }
 
 /* Accent Line */
@@ -505,7 +545,7 @@ ul {
   margin: 0.5rem auto 1.8rem;
   opacity: 0;
   transform: scaleX(0);
-  animation: heroLineExpand 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards;
+  animation: heroLineExpand 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
 }
 
 @keyframes heroLineExpand {
@@ -542,7 +582,7 @@ ul {
   text-align: center;
   opacity: 0;
   transform: translateY(20px);
-  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s forwards;
+  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.75s forwards;
 }
 
 /* Stats Row styling */
@@ -556,7 +596,7 @@ ul {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   opacity: 0;
   transform: translateY(20px);
-  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.95s forwards;
+  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.2s forwards;
 }
 
 .hero-stat-col {
@@ -605,7 +645,7 @@ ul {
   width: 100%;
   opacity: 0;
   transform: translateY(20px);
-  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.75s forwards;
+  animation: heroTextFade 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.0s forwards;
 }
 
 .hero-btn-primary {
