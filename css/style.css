@@ -2706,7 +2706,6 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
   margin-bottom: 1.5rem;
   border-radius: 2px;
   overflow: hidden;
-  max-height: 480px;
   width: 100%;
   border: 1px solid var(--color-divider);
   background-color: var(--color-bg);
@@ -2715,8 +2714,6 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
 .post-featured-image {
   width: 100%;
   height: auto;
-  max-height: 480px;
-  object-fit: cover;
   display: block;
 }
 
