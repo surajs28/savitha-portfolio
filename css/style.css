@@ -1163,7 +1163,7 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
   background-color: #1A2F22;
   color: #F4F2EC;
   border-top: none;
-  padding: 6rem 0;
+  padding: 6rem var(--space-xs); /* Use design system variable space-xs (1rem) for side gutters */
 }
 
 .contact-section .section-heading {
@@ -1325,10 +1325,13 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
 }
 
 @media (max-width: 768px) {
+  .contact-section {
+    padding: 4rem var(--space-xs); /* Tighter vertical padding on mobile */
+  }
   .contact-grid {
     grid-template-columns: 1fr;
+    gap: var(--space-sm); /* Ensure good spacing between info and form container on mobile */
   }
-
 }
 
 /* 14. SITE FOOTER */
