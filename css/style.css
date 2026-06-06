@@ -430,6 +430,7 @@ ul {
 }
 
 /* Guard initial states during signature preloader first visit */
+body.preloader-run-signature:not(.hero-start-reveal) #navbar,
 body.preloader-run-signature:not(.hero-start-reveal) .hero-name-headline,
 body.preloader-run-signature:not(.hero-start-reveal) .hero-accent-line,
 body.preloader-run-signature:not(.hero-start-reveal) .hero-eyebrow-container,
@@ -446,6 +447,9 @@ body.preloader-run-signature:not(.hero-start-reveal) .sky-bg {
 }
 
 /* Reveal sequence in Phase 5 */
+body.preloader-run-signature.hero-start-reveal #navbar {
+  animation: signatureTextFadeUp 1.5s cubic-bezier(0.25, 1, 0.3, 1) 0.3s forwards !important;
+}
 body.preloader-run-signature.hero-start-reveal .hero-name-headline {
   animation: signatureTextFadeUp 1.4s cubic-bezier(0.25, 1, 0.3, 1) 0s forwards !important;
 }
@@ -484,7 +488,7 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
   height: 100%;
   overflow: hidden;
   z-index: 0;
-  background-color: var(--color-bg);
+  background-color: var(--color-primary);
 }
 
 .sky-bg {
