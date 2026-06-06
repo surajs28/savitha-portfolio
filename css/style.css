@@ -461,37 +461,21 @@ body.preloader-run-signature .sky-bg {
   animation: skyFadeIn 4.0s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
 }
 
-/* Reveal sequence in Phase 6 - Step 4 (Pure Fade) */
-body.preloader-run-signature.hero-start-reveal #navbar {
-  animation: heroFade 1.5s ease-in-out 2.0s forwards !important;
-}
-body.preloader-run-signature.hero-start-reveal .hero-name-headline {
-  animation: heroFade 1.5s ease-in-out 0s forwards !important;
-}
-body.preloader-run-signature.hero-start-reveal .hero-accent-line {
-  animation: heroFade 1.5s ease-in-out 0.4s forwards !important;
-}
-body.preloader-run-signature.hero-start-reveal .hero-eyebrow-container {
-  animation: heroFade 1.5s ease-in-out 0.8s forwards !important;
-}
-body.preloader-run-signature.hero-start-reveal .hero-italic-bio {
-  animation: heroFade 1.5s ease-in-out 1.2s forwards !important;
-}
-body.preloader-run-signature.hero-start-reveal .hero-actions {
-  animation: heroFade 1.5s ease-in-out 1.6s forwards !important;
-}
-body.preloader-run-signature.hero-start-reveal .hero-stats-row {
-  animation: heroFade 1.5s ease-in-out 2.0s forwards !important;
-}
-
-/* Repeat visits: skip animations and reveal immediately */
+/* Reveal sequence (Phase 6 - Step 4) & Repeat visits: instantly visible with no animations */
 body:not(.preloader-run-signature) #navbar,
 body:not(.preloader-run-signature) .hero-name-headline,
 body:not(.preloader-run-signature) .hero-accent-line,
 body:not(.preloader-run-signature) .hero-eyebrow-container,
 body:not(.preloader-run-signature) .hero-italic-bio,
 body:not(.preloader-run-signature) .hero-actions,
-body:not(.preloader-run-signature) .hero-stats-row {
+body:not(.preloader-run-signature) .hero-stats-row,
+body.preloader-run-signature.hero-start-reveal #navbar,
+body.preloader-run-signature.hero-start-reveal .hero-name-headline,
+body.preloader-run-signature.hero-start-reveal .hero-accent-line,
+body.preloader-run-signature.hero-start-reveal .hero-eyebrow-container,
+body.preloader-run-signature.hero-start-reveal .hero-italic-bio,
+body.preloader-run-signature.hero-start-reveal .hero-actions,
+body.preloader-run-signature.hero-start-reveal .hero-stats-row {
   opacity: 1 !important;
   transform: none !important;
   animation: none !important;

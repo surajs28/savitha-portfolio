@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!isNaN(target)) {
             if (isFirstVisit) {
               const timeElapsed = performance.now();
-              const delay = Math.max(0, 9500 - timeElapsed);
+              const delay = Math.max(0, 6000 - timeElapsed);
               setTimeout(() => {
                 countUpHero(entry.target, target, suffix);
               }, delay);
