@@ -153,8 +153,66 @@ document.addEventListener('DOMContentLoaded', () => {
     let startTime = null;
     let animationFrameId = null;
 
+    // Repeat visit bypass checks
+    if (!isFirstVisit) {
+      finishPreloader();
+    }
+
+    // Particles setup
+    const maxParticles = window.innerWidth < 768 ? 6 : 12;
+    const nameEl = document.querySelector('.hero-name-headline');
+    const particles = [];
+
+    const createParticle = (atBaseline = false) => {
+      if (!nameEl) return null;
+      const canvasRect = canvas.getBoundingClientRect();
+      const nameRect = nameEl.getBoundingClientRect();
+
+      const xStart = nameRect.left - canvasRect.left;
+      const xEnd = nameRect.right - canvasRect.left;
+      const yBaseline = nameRect.bottom - canvasRect.top;
+      const yTop = nameRect.top - canvasRect.top;
+      const yMin = yTop - 40;
+
+      const lifetime = 120 + Math.floor(Math.random() * 101); // 120 to 220 frames
+      const age = atBaseline ? 0 : Math.floor(Math.random() * lifetime);
+
+      const x = xStart + Math.random() * (xEnd - xStart);
+      const y = atBaseline ? (yBaseline + Math.random() * 5) : (yTop + Math.random() * (yBaseline - yTop));
+
+      const coreSize = 0.8 + Math.random() * 2.0; // 0.8px to 2.8px
+      const speedY = -0.3 - Math.random() * 0.7; // -0.3 to -1.0 px/frame
+      const wobble = Math.random() * Math.PI * 2;
+      const wobbleSpeed = 0.04 + Math.random() * 0.06;
+      const driftX = -0.4 + Math.random() * 0.8; // -0.4 to +0.4 px/frame
+
+      return {
+        x,
+        y,
+        speedY,
+        wobble,
+        wobbleSpeed,
+        driftX,
+        lifetime,
+        age,
+        coreSize
+      };
+    };
+
+    // Initialize particles array
+    for (let i = 0; i < maxParticles; i++) {
+      const p = createParticle(false);
+      if (p) particles.push(p);
+    }
+
     const draw = (timestamp) => {
-      if (!startTime) startTime = timestamp;
+      if (!startTime) {
+        if (!isFirstVisit) {
+          startTime = timestamp - 6300; // Skip signature stages on repeat visit
+        } else {
+          startTime = timestamp;
+        }
+      }
       const elapsed = timestamp - startTime;
 
       ctx.clearRect(0, 0, width, height);
@@ -278,18 +336,89 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.clearRect(0, 0, width, height);
         animationFrameId = requestAnimationFrame(draw);
       }
-      // Phase 6 (6.0s+): Start reveal of hero content
-      else {
+      // Phase 6 (6.0s–6.3s): Start instant reveal of hero content, clear canvas, wait 300ms
+      else if (elapsed >= 6000 && elapsed < 6300) {
+        if (dotEl) dotEl.style.display = 'none';
         ctx.clearRect(0, 0, width, height);
-        cancelAnimationFrame(animationFrameId);
-        finishPreloader();
+        if (!document.body.classList.contains('hero-start-reveal')) {
+          finishPreloader();
+        }
+        animationFrameId = requestAnimationFrame(draw);
+      }
+      // Phase 7 (6.3s+): Continuous ambient particle loop
+      else {
+        if (dotEl) dotEl.style.display = 'none';
+        ctx.clearRect(0, 0, width, height);
+
+        if (!document.body.classList.contains('hero-start-reveal')) {
+          finishPreloader();
+        }
+
+        if (nameEl) {
+          const canvasRect = canvas.getBoundingClientRect();
+          const nameRect = nameEl.getBoundingClientRect();
+
+          const xStart = nameRect.left - canvasRect.left;
+          const xEnd = nameRect.right - canvasRect.left;
+          const yBaseline = nameRect.bottom - canvasRect.top;
+          const yTop = nameRect.top - canvasRect.top;
+          const yMin = yTop - 40;
+
+          // Make sure particles array is populated
+          while (particles.length < maxParticles) {
+            const p = createParticle(true);
+            if (p) particles.push(p);
+            else break;
+          }
+
+          particles.forEach((p, idx) => {
+            // Update physics
+            p.age++;
+            p.y += p.speedY;
+            p.wobble += p.wobbleSpeed;
+            p.x += Math.sin(p.wobble) * 0.3 + p.driftX;
+
+            // Opacity lifecycle (fade-in 20%, hold 50%, fade-out 30%)
+            const progress = p.age / p.lifetime;
+            let opacityFactor = 1.0;
+            if (progress < 0.2) {
+              opacityFactor = progress / 0.2;
+            } else if (progress >= 0.7) {
+              opacityFactor = Math.max(0, (1.0 - progress) / 0.3);
+            }
+
+            // Boundary checks: if particle exceeds lifetime or goes out of boundary box, respawn
+            if (p.age >= p.lifetime || p.y < yMin || p.x < xStart || p.x > xEnd) {
+              particles[idx] = createParticle(true);
+              return;
+            }
+
+            // Draw core dot
+            ctx.fillStyle = `rgba(255, 220, 100, ${0.95 * opacityFactor})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.coreSize / 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw soft radial glow (radius = 2 * coreSize)
+            const glowRadius = p.coreSize * 2;
+            const glowGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRadius);
+            glowGrad.addColorStop(0, `rgba(232, 168, 48, ${0.4 * opacityFactor})`);
+            glowGrad.addColorStop(1, 'rgba(232, 168, 48, 0)');
+            ctx.fillStyle = glowGrad;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, glowRadius, 0, Math.PI * 2);
+            ctx.fill();
+          });
+        }
+
+        animationFrameId = requestAnimationFrame(draw);
       }
     };
 
     animationFrameId = requestAnimationFrame(draw);
   };
 
-  if (canvas && isFirstVisit) {
+  if (canvas) {
     runSignaturePreloader();
   } else {
     finishPreloader();
