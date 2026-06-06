@@ -2631,7 +2631,7 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
   background: var(--color-white);
   border: 1px solid var(--color-secondary);
   color: var(--color-primary);
-  padding: 0 1.25rem;
+  padding: 0.8rem 1.5rem; /* Matches input padding and centers text */
   border-radius: 2px;
   cursor: pointer;
   font-family: var(--font-body);
@@ -2641,10 +2641,12 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
   letter-spacing: 0.08em;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
   transition: all 0.2s ease;
   user-select: none;
-  border-left: none; /* merge visually with the URL field */
+  box-sizing: border-box;
+  line-height: 1; /* Reset line-height to ensure perfect vertical alignment */
 }
 
 .btn-file-upload:hover {
