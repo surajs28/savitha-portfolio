@@ -421,7 +421,7 @@ ul {
 @keyframes signatureTextFadeUp {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -429,8 +429,39 @@ ul {
   }
 }
 
+@keyframes navbarFadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes skyFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Lock scrolling while preloader is active */
+body.preloader-active {
+  overflow: hidden !important;
+  height: 100vh;
+}
+
 /* Guard initial states during signature preloader first visit */
-body.preloader-run-signature:not(.hero-start-reveal) #navbar,
+body.preloader-run-signature:not(.hero-start-reveal) #navbar {
+  opacity: 0 !important;
+  transform: translateY(-20px) !important;
+  animation: none !important;
+}
+
 body.preloader-run-signature:not(.hero-start-reveal) .hero-name-headline,
 body.preloader-run-signature:not(.hero-start-reveal) .hero-accent-line,
 body.preloader-run-signature:not(.hero-start-reveal) .hero-eyebrow-container,
@@ -438,35 +469,50 @@ body.preloader-run-signature:not(.hero-start-reveal) .hero-italic-bio,
 body.preloader-run-signature:not(.hero-start-reveal) .hero-actions,
 body.preloader-run-signature:not(.hero-start-reveal) .hero-stats-row {
   opacity: 0 !important;
-  transform: translateY(16px) !important;
+  transform: translateY(20px) !important;
   animation: none !important;
 }
 
-body.preloader-run-signature:not(.hero-start-reveal) .sky-bg {
-  opacity: 0 !important;
+/* Slow, elegant sky fade-in during signature write */
+body.preloader-run-signature .sky-bg {
+  opacity: 0;
+  animation: skyFadeIn 4.0s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
 }
 
-/* Reveal sequence in Phase 5 */
+/* Reveal sequence in Phase 6 - Step 4 */
 body.preloader-run-signature.hero-start-reveal #navbar {
-  animation: signatureTextFadeUp 1.5s cubic-bezier(0.25, 1, 0.3, 1) 0.3s forwards !important;
+  animation: navbarFadeDown 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.25s forwards !important;
 }
 body.preloader-run-signature.hero-start-reveal .hero-name-headline {
-  animation: signatureTextFadeUp 1.4s cubic-bezier(0.25, 1, 0.3, 1) 0s forwards !important;
+  animation: signatureTextFadeUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s forwards !important;
 }
 body.preloader-run-signature.hero-start-reveal .hero-accent-line {
-  animation: signatureTextFadeUp 1.2s cubic-bezier(0.25, 1, 0.3, 1) 0.25s forwards !important;
+  animation: signatureTextFadeUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s forwards !important;
 }
 body.preloader-run-signature.hero-start-reveal .hero-eyebrow-container {
-  animation: signatureTextFadeUp 1.2s cubic-bezier(0.25, 1, 0.3, 1) 0.5s forwards !important;
+  animation: signatureTextFadeUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards !important;
 }
 body.preloader-run-signature.hero-start-reveal .hero-italic-bio {
-  animation: signatureTextFadeUp 1.2s cubic-bezier(0.25, 1, 0.3, 1) 0.8s forwards !important;
+  animation: signatureTextFadeUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.75s forwards !important;
 }
 body.preloader-run-signature.hero-start-reveal .hero-actions {
-  animation: signatureTextFadeUp 1.2s cubic-bezier(0.25, 1, 0.3, 1) 1.1s forwards !important;
+  animation: signatureTextFadeUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards !important;
 }
 body.preloader-run-signature.hero-start-reveal .hero-stats-row {
-  animation: signatureTextFadeUp 1.5s cubic-bezier(0.25, 1, 0.3, 1) 1.4s forwards !important;
+  animation: signatureTextFadeUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.25s forwards !important;
+}
+
+/* Repeat visits: skip animations and reveal immediately */
+body:not(.preloader-run-signature) #navbar,
+body:not(.preloader-run-signature) .hero-name-headline,
+body:not(.preloader-run-signature) .hero-accent-line,
+body:not(.preloader-run-signature) .hero-eyebrow-container,
+body:not(.preloader-run-signature) .hero-italic-bio,
+body:not(.preloader-run-signature) .hero-actions,
+body:not(.preloader-run-signature) .hero-stats-row {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
 }
 
 /* 6. HERO SECTION */

@@ -250,18 +250,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         animationFrameId = requestAnimationFrame(draw);
       }
-      // Phase 4 (4.5s–6.0s): Stroke slowly fades out while hero content starts revealing (1.5s duration)
-      else if (elapsed >= 4500 && elapsed < 6000) {
+      // Phase 4 (4.5s–5.7s): Stroke slowly fades out over 1.2s using easeInOutQuad
+      else if (elapsed >= 4500 && elapsed < 5700) {
         if (dotEl) dotEl.style.display = 'none';
-        
-        // Start the hero reveal sequence overlapping with the fade out
-        if (!document.body.classList.contains('hero-start-reveal')) {
-          document.body.classList.add('hero-start-reveal');
-        }
 
         const totalLen = densePoints.length;
-        const progress = (elapsed - 4500) / 1500;
-        const strokeOpacity = 1.0 - progress;
+        const progress = (elapsed - 4500) / 1200;
+        const easedProgress = easeInOutQuad(progress);
+        const strokeOpacity = 1.0 - easedProgress;
 
         ctx.beginPath();
         ctx.moveTo(densePoints[0].x, densePoints[0].y);
@@ -276,7 +272,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         animationFrameId = requestAnimationFrame(draw);
       }
-      // Phase 5 (6.0s+): Final reveal state
+      // Phase 5 (5.7s–6.0s): Intentional 300ms pause. Only warm gradient background is visible.
+      else if (elapsed >= 5700 && elapsed < 6000) {
+        if (dotEl) dotEl.style.display = 'none';
+        ctx.clearRect(0, 0, width, height);
+        animationFrameId = requestAnimationFrame(draw);
+      }
+      // Phase 6 (6.0s+): Start reveal of hero content
       else {
         ctx.clearRect(0, 0, width, height);
         cancelAnimationFrame(animationFrameId);
@@ -325,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!isNaN(target)) {
             if (isFirstVisit) {
               const timeElapsed = performance.now();
-              const delay = Math.max(0, 6200 - timeElapsed);
+              const delay = Math.max(0, 8300 - timeElapsed);
               setTimeout(() => {
                 countUpHero(entry.target, target, suffix);
               }, delay);
