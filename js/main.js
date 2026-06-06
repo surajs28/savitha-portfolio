@@ -399,46 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   animateElements.forEach(el => animationObserver.observe(el));
 
-  // 4. STATS COUNT-UP ANIMATION
-  const statContainers = document.querySelectorAll('.stat-box');
-  
-  const countUp = (element, targetValue) => {
-    let startTimestamp = null;
-    const duration = 2000; // 2 seconds count duration
 
-    const step = (timestamp) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      const currentValue = Math.floor(progress * targetValue);
-      element.textContent = currentValue;
-      if (progress < 1) {
-        window.requestAnimationFrame(step);
-      } else {
-        element.textContent = targetValue; // Ensure exact final value
-      }
-    };
-    window.requestAnimationFrame(step);
-  };
-
-  const statObserverOptions = {
-    threshold: 0.5,
-    rootMargin: '0px'
-  };
-
-  const statObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const countValueEl = entry.target.querySelector('.count-value');
-        if (countValueEl) {
-          const target = parseInt(countValueEl.getAttribute('data-target'), 10);
-          countUp(countValueEl, target);
-        }
-        observer.unobserve(entry.target);
-      }
-    });
-  }, statObserverOptions);
-
-  statContainers.forEach(box => statObserver.observe(box));
 
   // 5. THOUGHT LEADERSHIP ARTICLE MODAL
   const articleModal = document.getElementById('article-modal');
