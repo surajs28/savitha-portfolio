@@ -91,7 +91,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const dateStr = formatDate(post.created_at);
         const excerptText = post.content.length > 220 ? post.content.substring(0, 217) + '...' : post.content;
 
+        const hasImage = post.image_url && post.image_url.trim() !== '';
+        const cardImageHTML = hasImage ? `
+          <div class="homepage-article-image-wrapper">
+            <img src="${post.image_url}" alt="${post.title}" class="homepage-article-image" />
+          </div>
+        ` : '';
+
         articleElement.innerHTML = `
+          ${cardImageHTML}
           <div class="article-meta">
             <span class="article-tag">${tag} &bull; ${dateStr}</span>
           </div>
@@ -121,7 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
               return `<p>${p.trim()}</p>`;
             }).join('');
             
-            modalBody.innerHTML = formattedContent;
+            // Handle image in modal
+            const modalImageHTML = hasImage ? `
+              <div class="post-featured-image-wrapper">
+                <img src="${post.image_url}" alt="${post.title}" class="post-featured-image" />
+              </div>
+            ` : '';
+
+            modalBody.innerHTML = modalImageHTML + formattedContent;
 
             // Handle LinkedIn Link in modal if present
             if (post.linkedin_url && post.linkedin_url.trim() !== '') {

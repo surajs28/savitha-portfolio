@@ -85,6 +85,22 @@
                 <label for="post-content">Content *</label>
                 <textarea id="post-content" required rows="10" placeholder="Write your insight or paste from LinkedIn..."></textarea>
               </div>
+
+              <div class="form-group">
+                <label for="post-image-url">Image / Photo (Optional)</label>
+                <div class="image-input-wrapper">
+                  <input type="url" id="post-image-url" placeholder="https://example.com/image.jpg" />
+                  <label class="btn-file-upload">
+                    <input type="file" id="post-image-file" accept="image/*" style="display: none;" />
+                    <span>Upload</span>
+                  </label>
+                </div>
+                <div id="image-upload-status" class="image-upload-status" style="display: none;">Uploading photo to storage...</div>
+                <div id="image-preview-container" class="image-preview-container" style="display: none;">
+                  <img id="image-preview" src="" alt="Image Preview" />
+                  <button type="button" id="remove-image-btn" class="btn-remove-image">✕</button>
+                </div>
+              </div>
               
               <div class="form-group">
                 <label for="post-linkedin">LinkedIn URL (Optional)</label>

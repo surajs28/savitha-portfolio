@@ -137,6 +137,14 @@ document.addEventListener('DOMContentLoaded', () => {
           ${postTitle}
         `;
         
+        // Add featured image if present
+        if (post.image_url && post.image_url.trim() !== '') {
+          const imgWrapper = document.createElement('div');
+          imgWrapper.className = 'post-featured-image-wrapper';
+          imgWrapper.innerHTML = `<img src="${escapeHTML(post.image_url)}" alt="${escapeHTML(post.title)}" class="post-featured-image" />`;
+          postElement.appendChild(imgWrapper);
+        }
+        
         // Append content and link nodes safely
         postElement.appendChild(safeContent);
         

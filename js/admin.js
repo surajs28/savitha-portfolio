@@ -40,6 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitPostBtn = document.getElementById('submit-post-btn');
   const cancelEditBtn = document.getElementById('cancel-edit-btn');
 
+  // Image / Photo References
+  const postImageUrlInput = document.getElementById('post-image-url');
+  const postImageFileInput = document.getElementById('post-image-file');
+  const imagePreviewContainer = document.getElementById('image-preview-container');
+  const imagePreview = document.getElementById('image-preview');
+  const removeImageBtn = document.getElementById('remove-image-btn');
+  const imageUploadStatus = document.getElementById('image-upload-status');
+
   // List References
   const postsList = document.getElementById('admin-posts-list');
   const postCountBadge = document.getElementById('post-count-badge');
@@ -213,6 +221,91 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // File upload to Supabase Storage
+  if (postImageFileInput) {
+    postImageFileInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      imageUploadStatus.style.display = 'block';
+      imageUploadStatus.textContent = 'Uploading photo to storage...';
+      imageUploadStatus.style.color = 'var(--color-accent)';
+
+      try {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+        const filePath = `post-images/${fileName}`;
+
+        // Upload file to the 'post-images' bucket
+        const { data, error } = await supabase.storage
+          .from('post-images')
+          .upload(filePath, file);
+
+        if (error) {
+          // Try photos bucket fallback
+          const { data: fbData, error: fbError } = await supabase.storage
+            .from('photos')
+            .upload(filePath, file);
+
+          if (fbError) throw fbError;
+
+          const { data: { publicUrl } } = supabase.storage
+            .from('photos')
+            .getPublicUrl(filePath);
+
+          postImageUrlInput.value = publicUrl;
+          updateImagePreview(publicUrl);
+          showToast('Photo uploaded successfully!', 'success');
+        } else {
+          const { data: { publicUrl } } = supabase.storage
+            .from('post-images')
+            .getPublicUrl(filePath);
+
+          postImageUrlInput.value = publicUrl;
+          updateImagePreview(publicUrl);
+          showToast('Photo uploaded successfully!', 'success');
+        }
+      } catch (err) {
+        console.error('File upload error:', err);
+        showToast('Upload failed: ' + err.message, 'error');
+        imageUploadStatus.textContent = 'Upload failed. Make sure a public bucket named "post-images" exists in Supabase Storage, or paste an external URL.';
+        imageUploadStatus.style.color = '#e74c3c';
+      } finally {
+        if (imageUploadStatus.textContent.includes('Uploading')) {
+          imageUploadStatus.style.display = 'none';
+        }
+        postImageFileInput.value = '';
+      }
+    });
+  }
+
+  const updateImagePreview = (url) => {
+    if (imagePreview && imagePreviewContainer) {
+      if (url && url.trim() !== '') {
+        imagePreview.src = url;
+        imagePreviewContainer.style.display = 'block';
+      } else {
+        imagePreview.src = '';
+        imagePreviewContainer.style.display = 'none';
+      }
+    }
+  };
+
+  if (postImageUrlInput) {
+    postImageUrlInput.addEventListener('input', () => {
+      updateImagePreview(postImageUrlInput.value.trim());
+    });
+  }
+
+  if (removeImageBtn) {
+    removeImageBtn.addEventListener('click', () => {
+      postImageUrlInput.value = '';
+      updateImagePreview('');
+      if (imageUploadStatus) imageUploadStatus.style.display = 'none';
+      showToast('Photo removed.', 'info');
+    });
+  }
+
   // Reset form to default create state
   const resetForm = () => {
     postForm.reset();
@@ -222,6 +315,11 @@ document.addEventListener('DOMContentLoaded', () => {
     publishedStatusText.innerText = 'Publish Immediately';
     submitPostBtn.innerText = 'Publish Post';
     cancelEditBtn.classList.add('hidden');
+    
+    // Clear image elements
+    if (postImageUrlInput) postImageUrlInput.value = '';
+    updateImagePreview('');
+    if (imageUploadStatus) imageUploadStatus.style.display = 'none';
   };
 
   cancelEditBtn.addEventListener('click', (e) => {
@@ -371,8 +469,12 @@ document.addEventListener('DOMContentLoaded', () => {
     postTitleInput.value = post.title;
     postCategoryInput.value = post.category || 'Leadership';
     postContentInput.value = post.content;
+    if (postImageUrlInput) postImageUrlInput.value = post.image_url || '';
     postLinkedinInput.value = post.linkedin_url || '';
     postPublishedInput.checked = post.published;
+    
+    updateImagePreview(post.image_url || '');
+    if (imageUploadStatus) imageUploadStatus.style.display = 'none';
     
     publishedStatusText.innerText = post.published ? 'Publish Immediately' : 'Save as Draft';
     formTitle.innerText = 'Edit Post';
@@ -415,6 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const title = postTitleInput.value.trim();
     const category = postCategoryInput.value;
     const content = postContentInput.value.trim();
+    const image_url = postImageUrlInput ? postImageUrlInput.value.trim() : '';
     const linkedin_url = postLinkedinInput.value.trim();
     const published = postPublishedInput.checked;
 
@@ -427,6 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title,
       category,
       content,
+      image_url: image_url === '' ? null : image_url,
       linkedin_url: linkedin_url === '' ? null : linkedin_url,
       published
     };

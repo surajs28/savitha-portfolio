@@ -12,6 +12,7 @@ CREATE TABLE posts (
   title text NOT NULL,
   content text NOT NULL,
   category text DEFAULT 'Leadership',
+  image_url text,
   linkedin_url text,
   published boolean DEFAULT true,
   created_at timestamptz DEFAULT now()
