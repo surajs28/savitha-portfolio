@@ -20,16 +20,11 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- Lotus Preloader Overlay -->
-  <div id="preloader" class="preloader-overlay">
-    <canvas id="preloader-canvas"></canvas>
-  </div>
   <script>
     if (!sessionStorage.getItem('visited')) {
-      document.body.classList.add('preloader-active');
+      document.body.classList.add('preloader-active', 'preloader-run-signature');
     }
   </script>
-
   <!-- Scroll progress bar -->
   <div id="progress-bar"></div>
 
@@ -83,6 +78,8 @@
     <!-- Premium layered animated background with sunrise and shipping company graphics -->
     <div class="hero-bg-container">
       <div class="sky-bg"></div>
+      <canvas id="constellation-canvas"></canvas>
+      <div id="signature-glowing-dot"></div>
       <div class="hero-overlay"></div>
     </div>
 

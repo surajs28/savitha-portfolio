@@ -1,136 +1,285 @@
 // main.js - handles navigation, scroll progress, IntersectionObserver animations, modal, and count-up stats.
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 0. LOTUS PRELOADER AND STAGGERED REVEAL SYSTEM
-  const preloader = document.getElementById('preloader');
-  const preloaderCanvas = document.getElementById('preloader-canvas');
-  
-  const finishPreloader = () => {
-    if (preloader) preloader.style.display = 'none';
-    document.body.classList.remove('preloader-active');
-    document.body.classList.add('hero-reveal-start');
+  // 0. SIGNATURE PRELOADER AND SEQUENCE FLOW
+  const canvas = document.getElementById('constellation-canvas');
+  const dotEl = document.getElementById('signature-glowing-dot');
+  const isFirstVisit = !sessionStorage.getItem('visited');
+
+  // Easing function
+  const easeInOutQuad = (x) => {
+    return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
   };
 
-  const runPreloader = (overlay, canvas) => {
+  // Cursive signature control points for "Savitha Krishnamoorthy"
+  const signaturePoints = [
+    // S
+    { x: 100, y: 250 }, { x: 80,  y: 180 }, { x: 100, y: 120 }, { x: 140, y: 100 },
+    { x: 120, y: 180 }, { x: 140, y: 240 }, { x: 110, y: 260 }, { x: 130, y: 240 },
+    // a
+    { x: 160, y: 200 }, { x: 145, y: 220 }, { x: 160, y: 240 }, { x: 170, y: 200 },
+    { x: 175, y: 240 },
+    // v
+    { x: 190, y: 210 }, { x: 200, y: 240 }, { x: 210, y: 210 }, { x: 220, y: 205 },
+    // i
+    { x: 230, y: 240 }, { x: 235, y: 205 }, { x: 240, y: 240 },
+    // t
+    { x: 250, y: 150 }, { x: 255, y: 240 },
+    // h
+    { x: 275, y: 120 }, { x: 270, y: 150 }, { x: 275, y: 240 }, { x: 290, y: 210 },
+    { x: 300, y: 240 },
+    // a
+    { x: 325, y: 210 }, { x: 315, y: 225 }, { x: 325, y: 240 }, { x: 335, y: 210 },
+    { x: 340, y: 240 },
+    // Sweep back to cross 't'
+    { x: 300, y: 185 }, { x: 230, y: 185 }, { x: 270, y: 185 }, { x: 350, y: 210 },
+    // K
+    { x: 370, y: 240 }, { x: 365, y: 100 }, { x: 360, y: 130 }, { x: 370, y: 240 },
+    { x: 400, y: 120 }, { x: 390, y: 170 }, { x: 395, y: 180 }, { x: 415, y: 240 },
+    // r
+    { x: 435, y: 210 }, { x: 440, y: 205 }, { x: 445, y: 210 }, { x: 450, y: 240 },
+    // i
+    { x: 465, y: 205 }, { x: 470, y: 240 },
+    // s
+    { x: 490, y: 205 }, { x: 480, y: 230 }, { x: 495, y: 240 },
+    // h
+    { x: 520, y: 120 }, { x: 515, y: 150 }, { x: 520, y: 240 }, { x: 535, y: 210 },
+    { x: 545, y: 240 },
+    // n
+    { x: 565, y: 210 }, { x: 570, y: 240 }, { x: 585, y: 210 }, { x: 595, y: 240 },
+    // a
+    { x: 620, y: 210 }, { x: 610, y: 225 }, { x: 620, y: 240 }, { x: 630, y: 210 },
+    { x: 635, y: 240 },
+    // m
+    { x: 655, y: 210 }, { x: 660, y: 240 }, { x: 675, y: 210 }, { x: 680, y: 240 },
+    { x: 695, y: 210 }, { x: 705, y: 240 },
+    // o
+    { x: 730, y: 210 }, { x: 720, y: 225 }, { x: 730, y: 240 }, { x: 735, y: 210 },
+    // o
+    { x: 755, y: 210 }, { x: 745, y: 225 }, { x: 755, y: 240 }, { x: 760, y: 210 },
+    // r
+    { x: 780, y: 210 }, { x: 785, y: 205 }, { x: 790, y: 210 }, { x: 795, y: 240 },
+    // t
+    { x: 810, y: 150 }, { x: 815, y: 240 },
+    // h
+    { x: 835, y: 120 }, { x: 830, y: 150 }, { x: 835, y: 240 }, { x: 850, y: 210 },
+    { x: 860, y: 240 },
+    // y
+    { x: 880, y: 210 }, { x: 885, y: 230 }, { x: 895, y: 210 }, { x: 900, y: 240 },
+    { x: 890, y: 290 }, { x: 870, y: 310 }, { x: 910, y: 250 },
+    // Underline flourish
+    { x: 800, y: 260 }, { x: 600, y: 265 }, { x: 400, y: 265 }, { x: 300, y: 260 },
+    { x: 500, y: 270 }, { x: 700, y: 275 }, { x: 930, y: 265 }
+  ];
+
+  // Catmull-Rom spline generator
+  const generateSplinePoints = (controlPoints, segmentsPerStep = 60) => {
+    const points = [];
+    const n = controlPoints.length;
+    if (n < 4) return controlPoints;
+
+    const getCatmullRomPoint = (p0, p1, p2, p3, t) => {
+      const t2 = t * t;
+      const t3 = t2 * t;
+      const x = 0.5 * ((2 * p1.x) + (-p0.x + p2.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3);
+      const y = 0.5 * ((2 * p1.y) + (-p0.y + p2.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3);
+      return { x, y };
+    };
+
+    for (let i = 0; i < n - 1; i++) {
+      const p0 = controlPoints[Math.max(0, i - 1)];
+      const p1 = controlPoints[i];
+      const p2 = controlPoints[Math.min(n - 1, i + 1)];
+      const p3 = controlPoints[Math.min(n - 1, i + 2)];
+
+      for (let step = 0; step < segmentsPerStep; step++) {
+        const t = step / segmentsPerStep;
+        points.push(getCatmullRomPoint(p0, p1, p2, p3, t));
+      }
+    }
+    points.push(controlPoints[n - 1]);
+    return points;
+  };
+
+  const finishPreloader = () => {
+    document.body.classList.remove('preloader-active');
+    document.body.classList.add('hero-reveal-signature');
+    if (dotEl) dotEl.style.display = 'none';
+  };
+
+  const runSignaturePreloader = () => {
     sessionStorage.setItem('visited', 'true');
     const ctx = canvas.getContext('2d');
-    
-    // Set dimensions based on client size
     const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    ctx.scale(dpr, dpr);
-    
-    const width = rect.width;
-    const height = rect.height;
-    const centerX = width / 2;
-    const centerY = height / 2;
-    
-    const petalConfigs = [
-      { angle: -Math.PI / 2, length: 70, width: 20, delay: 500, duration: 400 },      // 0: Top
-      { angle: -Math.PI / 4, length: 65, width: 18, delay: 720, duration: 400 },      // 1: Top-Right
-      { angle: -3 * Math.PI / 4, length: 65, width: 18, delay: 940, duration: 400 },  // 2: Top-Left
-      { angle: 0, length: 68, width: 19, delay: 1160, duration: 400 },                // 3: Right
-      { angle: Math.PI, length: 68, width: 19, delay: 1380, duration: 400 },           // 4: Left
-      { angle: Math.PI / 4, length: 65, width: 18, delay: 1600, duration: 400 },      // 5: Bottom-Right
-      { angle: 3 * Math.PI / 4, length: 65, width: 18, delay: 1820, duration: 400 },  // 6: Bottom-Left
-      { angle: Math.PI / 2, length: 60, width: 17, delay: 2040, duration: 400 }       // 7: Bottom
-    ];
-    
-    let animationFrameId;
+
+    let width, height, scale, dx, dy, densePoints;
+
+    const setupDimensions = () => {
+      const rect = canvas.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+
+      // Recalculate signature scaling to fit proportionally
+      const paddingX = width * 0.08;
+      const paddingY = height * 0.15;
+      const availW = width - paddingX * 2;
+      const availH = height - paddingY * 2;
+
+      const scaleX = availW / 850;
+      const scaleY = availH / 220;
+      scale = Math.min(scaleX, scaleY);
+
+      dx = width / 2 - 515 * scale;
+      dy = height / 2 - 205 * scale;
+
+      const scaledControlPoints = signaturePoints.map(p => ({
+        x: dx + p.x * scale,
+        y: dy + p.y * scale
+      }));
+
+      densePoints = generateSplinePoints(scaledControlPoints, 60);
+    };
+
+    setupDimensions();
+    window.addEventListener('resize', setupDimensions);
+
     let startTime = null;
-    const totalDuration = 4300; // 2.5s bloom + 1s hold + 0.8s fade out
-    
+    let animationFrameId = null;
+
     const draw = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
-      
+
       ctx.clearRect(0, 0, width, height);
-      
-      // 1. Center Seed
-      let dotRadius = 0;
-      let dotGlow = 0;
-      
-      if (elapsed < 500) {
-        const progress = elapsed / 500;
-        dotRadius = 4 * progress;
-        dotGlow = 8 * progress;
-      } else if (elapsed >= 500 && elapsed < 2500) {
-        dotRadius = 4;
-        dotGlow = 8;
-      } else if (elapsed >= 2500 && elapsed < 3500) {
-        const pulseProgress = (elapsed - 2500) / 1000;
-        const pulseFactor = Math.sin(pulseProgress * Math.PI * 2);
-        dotRadius = 4 + 1.5 * pulseFactor;
-        dotGlow = 8 + 6 * Math.abs(pulseFactor);
-      } else {
-        dotRadius = 4;
-        dotGlow = 8;
+
+      // Phase 1 (0s–0.4s): Dark screen. Nothing is visible.
+      if (elapsed < 400) {
+        if (dotEl) dotEl.style.display = 'none';
+        animationFrameId = requestAnimationFrame(draw);
       }
-      
-      if (elapsed >= 0) {
+      // Phase 2 (0.4s–2.6s): Signature writes
+      else if (elapsed >= 400 && elapsed < 2600) {
+        const t = (elapsed - 400) / 2200;
+        const p = easeInOutQuad(t);
+        const totalLen = densePoints.length;
+        const currentIndex = Math.floor(p * (totalLen - 1));
+
+        // Draw background base stroke
         ctx.beginPath();
-        ctx.arc(centerX, centerY, dotRadius, 0, Math.PI * 2);
-        ctx.fillStyle = '#e8a830';
-        ctx.shadowColor = '#e8a830';
-        ctx.shadowBlur = dotGlow;
-        ctx.fill();
-      }
-      
-      ctx.shadowBlur = 0;
-      
-      // 2. Draw Petals
-      petalConfigs.forEach(petal => {
-        if (elapsed >= petal.delay) {
-          const petalProgress = Math.min((elapsed - petal.delay) / petal.duration, 1);
-          
-          ctx.save();
-          ctx.translate(centerX, centerY);
-          ctx.rotate(petal.angle);
-          
-          ctx.beginPath();
-          ctx.moveTo(0, 0);
-          
-          const curLength = petal.length * petalProgress;
-          const curWidth = petal.width * Math.sin(petalProgress * Math.PI / 2);
-          
-          ctx.quadraticCurveTo(-curWidth, -curLength * 0.4, 0, -curLength);
-          ctx.quadraticCurveTo(curWidth, -curLength * 0.4, 0, 0);
-          
-          ctx.strokeStyle = '#e8a830';
-          ctx.lineWidth = 1.5;
-          ctx.lineCap = 'round';
-          ctx.lineJoin = 'round';
-          
-          ctx.shadowColor = '#e8a830';
-          ctx.shadowBlur = 12 * petalProgress;
-          ctx.stroke();
-          
-          ctx.restore();
+        if (currentIndex > 0) {
+          ctx.moveTo(densePoints[0].x, densePoints[0].y);
+          for (let i = 1; i <= currentIndex; i++) {
+            ctx.lineTo(densePoints[i].x, densePoints[i].y);
+          }
         }
-      });
-      
-      ctx.shadowBlur = 0;
-      
-      // 3. Transitions
-      if (elapsed < 3500) {
+        ctx.strokeStyle = 'rgba(232, 168, 48, 0.85)'; // #e8a830
+        ctx.lineWidth = 2.2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+
+        // Draw shimmer highlight (80 points behind)
+        const shimmerStart = Math.max(0, currentIndex - 80);
+        if (currentIndex > shimmerStart) {
+          ctx.beginPath();
+          ctx.moveTo(densePoints[shimmerStart].x, densePoints[shimmerStart].y);
+          for (let i = shimmerStart + 1; i <= currentIndex; i++) {
+            ctx.lineTo(densePoints[i].x, densePoints[i].y);
+          }
+          ctx.strokeStyle = 'rgba(255, 230, 120, 0.6)';
+          ctx.lineWidth = 2.2;
+          ctx.stroke();
+        }
+
+        // Position glowing dot at the tip
+        if (dotEl && currentIndex >= 0) {
+          const tip = densePoints[currentIndex];
+          dotEl.style.display = 'block';
+          dotEl.style.left = `${tip.x}px`;
+          dotEl.style.top = `${tip.y}px`;
+          dotEl.style.opacity = '1';
+        }
+
         animationFrameId = requestAnimationFrame(draw);
-      } else if (elapsed >= 3500 && elapsed < totalDuration) {
-        const fadeProgress = (elapsed - 3500) / 800;
-        overlay.style.opacity = (1 - fadeProgress).toString();
+      }
+      // Phase 3 (2.6s–3.2s): Hold
+      else if (elapsed >= 2600 && elapsed < 3200) {
+        const totalLen = densePoints.length;
+
+        // Draw complete base signature
+        ctx.beginPath();
+        ctx.moveTo(densePoints[0].x, densePoints[0].y);
+        for (let i = 1; i < totalLen; i++) {
+          ctx.lineTo(densePoints[i].x, densePoints[i].y);
+        }
+        ctx.strokeStyle = 'rgba(232, 168, 48, 0.85)';
+        ctx.lineWidth = 2.2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+
+        // Travel shimmer across completed stroke
+        const shimmerProgress = (elapsed - 2600) / 600;
+        const shimmerStart = Math.min(totalLen - 1, Math.floor((totalLen - 1 - 80) + shimmerProgress * 80));
+        const shimmerEnd = Math.min(totalLen - 1, shimmerStart + 80);
+
+        if (shimmerEnd > shimmerStart) {
+          ctx.beginPath();
+          ctx.moveTo(densePoints[shimmerStart].x, densePoints[shimmerStart].y);
+          for (let i = shimmerStart + 1; i <= shimmerEnd; i++) {
+            ctx.lineTo(densePoints[i].x, densePoints[i].y);
+          }
+          ctx.strokeStyle = 'rgba(255, 230, 120, 0.6)';
+          ctx.lineWidth = 2.2;
+          ctx.stroke();
+        }
+
+        // Fade glowing dot
+        if (dotEl) {
+          const dotOpacity = 1.0 - (elapsed - 2600) / 600;
+          dotEl.style.opacity = Math.max(0, dotOpacity).toString();
+          if (dotOpacity <= 0) dotEl.style.display = 'none';
+        }
+
         animationFrameId = requestAnimationFrame(draw);
-      } else {
+      }
+      // Phase 4 (3.2s–3.9s): Stroke fades
+      else if (elapsed >= 3200 && elapsed < 3900) {
+        if (dotEl) dotEl.style.display = 'none';
+        
+        const totalLen = densePoints.length;
+        const strokeOpacity = 1.0 - (elapsed - 3200) / 700;
+
+        ctx.beginPath();
+        ctx.moveTo(densePoints[0].x, densePoints[0].y);
+        for (let i = 1; i < totalLen; i++) {
+          ctx.lineTo(densePoints[i].x, densePoints[i].y);
+        }
+        ctx.strokeStyle = `rgba(232, 168, 48, ${Math.max(0, strokeOpacity * 0.85)})`;
+        ctx.lineWidth = 2.2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+
+        animationFrameId = requestAnimationFrame(draw);
+      }
+      // Phase 5 (3.9s+): Hero content reveals
+      else {
+        ctx.clearRect(0, 0, width, height);
         cancelAnimationFrame(animationFrameId);
         finishPreloader();
       }
     };
-    
+
     animationFrameId = requestAnimationFrame(draw);
   };
 
-  if (preloader && preloaderCanvas && !sessionStorage.getItem('visited')) {
-    runPreloader(preloader, preloaderCanvas);
+  if (canvas && isFirstVisit) {
+    runSignaturePreloader();
   } else {
     finishPreloader();
   }
@@ -139,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroStatCols = document.querySelectorAll('.hero-stat-col');
   const countUpHero = (element, targetValue, suffix) => {
     let startTimestamp = null;
-    const duration = 1500;
+    const duration = 1800; // count duration 1.8s
     const numEl = element.querySelector('.hero-stat-num');
 
     const step = (timestamp) => {
@@ -165,21 +314,21 @@ document.addEventListener('DOMContentLoaded', () => {
           const target = parseInt(entry.target.getAttribute('data-count-target'), 10);
           const suffix = entry.target.getAttribute('data-count-suffix') || '';
           if (!isNaN(target)) {
-            countUpHero(entry.target, target, suffix);
+            if (isFirstVisit) {
+              const timeElapsed = performance.now();
+              const delay = Math.max(0, 5100 - timeElapsed);
+              setTimeout(() => {
+                countUpHero(entry.target, target, suffix);
+              }, delay);
+            } else {
+              setTimeout(() => {
+                countUpHero(entry.target, target, suffix);
+              }, 300);
+            }
           }
         };
 
-        if (document.body.classList.contains('preloader-active')) {
-          const checkInterval = setInterval(() => {
-            if (!document.body.classList.contains('preloader-active')) {
-              clearInterval(checkInterval);
-              setTimeout(startCount, 1200);
-            }
-          }, 100);
-        } else {
-          setTimeout(startCount, 1200);
-        }
-        
+        startCount();
         observer.unobserve(entry.target);
       }
     });

@@ -394,44 +394,75 @@ ul {
   }
 }
 
-/* Lotus Preloader Overlay */
-.preloader-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: #1a1a2e;
-  z-index: 9999;
-  display: none; /* hidden by default for graceful degradation */
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+/* Signature Preloader styles */
+#constellation-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
 }
 
-body.preloader-active .preloader-overlay {
-  display: flex;
+#signature-glowing-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #e8a830;
+  box-shadow: 0 0 12px 4px rgba(232, 168, 48, 0.6);
+  z-index: 15;
+  pointer-events: none;
+  display: none;
+  transform: translate(-50%, -50%);
 }
 
-#preloader-canvas {
-  max-width: 100%;
-  max-height: 100%;
-  width: 400px;
-  height: 400px;
-}
-
-@media (max-width: 768px) {
-  #preloader-canvas {
-    width: 280px;
-    height: 280px;
+@keyframes signatureTextFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* If preloader is active, hold animations until .hero-reveal-start is added */
-body.preloader-active [data-animate] {
-  animation-play-state: paused !important;
+/* Guard initial states during signature preloader first visit */
+body.preloader-run-signature:not(.hero-reveal-signature) .hero-name-headline,
+body.preloader-run-signature:not(.hero-reveal-signature) .hero-accent-line,
+body.preloader-run-signature:not(.hero-reveal-signature) .hero-eyebrow-container,
+body.preloader-run-signature:not(.hero-reveal-signature) .hero-italic-bio,
+body.preloader-run-signature:not(.hero-reveal-signature) .hero-actions,
+body.preloader-run-signature:not(.hero-reveal-signature) .hero-stats-row {
+  opacity: 0 !important;
+  transform: translateY(8px) !important;
+  animation: none !important;
 }
 
-body.hero-reveal-start [data-animate] {
-  animation-play-state: running !important;
+body.preloader-run-signature:not(.hero-reveal-signature) .sky-bg {
+  opacity: 0 !important;
+}
+
+/* Reveal sequence in Phase 5 */
+body.preloader-run-signature.hero-reveal-signature .hero-name-headline {
+  animation: signatureTextFadeUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s forwards !important;
+}
+body.preloader-run-signature.hero-reveal-signature .hero-accent-line {
+  animation: signatureTextFadeUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards !important;
+}
+body.preloader-run-signature.hero-reveal-signature .hero-eyebrow-container {
+  animation: signatureTextFadeUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards !important;
+}
+body.preloader-run-signature.hero-reveal-signature .hero-italic-bio {
+  animation: signatureTextFadeUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.65s forwards !important;
+}
+body.preloader-run-signature.hero-reveal-signature .hero-actions {
+  animation: signatureTextFadeUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.9s forwards !important;
+}
+body.preloader-run-signature.hero-reveal-signature .hero-stats-row {
+  animation: signatureTextFadeUp 1.0s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.2s forwards !important;
 }
 
 /* 6. HERO SECTION */
@@ -462,7 +493,8 @@ body.hero-reveal-start [data-animate] {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(ellipse at 65% 45%, #c8892a 0%, #7a4a1a 25%, #3a2810 45%, #1a1a2e 75%);
+  background: radial-gradient(ellipse at 55% 50%, #c8892a 0%, #7a4a1a 22%, #3a2810 44%, #1a1a2e 72%);
+  transition: opacity 0.8s ease;
 }
 
 
