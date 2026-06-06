@@ -2624,20 +2624,24 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
 .image-input-wrapper {
   display: flex;
   gap: 0.5rem;
-  align-items: stretch; /* Stretches children to equal height */
+  align-items: center; /* Align them on the same vertical center line */
+  width: 100%;
 }
 
 .image-input-wrapper input {
   flex: 1;
-  margin: 0;
-  box-sizing: border-box;
+  height: 44px !important; /* Force exact 44px height */
+  padding: 0 0.8rem !important; /* Clear vertical padding to avoid stretching browser issues */
+  margin: 0 !important;
+  box-sizing: border-box !important;
 }
 
 .btn-file-upload {
   background: var(--color-white);
-  border: 1px solid var(--color-secondary);
+  border: 1px solid var(--color-secondary) !important;
   color: var(--color-primary);
-  padding: 0 1.5rem; /* Set vertical padding to 0; flex stretch handles height */
+  height: 44px !important; /* Force exact 44px height */
+  padding: 0 1.5rem !important; /* Let center flex alignment position the text */
   border-radius: 2px;
   cursor: pointer;
   font-family: var(--font-body);
@@ -2645,15 +2649,14 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.08em;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   gap: 0.35rem;
   transition: all 0.2s ease;
   user-select: none;
-  box-sizing: border-box;
-  margin: 0;
-  height: auto; /* Allow stretching */
+  box-sizing: border-box !important;
+  margin: 0 !important;
 }
 
 .btn-file-upload:hover {
