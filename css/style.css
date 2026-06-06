@@ -2624,14 +2624,20 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
 .image-input-wrapper {
   display: flex;
   gap: 0.5rem;
-  align-items: stretch;
+  align-items: stretch; /* Stretches children to equal height */
+}
+
+.image-input-wrapper input {
+  flex: 1;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .btn-file-upload {
   background: var(--color-white);
   border: 1px solid var(--color-secondary);
   color: var(--color-primary);
-  padding: 0.8rem 1.5rem; /* Matches input padding and centers text */
+  padding: 0 1.5rem; /* Set vertical padding to 0; flex stretch handles height */
   border-radius: 2px;
   cursor: pointer;
   font-family: var(--font-body);
@@ -2646,7 +2652,8 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
   transition: all 0.2s ease;
   user-select: none;
   box-sizing: border-box;
-  line-height: 1; /* Reset line-height to ensure perfect vertical alignment */
+  margin: 0;
+  height: auto; /* Allow stretching */
 }
 
 .btn-file-upload:hover {
