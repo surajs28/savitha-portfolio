@@ -104,6 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const finishPreloader = () => {
     document.body.classList.remove('preloader-active');
     document.body.classList.add('hero-reveal-signature');
+    if (!document.body.classList.contains('hero-start-reveal')) {
+      document.body.classList.add('hero-start-reveal');
+    }
     if (dotEl) dotEl.style.display = 'none';
   };
 
@@ -156,14 +159,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       ctx.clearRect(0, 0, width, height);
 
-      // Phase 1 (0s–0.4s): Dark screen. Nothing is visible.
-      if (elapsed < 400) {
+      // Phase 1 (0s–0.5s): Dark screen. Nothing is visible.
+      if (elapsed < 500) {
         if (dotEl) dotEl.style.display = 'none';
         animationFrameId = requestAnimationFrame(draw);
       }
-      // Phase 2 (0.4s–2.6s): Signature writes
-      else if (elapsed >= 400 && elapsed < 2600) {
-        const t = (elapsed - 400) / 2200;
+      // Phase 2 (0.5s–3.3s): Signature writes (2.8s duration)
+      else if (elapsed >= 500 && elapsed < 3300) {
+        const t = (elapsed - 500) / 2800;
         const p = easeInOutQuad(t);
         const totalLen = densePoints.length;
         const currentIndex = Math.floor(p * (totalLen - 1));
@@ -206,8 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         animationFrameId = requestAnimationFrame(draw);
       }
-      // Phase 3 (2.6s–3.2s): Hold
-      else if (elapsed >= 2600 && elapsed < 3200) {
+      // Phase 3 (3.3s–4.5s): Hold & Shimmer Travel (1.2s duration)
+      else if (elapsed >= 3300 && elapsed < 4500) {
         const totalLen = densePoints.length;
 
         // Draw complete base signature
@@ -223,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.stroke();
 
         // Travel shimmer across completed stroke
-        const shimmerProgress = (elapsed - 2600) / 600;
+        const shimmerProgress = (elapsed - 3300) / 1200;
         const shimmerStart = Math.min(totalLen - 1, Math.floor((totalLen - 1 - 80) + shimmerProgress * 80));
         const shimmerEnd = Math.min(totalLen - 1, shimmerStart + 80);
 
@@ -240,19 +243,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Fade glowing dot
         if (dotEl) {
-          const dotOpacity = 1.0 - (elapsed - 2600) / 600;
+          const dotOpacity = 1.0 - (elapsed - 3300) / 600;
           dotEl.style.opacity = Math.max(0, dotOpacity).toString();
           if (dotOpacity <= 0) dotEl.style.display = 'none';
         }
 
         animationFrameId = requestAnimationFrame(draw);
       }
-      // Phase 4 (3.2s–3.9s): Stroke fades
-      else if (elapsed >= 3200 && elapsed < 3900) {
+      // Phase 4 (4.5s–6.0s): Stroke slowly fades out while hero content starts revealing (1.5s duration)
+      else if (elapsed >= 4500 && elapsed < 6000) {
         if (dotEl) dotEl.style.display = 'none';
         
+        // Start the hero reveal sequence overlapping with the fade out
+        if (!document.body.classList.contains('hero-start-reveal')) {
+          document.body.classList.add('hero-start-reveal');
+        }
+
         const totalLen = densePoints.length;
-        const strokeOpacity = 1.0 - (elapsed - 3200) / 700;
+        const progress = (elapsed - 4500) / 1500;
+        const strokeOpacity = 1.0 - progress;
 
         ctx.beginPath();
         ctx.moveTo(densePoints[0].x, densePoints[0].y);
@@ -267,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         animationFrameId = requestAnimationFrame(draw);
       }
-      // Phase 5 (3.9s+): Hero content reveals
+      // Phase 5 (6.0s+): Final reveal state
       else {
         ctx.clearRect(0, 0, width, height);
         cancelAnimationFrame(animationFrameId);
@@ -316,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!isNaN(target)) {
             if (isFirstVisit) {
               const timeElapsed = performance.now();
-              const delay = Math.max(0, 5100 - timeElapsed);
+              const delay = Math.max(0, 6200 - timeElapsed);
               setTimeout(() => {
                 countUpHero(entry.target, target, suffix);
               }, delay);
