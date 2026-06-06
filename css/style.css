@@ -596,12 +596,12 @@ body.preloader-run-signature.hero-reveal-signature .hero-stats-row {
 /* Italic Bio paragraph */
 .hero-italic-bio {
   font-family: var(--font-heading);
-  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-size: clamp(1.1rem, 2.2vw, 1.55rem);
   font-style: italic;
   font-weight: 300;
   color: rgba(255, 255, 255, 0.9);
   line-height: 1.5;
-  max-width: 800px;
+  max-width: 950px;
   margin: 0 auto 3rem;
   text-align: center;
   opacity: 0;
