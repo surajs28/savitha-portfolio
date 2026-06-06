@@ -1260,6 +1260,18 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
   display: block;
 }
 
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
 .contact-form-container .form-group {
   margin-bottom: 1.8rem; /* Tighter layout but more spaced than default */
 }
