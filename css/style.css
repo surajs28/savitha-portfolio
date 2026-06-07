@@ -2802,6 +2802,31 @@ body.hero-start-reveal .hero-video-bg {
   display: block;
 }
 
+/* Post Gallery Styling */
+.post-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.post-gallery-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid var(--color-divider);
+  background-color: var(--color-bg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-gallery-img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
 /* Homepage article card image style */
 .homepage-article-image-wrapper {
   margin-bottom: 1rem;

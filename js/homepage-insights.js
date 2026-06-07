@@ -76,28 +76,57 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Hide message if there are posts
-      if (noInsightsMessage) {
-        noInsightsMessage.style.display = 'none';
-      }
+      // Helper to parse image_url string into an array
+      const parseImages = (imageUrlString) => {
+        if (!imageUrlString || imageUrlString.trim() === '') return [];
+        const trimmed = imageUrlString.trim();
+        if (trimmed.startsWith('[')) {
+          try {
+            return JSON.parse(trimmed);
+          } catch (e) {
+            console.error('Failed to parse image_url JSON:', e);
+          }
+        }
+        if (trimmed.includes(',')) {
+          return trimmed.split(',').map(url => url.trim()).filter(url => url !== '');
+        }
+        return [trimmed];
+      };
+
+      // Helper to build gallery HTML
+      const getGalleryHTML = (images, title) => {
+        if (images.length === 0) return '';
+        if (images.length === 1) {
+          return `
+            <div class="post-featured-image-wrapper">
+              <img src="${images[0]}" alt="${title}" class="post-featured-image" />
+            </div>
+          `;
+        }
+        const thumbs = images.map(url => `
+          <img src="${url}" alt="${title}" class="post-gallery-img" onclick="window.open('${url}', '_blank')" style="cursor: pointer;" />
+        `).join('');
+        return `<div class="post-gallery-grid">${thumbs}</div>`;
+      };
 
       posts.forEach((post, index) => {
         const articleElement = document.createElement('article');
         articleElement.className = 'featured-article-card';
         articleElement.setAttribute('data-animate', 'fade-up');
         articleElement.style.setProperty('--delay', (index + 3).toString());
-
+ 
         const tag = post.category || 'Leadership';
         const dateStr = formatDate(post.created_at);
         const excerptText = post.content.length > 220 ? post.content.substring(0, 217) + '...' : post.content;
-
-        const hasImage = post.image_url && post.image_url.trim() !== '';
+ 
+        const images = parseImages(post.image_url);
+        const hasImage = images.length > 0;
         const cardImageHTML = hasImage ? `
           <div class="homepage-article-image-wrapper">
-            <img src="${post.image_url}" alt="${post.title}" class="homepage-article-image" />
+            <img src="${images[0]}" alt="${post.title}" class="homepage-article-image" />
           </div>
         ` : '';
-
+ 
         articleElement.innerHTML = `
           ${cardImageHTML}
           <div class="article-meta">
@@ -107,9 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <p class="article-excerpt">${excerptText}</p>
           <button class="article-cta-btn read-dynamic-btn">Read Article <span class="arrow">→</span></button>
         `;
-
+ 
         dynamicPostsContainer.appendChild(articleElement);
-
+ 
         // Bind modal open event
         const readBtn = articleElement.querySelector('.read-dynamic-btn');
         if (readBtn && articleModal && modalTag && modalTitle && modalBody) {
@@ -129,13 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
               return `<p>${p.trim()}</p>`;
             }).join('');
             
-            // Handle image in modal
-            const modalImageHTML = hasImage ? `
-              <div class="post-featured-image-wrapper">
-                <img src="${post.image_url}" alt="${post.title}" class="post-featured-image" />
-              </div>
-            ` : '';
-
+            // Handle gallery in modal
+            const modalImageHTML = getGalleryHTML(images, post.title);
+ 
             modalBody.innerHTML = modalImageHTML + formattedContent;
 
             // Handle LinkedIn Link in modal if present

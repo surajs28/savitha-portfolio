@@ -29,6 +29,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // Helper to escape HTML characters to prevent XSS
+  const escapeHTML = (str) => {
+    if (!str) return '';
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+
+  // Helper to parse image_url string into an array
+  const parseImages = (imageUrlString) => {
+    if (!imageUrlString || imageUrlString.trim() === '') return [];
+    const trimmed = imageUrlString.trim();
+    if (trimmed.startsWith('[')) {
+      try {
+        return JSON.parse(trimmed);
+      } catch (e) {
+        console.error('Failed to parse image_url JSON:', e);
+      }
+    }
+    if (trimmed.includes(',')) {
+      return trimmed.split(',').map(url => url.trim()).filter(url => url !== '');
+    }
+    return [trimmed];
+  };
+
+  // Helper to build gallery HTML
+  const getGalleryHTML = (images, title) => {
+    if (images.length === 0) return '';
+    if (images.length === 1) {
+      return `
+        <div class="post-featured-image-wrapper">
+          <img src="${escapeHTML(images[0])}" alt="${escapeHTML(title)}" class="post-featured-image" />
+        </div>
+      `;
+    }
+    const thumbs = images.map(url => `
+      <img src="${escapeHTML(url)}" alt="${escapeHTML(title)}" class="post-gallery-img" onclick="window.open('${escapeHTML(url)}', '_blank')" style="cursor: pointer;" />
+    `).join('');
+    return `<div class="post-gallery-grid">${thumbs}</div>`;
+  };
+
   // Setup scroll animation observer for dynamically loaded elements
   const setupScrollAnimations = () => {
     const posts = document.querySelectorAll('.editorial-post[data-animate]');
@@ -94,15 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         safeContent.className = 'post-content modal-body-text';
         safeContent.style.whiteSpace = 'normal';
         
-        // Helper to escape HTML characters to prevent XSS
-        const escapeHTML = (str) => {
-          return str
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-        };
+        // Using escapeHTML from outer scope
 
         const formattedContent = post.content.split('\n\n').map(p => {
           const trimmed = p.trim();
@@ -137,12 +173,17 @@ document.addEventListener('DOMContentLoaded', () => {
           ${postTitle}
         `;
         
-        // Add featured image if present
-        if (post.image_url && post.image_url.trim() !== '') {
-          const imgWrapper = document.createElement('div');
-          imgWrapper.className = 'post-featured-image-wrapper';
-          imgWrapper.innerHTML = `<img src="${escapeHTML(post.image_url)}" alt="${escapeHTML(post.title)}" class="post-featured-image" />`;
-          postElement.appendChild(imgWrapper);
+        // Add featured image or gallery if present
+        const images = parseImages(post.image_url);
+        if (images.length > 0) {
+          const galleryHTML = getGalleryHTML(images, post.title);
+          if (galleryHTML !== '') {
+            const galleryWrapper = document.createElement('div');
+            galleryWrapper.innerHTML = galleryHTML;
+            if (galleryWrapper.firstElementChild) {
+              postElement.appendChild(galleryWrapper.firstElementChild);
+            }
+          }
         }
         
         // Append content and link nodes safely

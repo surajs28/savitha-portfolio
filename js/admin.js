@@ -43,10 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Image / Photo References
   const postImageUrlInput = document.getElementById('post-image-url');
   const postImageFileInput = document.getElementById('post-image-file');
-  const imagePreviewContainer = document.getElementById('image-preview-container');
-  const imagePreview = document.getElementById('image-preview');
-  const removeImageBtn = document.getElementById('remove-image-btn');
+  const addImageUrlBtn = document.getElementById('add-image-url-btn');
+  const galleryPreviewContainer = document.getElementById('gallery-preview-container');
+  const galleryPreviewGrid = document.getElementById('gallery-preview-grid');
   const imageUploadStatus = document.getElementById('image-upload-status');
+
+  let uploadedImages = [];
 
   // List References
   const postsList = document.getElementById('admin-posts-list');
@@ -221,88 +223,157 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // File upload to Supabase Storage
-  if (postImageFileInput) {
-    postImageFileInput.addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      imageUploadStatus.style.display = 'block';
-      imageUploadStatus.textContent = 'Uploading photo to storage...';
-      imageUploadStatus.style.color = 'var(--color-accent)';
-
+  // Helper to parse image_url string into an array
+  const parseImages = (imageUrlString) => {
+    if (!imageUrlString || imageUrlString.trim() === '') return [];
+    const trimmed = imageUrlString.trim();
+    if (trimmed.startsWith('[')) {
       try {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
-        const filePath = `post-images/${fileName}`;
-
-        // Upload file to the 'post-images' bucket
-        const { data, error } = await supabase.storage
-          .from('post-images')
-          .upload(filePath, file);
-
-        if (error) {
-          // Try photos bucket fallback
-          const { data: fbData, error: fbError } = await supabase.storage
-            .from('photos')
-            .upload(filePath, file);
-
-          if (fbError) throw fbError;
-
-          const { data: { publicUrl } } = supabase.storage
-            .from('photos')
-            .getPublicUrl(filePath);
-
-          postImageUrlInput.value = publicUrl;
-          updateImagePreview(publicUrl);
-          showToast('Photo uploaded successfully!', 'success');
-        } else {
-          const { data: { publicUrl } } = supabase.storage
-            .from('post-images')
-            .getPublicUrl(filePath);
-
-          postImageUrlInput.value = publicUrl;
-          updateImagePreview(publicUrl);
-          showToast('Photo uploaded successfully!', 'success');
-        }
-      } catch (err) {
-        console.error('File upload error:', err);
-        showToast('Upload failed: ' + err.message, 'error');
-        imageUploadStatus.textContent = 'Upload failed. Make sure a public bucket named "post-images" exists in Supabase Storage, or paste an external URL.';
-        imageUploadStatus.style.color = '#e74c3c';
-      } finally {
-        if (imageUploadStatus.textContent.includes('Uploading')) {
-          imageUploadStatus.style.display = 'none';
-        }
-        postImageFileInput.value = '';
+        return JSON.parse(trimmed);
+      } catch (e) {
+        console.error('Failed to parse image_url JSON:', e);
       }
-    });
-  }
+    }
+    if (trimmed.includes(',')) {
+      return trimmed.split(',').map(url => url.trim()).filter(url => url !== '');
+    }
+    return [trimmed];
+  };
 
-  const updateImagePreview = (url) => {
-    if (imagePreview && imagePreviewContainer) {
-      if (url && url.trim() !== '') {
-        imagePreview.src = url;
-        imagePreviewContainer.style.display = 'block';
-      } else {
-        imagePreview.src = '';
-        imagePreviewContainer.style.display = 'none';
-      }
+  // Gallery preview update helper
+  const updateGalleryPreview = () => {
+    if (!galleryPreviewGrid || !galleryPreviewContainer) return;
+    
+    galleryPreviewGrid.innerHTML = '';
+    
+    if (uploadedImages.length > 0) {
+      uploadedImages.forEach((url, index) => {
+        const thumbWrapper = document.createElement('div');
+        thumbWrapper.className = 'gallery-thumb-wrapper';
+        thumbWrapper.style.position = 'relative';
+        thumbWrapper.style.aspectRatio = '1';
+        thumbWrapper.style.borderRadius = '4px';
+        thumbWrapper.style.overflow = 'hidden';
+        thumbWrapper.style.border = '1px solid var(--color-divider)';
+        thumbWrapper.style.backgroundColor = '#f4f4f4';
+
+        thumbWrapper.innerHTML = `
+          <img src="${url}" style="width: 100%; height: 100%; object-fit: cover;" />
+          <button type="button" class="btn-remove-thumb" data-index="${index}" style="position: absolute; top: 4px; right: 4px; background: rgba(0, 0, 0, 0.6); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; padding: 0; transition: background 0.2s;" onmouseover="this.style.background='rgba(178, 34, 34, 0.95)'" onmouseout="this.style.background='rgba(0, 0, 0, 0.6)'">✕</button>
+        `;
+        
+        galleryPreviewGrid.appendChild(thumbWrapper);
+      });
+      
+      galleryPreviewContainer.style.display = 'flex';
+    } else {
+      galleryPreviewContainer.style.display = 'none';
     }
   };
 
-  if (postImageUrlInput) {
-    postImageUrlInput.addEventListener('input', () => {
-      updateImagePreview(postImageUrlInput.value.trim());
+  // Remove photo from gallery
+  if (galleryPreviewGrid) {
+    galleryPreviewGrid.addEventListener('click', (e) => {
+      const removeBtn = e.target.closest('.btn-remove-thumb');
+      if (removeBtn) {
+        const index = parseInt(removeBtn.getAttribute('data-index'), 10);
+        uploadedImages.splice(index, 1);
+        updateGalleryPreview();
+        showToast('Photo removed from gallery.', 'info');
+      }
     });
   }
 
-  if (removeImageBtn) {
-    removeImageBtn.addEventListener('click', () => {
+  // Add URL manually
+  if (addImageUrlBtn && postImageUrlInput) {
+    addImageUrlBtn.addEventListener('click', () => {
+      const url = postImageUrlInput.value.trim();
+      if (!url) {
+        showToast('Please enter an image URL first.', 'error');
+        return;
+      }
+      uploadedImages.push(url);
       postImageUrlInput.value = '';
-      updateImagePreview('');
-      if (imageUploadStatus) imageUploadStatus.style.display = 'none';
-      showToast('Photo removed.', 'info');
+      updateGalleryPreview();
+      showToast('Image URL added to gallery!', 'success');
+    });
+
+    postImageUrlInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addImageUrlBtn.click();
+      }
+    });
+  }
+
+  // File upload to Supabase Storage (multiple files)
+  if (postImageFileInput) {
+    postImageFileInput.addEventListener('change', async (e) => {
+      const files = e.target.files;
+      if (!files || files.length === 0) return;
+
+      imageUploadStatus.style.display = 'block';
+      imageUploadStatus.textContent = `Uploading ${files.length} photo(s) to storage...`;
+      imageUploadStatus.style.color = 'var(--color-accent)';
+
+      let successCount = 0;
+      let failCount = 0;
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        imageUploadStatus.textContent = `Uploading photo ${i + 1} of ${files.length}...`;
+        
+        try {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+          const filePath = `post-images/${fileName}`;
+
+          // Upload file to the 'post-images' bucket
+          const { data, error } = await supabase.storage
+            .from('post-images')
+            .upload(filePath, file);
+
+          let publicUrl = '';
+          if (error) {
+            // Try photos bucket fallback
+            const { data: fbData, error: fbError } = await supabase.storage
+              .from('photos')
+              .upload(filePath, file);
+
+            if (fbError) throw fbError;
+
+            const { data: { publicUrl: fbUrl } } = supabase.storage
+              .from('photos')
+              .getPublicUrl(filePath);
+            publicUrl = fbUrl;
+          } else {
+            const { data: { publicUrl: piUrl } } = supabase.storage
+              .from('post-images')
+              .getPublicUrl(filePath);
+            publicUrl = piUrl;
+          }
+
+          if (publicUrl) {
+            uploadedImages.push(publicUrl);
+            successCount++;
+          }
+        } catch (err) {
+          console.error(`File upload error for ${file.name}:`, err);
+          failCount++;
+        }
+      }
+
+      updateGalleryPreview();
+      postImageFileInput.value = '';
+
+      if (failCount === 0) {
+        showToast(`Uploaded ${successCount} photo(s) successfully!`, 'success');
+        imageUploadStatus.style.display = 'none';
+      } else {
+        showToast(`Uploaded ${successCount} successfully, ${failCount} failed.`, 'warning');
+        imageUploadStatus.textContent = `Some uploads failed. Make sure a public bucket named "post-images" exists in Supabase Storage, or paste an external URL.`;
+        imageUploadStatus.style.color = '#e74c3c';
+      }
     });
   }
 
@@ -317,8 +388,9 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelEditBtn.classList.add('hidden');
     
     // Clear image elements
+    uploadedImages = [];
+    updateGalleryPreview();
     if (postImageUrlInput) postImageUrlInput.value = '';
-    updateImagePreview('');
     if (imageUploadStatus) imageUploadStatus.style.display = 'none';
   };
 
@@ -469,11 +541,12 @@ document.addEventListener('DOMContentLoaded', () => {
     postTitleInput.value = post.title;
     postCategoryInput.value = post.category || 'Leadership';
     postContentInput.value = post.content;
-    if (postImageUrlInput) postImageUrlInput.value = post.image_url || '';
+    if (postImageUrlInput) postImageUrlInput.value = '';
     postLinkedinInput.value = post.linkedin_url || '';
     postPublishedInput.checked = post.published;
     
-    updateImagePreview(post.image_url || '');
+    uploadedImages = parseImages(post.image_url);
+    updateGalleryPreview();
     if (imageUploadStatus) imageUploadStatus.style.display = 'none';
     
     publishedStatusText.innerText = post.published ? 'Publish Immediately' : 'Save as Draft';
@@ -517,7 +590,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const title = postTitleInput.value.trim();
     const category = postCategoryInput.value;
     const content = postContentInput.value.trim();
-    const image_url = postImageUrlInput ? postImageUrlInput.value.trim() : '';
     const linkedin_url = postLinkedinInput.value.trim();
     const published = postPublishedInput.checked;
 
@@ -530,7 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title,
       category,
       content,
-      image_url: image_url === '' ? null : image_url,
+      image_url: uploadedImages.length > 0 ? JSON.stringify(uploadedImages) : null,
       linkedin_url: linkedin_url === '' ? null : linkedin_url,
       published
     };
