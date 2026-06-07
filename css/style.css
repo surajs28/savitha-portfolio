@@ -838,14 +838,14 @@ body.hero-start-reveal .hero-video-bg {
 /* 7. ABOUT SECTION */
 .about-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1fr 1fr;
   gap: var(--space-lg);
   align-items: start;
 }
 
 .profile-image-frame {
   position: relative;
-  max-width: 360px;
+  max-width: 100%;
   margin: 0;
 }
 
