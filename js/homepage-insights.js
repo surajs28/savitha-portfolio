@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <h3 class="article-title">${post.title}</h3>
           <p class="article-excerpt">${excerptText}</p>
-          <button class="article-cta-btn read-dynamic-btn">Read Article <span class="arrow">→</span></button>
+          <button class="article-cta-btn read-dynamic-btn">Read More <span class="arrow">→</span></button>
         `;
  
         dynamicPostsContainer.appendChild(articleElement);
