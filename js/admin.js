@@ -147,6 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loginSection.classList.add('hidden');
     dashboardSection.classList.remove('hidden');
     loadPosts();
+    // Load messages in the background to update the message count badge
+    loadMessages();
   };
 
   // Login handler
