@@ -860,21 +860,7 @@ body.hero-start-reveal .hero-video-bg {
   box-shadow: 0 10px 30px rgba(26, 26, 46, 0.1);
 }
 
-.frame-border {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  width: calc(100% + 20px);
-  height: calc(100% + 20px);
-  border: 1.5px solid var(--color-accent);
-  border-radius: 6px;
-  z-index: 1;
-  transition: var(--transition-smooth);
-}
 
-.profile-image-frame:hover .frame-border {
-  transform: scale(1.03);
-}
 
 .about-lead {
   font-size: 1.35rem;
