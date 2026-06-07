@@ -108,6 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.add('hero-start-reveal');
     }
     if (dotEl) dotEl.style.display = 'none';
+
+    // Start video playback when signature preloader finishes
+    const video = document.querySelector('.hero-video-bg');
+    if (video) {
+      video.play().catch(err => {
+        console.log("Video playback failed or was prevented:", err);
+      });
+    }
   };
 
   const runSignaturePreloader = () => {
