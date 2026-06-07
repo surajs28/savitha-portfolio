@@ -2854,11 +2854,10 @@ body.hero-start-reveal .hero-video-bg {
 .recaptcha-row {
   display: flex;
   justify-content: flex-start;
+  height: 66px; /* 78px * 0.85 = 66.3px height for scaled widget */
 }
 
-@media (max-width: 360px) {
-  .g-recaptcha {
-    transform: scale(0.85);
-    transform-origin: 0 0;
-  }
+.g-recaptcha {
+  transform: scale(0.85);
+  transform-origin: 0 0;
 }
