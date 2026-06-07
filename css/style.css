@@ -1366,27 +1366,60 @@ body.hero-start-reveal .hero-video-bg {
 }
 
 .footer-container {
-  max-width: var(--max-width);
+  max-width: 900px;
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  text-align: center;
+  width: 100%;
 }
 
 .copyright {
   font-size: 0.85rem;
   color: var(--color-secondary);
+  flex: 1;
+  text-align: left;
+}
+
+.footer-privacy-link {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--color-secondary);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  flex: 1;
+  text-align: center;
+}
+
+.footer-privacy-link:hover {
+  color: var(--color-accent);
 }
 
 .footer-social-link {
   color: var(--color-secondary);
+  flex: 1;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  transition: var(--transition-smooth);
 }
 
 .footer-social-link:hover {
   color: var(--color-accent);
+}
+
+@media (max-width: 576px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  .copyright, .footer-privacy-link, .footer-social-link {
+    flex: none;
+    text-align: center;
+    justify-content: center;
+  }
 }
 
 /* 15. PERSPECTIVES ARTICLE MODAL */
