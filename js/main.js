@@ -608,11 +608,58 @@ document.addEventListener('DOMContentLoaded', () => {
   const contactForm = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
   
+  // Math CAPTCHA state
+  let captchaNum1 = 0;
+  let captchaNum2 = 0;
+  let captchaAnswer = 0;
+
+  const generateCaptcha = () => {
+    captchaNum1 = Math.floor(Math.random() * 9) + 1; // 1 to 9
+    captchaNum2 = Math.floor(Math.random() * 9) + 1; // 1 to 9
+    captchaAnswer = captchaNum1 + captchaNum2;
+    const questionEl = document.getElementById('captcha-question');
+    if (questionEl) {
+      questionEl.textContent = `What is ${captchaNum1} + ${captchaNum2}?`;
+    }
+    const inputEl = document.getElementById('captcha-input');
+    if (inputEl) {
+      inputEl.value = '';
+    }
+  };
+
+  // Initialize captcha if form is present
+  if (contactForm) {
+    generateCaptcha();
+  }
+  
   if (contactForm && formStatus) {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const formData = new FormData(contactForm);
+      
+      // 1. Honeypot check (Bots fill this invisible input)
+      const honeypot = formData.get('honeypot_field');
+      if (honeypot && honeypot.trim() !== '') {
+        // Silent success (trap the bot)
+        formStatus.textContent = "Thank you! Savitha will get back to you shortly.";
+        formStatus.style.display = 'block';
+        formStatus.style.color = 'var(--color-accent)';
+        contactForm.reset();
+        generateCaptcha();
+        return;
+      }
+
+      // 2. CAPTCHA verification
+      const userAnswer = parseInt(formData.get('captcha-answer'), 10);
+      if (userAnswer !== captchaAnswer) {
+        formStatus.textContent = "Incorrect answer to security question. Please try again.";
+        formStatus.style.display = 'block';
+        formStatus.style.color = '#e74c3c';
+        generateCaptcha(); // regenerate for next attempt
+        return;
+      }
+
       const name = formData.get('name');
       const email = formData.get('email');
       const message = formData.get('message');
@@ -629,17 +676,20 @@ document.addEventListener('DOMContentLoaded', () => {
           formStatus.style.display = 'block';
           formStatus.style.color = 'var(--color-accent)';
           contactForm.reset();
+          generateCaptcha(); // Generate new captcha on success
         } else {
           console.error("Supabase error:", error);
           formStatus.textContent = "Something went wrong. Please try again.";
           formStatus.style.display = 'block';
           formStatus.style.color = '#e74c3c';
+          generateCaptcha();
         }
       } catch (error) {
         console.error("Fetch error:", error);
         formStatus.textContent = "Something went wrong. Please try again.";
         formStatus.style.display = 'block';
         formStatus.style.color = '#e74c3c';
+        generateCaptcha();
       }
     });
   }

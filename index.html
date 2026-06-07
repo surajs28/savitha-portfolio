@@ -608,6 +608,25 @@
               <label for="message">MESSAGE</label>
               <textarea id="message" name="message" placeholder="Send me a message if you wish to connect!" rows="4" required></textarea>
             </div>
+
+            <!-- Honeypot field to trap spam bots (hidden from humans) -->
+            <div style="display: none;" aria-hidden="true">
+              <label for="honeypot_field">Leave this field blank</label>
+              <input type="text" id="honeypot_field" name="honeypot_field" autocomplete="off" tabindex="-1">
+            </div>
+
+            <!-- Math CAPTCHA Security Question -->
+            <div class="form-row math-captcha-row" style="align-items: center; margin-bottom: 1.8rem;">
+              <div class="form-group" style="margin-bottom: 0; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                <div>
+                  <label for="captcha-input" style="margin-bottom: 0.35rem;">SPAM PROTECTION *</label>
+                  <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span id="captcha-question" style="font-family: var(--font-heading); font-size: 1.25rem; font-style: italic; color: #F4F2EC; white-space: nowrap;">What is 5 + 3?</span>
+                    <input type="number" id="captcha-input" name="captcha-answer" placeholder="Answer" required style="width: 90px; text-align: center; padding: 0.75rem 0.5rem; height: 44px; margin: 0; background-color: #243E2D; border: 1px solid #365540; color: #FFF; border-radius: 8px;">
+                  </div>
+                </div>
+              </div>
+            </div>
             
             <button type="submit" class="btn-primary-form">Send Message</button>
             <p id="form-status" style="display: none; margin-top: 1rem; color: var(--color-accent); font-weight: 500; font-size: 0.9rem;"></p>
