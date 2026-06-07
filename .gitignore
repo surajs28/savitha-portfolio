@@ -1,0 +1,12 @@
+.env
+.env.local
+.env.*.local
+.vercel
+node_modules/
+dist/
+build/
+.agent/
+.tempmediaStorage/
+*.log
+
+.vercel
