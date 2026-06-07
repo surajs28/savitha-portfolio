@@ -846,7 +846,7 @@ body.hero-start-reveal .hero-video-bg {
 .profile-image-frame {
   position: relative;
   max-width: 360px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .profile-img {
