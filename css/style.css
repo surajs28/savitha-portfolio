@@ -511,6 +511,8 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
   height: 100%;
   object-fit: cover;
   z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
 }
 
 .sky-bg {
@@ -527,6 +529,10 @@ body.preloader-run-signature.hero-start-reveal .hero-stats-row {
 body.hero-start-reveal .sky-bg {
   opacity: 0 !important;
   pointer-events: none;
+}
+
+body.hero-start-reveal .hero-video-bg {
+  opacity: 1;
 }
 
 .hero-overlay {
