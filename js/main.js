@@ -616,30 +616,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const contactForm = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
   
-  // Math CAPTCHA state
-  let captchaNum1 = 0;
-  let captchaNum2 = 0;
-  let captchaAnswer = 0;
-
-  const generateCaptcha = () => {
-    captchaNum1 = Math.floor(Math.random() * 9) + 1; // 1 to 9
-    captchaNum2 = Math.floor(Math.random() * 9) + 1; // 1 to 9
-    captchaAnswer = captchaNum1 + captchaNum2;
-    const questionEl = document.getElementById('captcha-question');
-    if (questionEl) {
-      questionEl.textContent = `What is ${captchaNum1} + ${captchaNum2}?`;
-    }
-    const inputEl = document.getElementById('captcha-input');
-    if (inputEl) {
-      inputEl.value = '';
-    }
-  };
-
-  // Initialize captcha if form is present
-  if (contactForm) {
-    generateCaptcha();
-  }
-  
   if (contactForm && formStatus) {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -654,18 +630,21 @@ document.addEventListener('DOMContentLoaded', () => {
         formStatus.style.display = 'block';
         formStatus.style.color = 'var(--color-accent)';
         contactForm.reset();
-        generateCaptcha();
+        if (typeof grecaptcha !== 'undefined') {
+          grecaptcha.reset();
+        }
         return;
       }
 
-      // 2. CAPTCHA verification
-      const userAnswer = parseInt(formData.get('captcha-answer'), 10);
-      if (userAnswer !== captchaAnswer) {
-        formStatus.textContent = "Incorrect answer to security question. Please try again.";
-        formStatus.style.display = 'block';
-        formStatus.style.color = '#e74c3c';
-        generateCaptcha(); // regenerate for next attempt
-        return;
+      // 2. Google reCAPTCHA verification
+      if (typeof grecaptcha !== 'undefined') {
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+          formStatus.textContent = "Please verify that you are not a robot.";
+          formStatus.style.display = 'block';
+          formStatus.style.color = '#e74c3c';
+          return;
+        }
       }
 
       const name = formData.get('name');
@@ -684,20 +663,20 @@ document.addEventListener('DOMContentLoaded', () => {
           formStatus.style.display = 'block';
           formStatus.style.color = 'var(--color-accent)';
           contactForm.reset();
-          generateCaptcha(); // Generate new captcha on success
+          if (typeof grecaptcha !== 'undefined') {
+            grecaptcha.reset();
+          }
         } else {
           console.error("Supabase error:", error);
           formStatus.textContent = "Something went wrong. Please try again.";
           formStatus.style.display = 'block';
           formStatus.style.color = '#e74c3c';
-          generateCaptcha();
         }
       } catch (error) {
         console.error("Fetch error:", error);
         formStatus.textContent = "Something went wrong. Please try again.";
         formStatus.style.display = 'block';
         formStatus.style.color = '#e74c3c';
-        generateCaptcha();
       }
     });
   }

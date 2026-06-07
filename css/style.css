@@ -2789,5 +2789,15 @@ body.hero-start-reveal .hero-video-bg {
   transform: scale(1.04);
 }
 
+/* Google reCAPTCHA Responsive Scaling */
+.recaptcha-row {
+  display: flex;
+  justify-content: flex-start;
+}
 
-
+@media (max-width: 360px) {
+  .g-recaptcha {
+    transform: scale(0.85);
+    transform-origin: 0 0;
+  }
+}
