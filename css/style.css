@@ -1208,6 +1208,7 @@ body.hero-start-reveal .hero-video-bg {
 .contact-info {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   height: 100%;
 }
 
