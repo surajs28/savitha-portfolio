@@ -116,6 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Video playback failed or was prevented:", err);
       });
     }
+
+    // Name shimmer trigger (0.8s after content appears)
+    setTimeout(() => {
+      const nameHeadline = document.querySelector('.hero-name-headline');
+      if (nameHeadline) {
+        nameHeadline.classList.add('shimmer-active');
+        nameHeadline.addEventListener('animationend', () => {
+          nameHeadline.classList.remove('shimmer-active');
+        }, { once: true });
+      }
+    }, 800);
   };
 
   const runSignaturePreloader = () => {

@@ -443,7 +443,13 @@ body.preloader-active {
 }
 
 /* Guard initial states during signature preloader first visit */
-body.preloader-run-signature:not(.hero-start-reveal) #navbar,
+body.preloader-run-signature:not(.hero-start-reveal) #navbar {
+  opacity: 0 !important;
+  transform: translateY(-20px) !important;
+  animation: none !important;
+  transition: none !important;
+}
+
 body.preloader-run-signature:not(.hero-start-reveal) .hero-name-headline,
 body.preloader-run-signature:not(.hero-start-reveal) .hero-accent-line,
 body.preloader-run-signature:not(.hero-start-reveal) .hero-eyebrow-container,
@@ -451,8 +457,9 @@ body.preloader-run-signature:not(.hero-start-reveal) .hero-italic-bio,
 body.preloader-run-signature:not(.hero-start-reveal) .hero-actions,
 body.preloader-run-signature:not(.hero-start-reveal) .hero-stats-row {
   opacity: 0 !important;
-  transform: none !important;
+  transform: translateY(20px) !important;
   animation: none !important;
+  transition: none !important;
 }
 
 /* Slow, elegant sky fade-in during signature write */
@@ -461,24 +468,64 @@ body.preloader-run-signature .sky-bg {
   animation: skyFadeIn 4.0s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
 }
 
-/* Reveal sequence (Phase 6 - Step 4) & Repeat visits: instantly visible with no animations */
-body:not(.preloader-run-signature) #navbar,
-body:not(.preloader-run-signature) .hero-name-headline,
-body:not(.preloader-run-signature) .hero-accent-line,
-body:not(.preloader-run-signature) .hero-eyebrow-container,
-body:not(.preloader-run-signature) .hero-italic-bio,
-body:not(.preloader-run-signature) .hero-actions,
-body:not(.preloader-run-signature) .hero-stats-row,
-body.preloader-run-signature.hero-start-reveal #navbar,
+/* Reveal sequence (Phase 6 - Step 4) on first visit: unified fade up */
+body.preloader-run-signature.hero-start-reveal #navbar {
+  animation: unifiedFadeDown 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+}
+
 body.preloader-run-signature.hero-start-reveal .hero-name-headline,
 body.preloader-run-signature.hero-start-reveal .hero-accent-line,
 body.preloader-run-signature.hero-start-reveal .hero-eyebrow-container,
 body.preloader-run-signature.hero-start-reveal .hero-italic-bio,
 body.preloader-run-signature.hero-start-reveal .hero-actions,
 body.preloader-run-signature.hero-start-reveal .hero-stats-row {
+  animation: unifiedFadeUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+}
+
+/* Repeat visits: skip animations and reveal immediately */
+body:not(.preloader-run-signature) #navbar,
+body:not(.preloader-run-signature) .hero-name-headline,
+body:not(.preloader-run-signature) .hero-accent-line,
+body:not(.preloader-run-signature) .hero-eyebrow-container,
+body:not(.preloader-run-signature) .hero-italic-bio,
+body:not(.preloader-run-signature) .hero-actions,
+body:not(.preloader-run-signature) .hero-stats-row {
   opacity: 1 !important;
   transform: none !important;
   animation: none !important;
+}
+
+@keyframes unifiedFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes unifiedFadeDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Name Shimmer (triggered via JS shim active class) */
+.hero-name-headline.shimmer-active {
+  background: linear-gradient(90deg, #f28a22 0%, #f28a22 42%, #fff 50%, #f28a22 58%, #f28a22 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: nameShimmer 1.5s ease-in-out forwards !important;
+}
+
+@keyframes nameShimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
 }
 
 /* 6. HERO SECTION */
@@ -790,6 +837,12 @@ body.hero-start-reveal .hero-video-bg {
     font-size: 2.2rem;
   }
   
+  .hero-eyebrow {
+    font-size: clamp(0.52rem, 2vw, 0.72rem);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  
   .hero-accent-line {
     width: 150px;
     margin-bottom: 1.5rem;
@@ -883,6 +936,8 @@ body.hero-start-reveal .hero-video-bg {
   border-left: 1px solid var(--color-accent);
   padding-left: var(--space-sm);
   margin-top: var(--space-xs);
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .quote-text {
