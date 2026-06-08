@@ -1312,7 +1312,7 @@ body.hero-start-reveal .hero-video-bg {
 }
 
 .contact-form-container form textarea {
-  resize: vertical;
+  resize: none;
 }
 
 .contact-form-container form input::placeholder,
