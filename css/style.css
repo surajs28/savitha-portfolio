@@ -1205,6 +1205,17 @@ body.hero-start-reveal .hero-video-bg {
   gap: var(--space-md);
 }
 
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.btn-linkedin-pill-wrapper {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .contact-eyebrow {
   display: none; /* Hide the old smaller eyebrow as we've integrated it into the main heading */
 }
@@ -1345,6 +1356,13 @@ body.hero-start-reveal .hero-video-bg {
   .contact-grid {
     grid-template-columns: 1fr;
     gap: var(--space-sm); /* Ensure good spacing between info and form container on mobile */
+  }
+  .contact-info {
+    height: auto;
+  }
+  .btn-linkedin-pill-wrapper {
+    margin-top: 1.5rem;
+    margin-bottom: 0;
   }
 }
 
