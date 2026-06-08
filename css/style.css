@@ -1299,6 +1299,10 @@ body.hero-start-reveal .hero-video-bg {
   transition: var(--transition-shimmer);
 }
 
+.contact-form-container form textarea {
+  resize: vertical;
+}
+
 .contact-form-container form input::placeholder,
 .contact-form-container form textarea::placeholder {
   color: #8C9C91;
