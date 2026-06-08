@@ -1214,6 +1214,7 @@ body.hero-start-reveal .hero-video-bg {
 .btn-linkedin-pill-wrapper {
   margin-top: auto;
   margin-bottom: auto;
+  transform: translateY(-25px);
 }
 
 .contact-eyebrow {
@@ -1363,6 +1364,7 @@ body.hero-start-reveal .hero-video-bg {
   .btn-linkedin-pill-wrapper {
     margin-top: 1.5rem;
     margin-bottom: 0;
+    transform: none;
   }
 }
 
